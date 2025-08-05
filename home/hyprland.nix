@@ -1,4 +1,4 @@
-{ pkgs, config, ...}:
+{ pkgs, config, theme, ...}:
 
 let
   # Read the list of keybindings from your Hyprland config
@@ -82,10 +82,11 @@ in # This is the end of the 'let' block and the start of your main config
         gaps_in = 5;
         gaps_out = 10;
         border_size = 2;
-        "col.active_border" = "rgba(33ccffee) rgba(00ff99ee) 45deg";
-        "col.inactive_border" = "rgba(595959aa)";
+        "col.active_border" = "rgba(${theme.red}ee) rgba(cc0000ee) 45deg";
+        "col.inactive_border" = "rgba(${theme.dark_gray}aa)";
         allow_tearing = true;
       };
+
       decoration = { rounding = 10; };
       animations = {
         enabled = true; 

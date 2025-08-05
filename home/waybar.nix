@@ -1,4 +1,4 @@
-{pkgs, ...}:
+{pkgs, theme, ...}:
 {
   programs.waybar = {
     enable = true;
@@ -74,8 +74,8 @@
       }
 
       window#waybar {
-        background-color: rgba(26, 27, 38, 0.8);
-        color: #cdd6f4;
+        background-color:${theme.transparent_black};
+        color: #${theme.white};
         transition-property: background-color;
         transition-duration: .5s;
       }
@@ -83,22 +83,22 @@
       #workspaces button {
         padding: 0 5px;
         background-color: transparent;
-        color: #cdd6f4;
+        color: #${theme.white};
         border-radius: 0px;
       }
 
       #workspaces button.active {
-        background-color: #89b4fa;
-        color: #1e1e2e;
+        background-color: #${theme.red}; /* Red background for active workspace */
+        color: #${theme.black}; /* Black text on the active button */
       }
 
       #workspaces button:hover {
-        background: #45475a;
+        background: #${theme.dark_gray}; /* Dark gray hover */
       }
 
-      #submap {
-        background-color: #cba6f7;
-        color: #1e1e2e;
+      #mode {
+        background-color: #${theme.red}; /* Red background */
+        color: #${theme.black}; /* Black text */
         padding: 0 8px;
         margin: 4px 0px;
         border-radius: 10px;

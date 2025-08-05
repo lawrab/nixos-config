@@ -10,11 +10,15 @@
     };
   };
 
-  outputs = { self, nixpkgs, home-manager, ... }@inputs: {
+  outputs = { self, nixpkgs, home-manager, ... }@inputs: 
+    let
+      theme = import ./theme/theme.nix;
+    in
+  {
     nixosConfigurations = {
       "larry-desktop" = nixpkgs.lib.nixosSystem {
         system = "x86_64-linux";
-        specialArgs = { inherit inputs; }; # Pass inputs to modules
+        specialArgs = { inherit inputs theme; }; # Pass inputs to modules
         modules = [
           # Main system configuration
           ./configuration.nix
