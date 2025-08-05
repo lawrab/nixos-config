@@ -7,7 +7,6 @@
     kitty
     wofi
     waybar
-    vscode
     
     # -- Gaming Setup with Steam --
     steam

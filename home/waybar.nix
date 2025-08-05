@@ -38,6 +38,14 @@
           "on-click" = "pavucontrol";
         };
 
+        "network" = {
+          "format-wifi" = "{essid} ({signalStrength}%) ";
+          "format-ethernet" = " Connected";
+          "format-disconnected" = "Disconnected";
+          "tooltip-format" = "{ifname} via {gwaddr} ";
+          "on-click" = "nm-connection-editor";
+        };
+
       };
     };
     # Add some basic styling
