@@ -15,14 +15,14 @@ let
       action = pkgs.lib.concatStringsSep "," (pkgs.lib.drop 2 parts);
     in
     # Replace variables and format for readability
-    "<b>${pkgs.lib.replaceStrings [ "$mainMod" "SHIFT" ] [ "SUPER" "+Shift" ] keys}</b>: ${action}";
+    "<b>${pkgs.lib.replaceStrings [ "$mainMod" ] [ "SUPER" ] keys}</b>: ${action}";
 
   # Create the final list of formatted keybindings
-  formatted-keybinds = pkgs.lib.mapAttrsToList (name: value: format-keybind value) keybinds;
+  formatted-keybinds = pkgs.lib.map format-keybind keybinds;
 
   # Create a script package named "hypr-keybinds"
   keybinds-script = pkgs.writeShellScriptBin "hypr-keybinds" ''
-    echo -e "${pkgs.lib.concatStringsSep "\\n" formatted-keybinds}" | wofi --show dmenu -p "Hyprland Keybindings"
+    echo -e "${pkgs.lib.concatStringsSep "\\n" formatted-keybinds}" | wofi --show dmenu --allow-markup -p "Hyprland Keybindings"
   '';
 
 in # This is the end of the 'let' block and the start of your main config
@@ -50,6 +50,7 @@ in # This is the end of the 'let' block and the start of your main config
         "$mainMod, right, movefocus, r"
         "$mainMod, up, movefocus, u"
         "$mainMod, down, movefocus, d"
+        "$mainMod, slash, exec, hypr-keybinds"
         "$mainMod SHIFT, left, movewindow, l"
         "$mainMod SHIFT, right, movewindow, r"
         "$mainMod SHIFT, up, movewindow, u"
