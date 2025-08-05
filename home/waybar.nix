@@ -1,7 +1,10 @@
-{...}:
+{pkgs, ...}:
 {
-    programs.waybar = {
+  programs.waybar = {
     enable = true;
+
+    # package = pkgs.waybar.withFeatures [ "hyprland" ];
+
     settings = {
       mainBar = {
         layer = "top";

@@ -4,6 +4,7 @@
 {
   imports = [
     ./hardware-configuration.nix
+    ./environment.nix
   ];
 
   # Bootloader

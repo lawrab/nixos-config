@@ -6,7 +6,6 @@
     firefox
     kitty
     wofi
-    waybar
     
     # -- Gaming Setup with Steam --
     steam
