@@ -19,6 +19,7 @@
     ./home/vscode.nix
     ./home/firefox.nix
     ./home/1password.nix
+    ./home/kitty.nix
     ./hyprpaper/hyprpaper.nix
   ];
 

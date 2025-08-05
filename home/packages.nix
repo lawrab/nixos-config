@@ -3,7 +3,6 @@
 {
     home.packages = with pkgs; [
     # ---- Your Existing Apps ----
-    kitty
     wofi
     
     # -- Gaming Setup with Steam --
