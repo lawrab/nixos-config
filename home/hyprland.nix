@@ -36,6 +36,7 @@ in # This is the end of the 'let' block and the start of your main config
       exec-once = [ 
         "waybar" 
         "mako"
+        "hyprpaper"
       ];
 
       "$mainMod" = "SUPER";

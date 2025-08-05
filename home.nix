@@ -17,6 +17,7 @@
     ./home/packages.nix
     ./home/git.nix
     ./home/vscode.nix
+    ./hyprpaper/hyprpaper.nix
   ];
 
   home.pointerCursor = {
