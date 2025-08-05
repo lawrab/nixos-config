@@ -17,6 +17,8 @@
     ./home/packages.nix
     ./home/git.nix
     ./home/vscode.nix
+    ./home/firefox.nix
+    ./home/1password.nix
     ./hyprpaper/hyprpaper.nix
   ];
 
