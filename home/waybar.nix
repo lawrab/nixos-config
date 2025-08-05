@@ -11,7 +11,7 @@
         height = 30;
         modules-left = [ "hyprland/workspaces" "hyprland/submap" ];
         modules-center = [ "hyprland/window" ];
-        modules-right = [ "tray" "custom/mako" "pulseaudio" "network" "cpu" "memory" "clock" ];
+        modules-right = [ "tray" "pulseaudio" "network" "cpu" "memory" "clock" ];
         
         "hyprland/workspaces" = {
           "format" = "{icon}";
@@ -21,18 +21,6 @@
         "hyprland/submap" ={
           "format" = "mode: {}";
           "tooltip" = false;
-        };
-
-        "custom/mako" = {
-          exec = "makoctl list | wc -l";
-          exec-if = "pgrep mako";
-          format = "{} ";
-          format-alt = "";
-          tooltip = true;
-          tooltip-format = "Notifications";
-          on-click = "makoctl restore";
-          on-click-right = "makoctl dismiss -a";
-          on-click-middle = "makoctl menu wofi -d";
         };
 
         "tray" = {
