@@ -20,6 +20,7 @@
     ./home/firefox.nix
     ./home/1password.nix
     ./home/kitty.nix
+    ./home/wofi.nix
     ./hyprpaper/hyprpaper.nix
   ];
 

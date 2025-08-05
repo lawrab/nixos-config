@@ -2,9 +2,6 @@
 
 {
     home.packages = with pkgs; [
-    # ---- Your Existing Apps ----
-    wofi
-    
     # -- Gaming Setup with Steam --
     steam
     protonup-qt
