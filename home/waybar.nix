@@ -4,29 +4,35 @@
     enable = true;
 
     # package = pkgs.waybar.withFeatures [ "hyprland" ];
-
     settings = {
       mainBar = {
         layer = "top";
         position = "top";
         height = 30;
-        modules-left = [ "hyprland/workspaces" "hyprland/mode" ];
+        modules-left = [ "hyprland/workspaces" "hyprland/submap" ];
         modules-center = [ "hyprland/window" ];
-        modules-right = [ "tray" "mako" "pipewire" "network" "cpu" "memory" "clock" ];
+        modules-right = [ "tray" "custom/mako" "pulseaudio" "network" "cpu" "memory" "clock" ];
         
         "hyprland/workspaces" = {
           "format" = "{icon}";
           "on-click" = "activate";
         };
 
-        "mako" = {
-          "format" = "{count} ";
-          "format-alt" = "";
-          "tooltip" = true;
-          "tooltip-format" = "Notifications";
-          "on-click" = "makoctl restore";
-          "on-click-right" = "makoctl dismiss -a";
-          "on-click-middle" = "makoctl menu wofi -d";
+        "hyprland/submap" ={
+          "format" = "mode: {}";
+          "tooltip" = false;
+        };
+
+        "custom/mako" = {
+          exec = "makoctl list | wc -l";
+          exec-if = "pgrep mako";
+          format = "{} ";
+          format-alt = "";
+          tooltip = true;
+          tooltip-format = "Notifications";
+          on-click = "makoctl restore";
+          on-click-right = "makoctl dismiss -a";
+          on-click-middle = "makoctl menu wofi -d";
         };
 
         "tray" = {
@@ -34,10 +40,12 @@
           "spacing" = 10;
         };
 
-        "pipewire" = {
+        "pulseaudio" = {
           "format" = "{volume}% {icon}";
           "format-muted" = "";
-          "icons" = [ "" "" ];
+          "format-icons" = {
+            "default" = [ "" "" ];
+          };
           "on-click" = "pavucontrol";
         };
 
@@ -82,7 +90,7 @@
         background: #45475a;
       }
 
-      #mode {
+      #submap {
         background-color: #cba6f7;
         color: #1e1e2e;
         padding: 0 8px;
