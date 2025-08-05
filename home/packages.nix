@@ -8,7 +8,6 @@
     wofi
     waybar
     vscode
-    git
     
     # -- Gaming Setup with Steam --
     steam
@@ -29,10 +28,4 @@
     # CORRECTED: Use the new nerd-fonts package for JetBrains Mono
     nerd-fonts.jetbrains-mono
   ];
-
-  programs.git = {
-    enable = true;
-    userName = "Lawrence Rabbets";
-    userEmail = "lrabbets@gmail.com";
-  };
 }

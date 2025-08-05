@@ -11,7 +11,7 @@
   programs.git = {
     enable = true;
     userName = "Lawrence Rabbets";
-    userEmail = "lrabbets@gmail.com";
+    userEmail = "lawrab@users.noreply.github.com";
   };
 
   home.stateVersion = "25.05";
