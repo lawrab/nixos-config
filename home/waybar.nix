@@ -24,7 +24,7 @@
         };
 
         "custom/mako" = {
-          exec = "makoctl list | wc -l";
+          exec = "makoctl count";
           exec-if = "pgrep mako";
           format = "{} ";
           format-alt = "";
@@ -55,6 +55,12 @@
           "format-disconnected" = "Disconnected";
           "tooltip-format" = "{ifname} via {gwaddr} ";
           "on-click" = "nm-connection-editor";
+        };
+
+        "clock" = {
+          "format" = "{:%H:%M }";
+          "format-alt" = "{:%A, %d %B %Y}";
+          "tooltip-format" = "<big>{:%Y %B}</big>\n<tt><small>{calendar}</small></tt>";
         };
 
       };
