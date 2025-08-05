@@ -24,7 +24,7 @@
         };
 
         "custom/mako" = {
-          exec = "makoctl count";
+          exec = "makoctl list | wc -l";
           exec-if = "pgrep mako";
           format = "{} ";
           format-alt = "";
@@ -96,7 +96,7 @@
         background: #${theme.dark_gray}; /* Dark gray hover */
       }
 
-      #mode {
+      #submap {
         background-color: #${theme.red}; /* Red background */
         color: #${theme.black}; /* Black text */
         padding: 0 8px;
