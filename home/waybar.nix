@@ -1,36 +1,34 @@
+# home/waybar.nix
 {pkgs, theme, ...}:
 {
   programs.waybar = {
     enable = true;
-
-    # package = pkgs.waybar.withFeatures [ "hyprland" ];
     settings = {
       mainBar = {
         layer = "top";
         position = "top";
-        height = 30;
-        modules-left = [ "hyprland/workspaces" "hyprland/submap" ];
+        height = 35;
+        modules-left = [ "hyprland/workspaces" ];
         modules-center = [ "hyprland/window" ];
-        modules-right = [ "tray" "pulseaudio" "network" "cpu" "memory" "clock" ];
-        
+        modules-right = [ "pulseaudio" "network" "cpu" "memory" "clock" "tray" ]; # Moved tray to the end
+
         "hyprland/workspaces" = {
-          "format" = "{icon}";
+          "format" = "{id}";
           "on-click" = "activate";
+          "format-icons" = {
+            "default" = "";
+            "active" = "";
+          };
         };
-
-        "hyprland/submap" ={
-          "format" = "mode: {}";
-          "tooltip" = false;
-        };
-
-        "tray" = {
-          "icon-size" = 18;
-          "spacing" = 10;
+        
+        "hyprland/window" = {
+          "format" = "{}";
+          "separate-outputs" = true;
         };
 
         "pulseaudio" = {
           "format" = "{volume}% {icon}";
-          "format-muted" = "";
+          "format-muted" = " Muted";
           "format-icons" = {
             "default" = [ "" "" ];
           };
@@ -38,60 +36,91 @@
         };
 
         "network" = {
-          "format-wifi" = "{essid} ({signalStrength}%) ";
-          "format-ethernet" = " Connected";
-          "format-disconnected" = "Disconnected";
+          "format-wifi" = "{essid} ";
+          "format-ethernet" = "";
+          "format-disconnected" = "";
           "tooltip-format" = "{ifname} via {gwaddr} ";
           "on-click" = "nm-connection-editor";
         };
 
-        "clock" = {
-          "format" = "{:%H:%M }";
-          "format-alt" = "{:%A, %d %B %Y}";
-          "tooltip-format" = "<big>{:%Y %B}</big>\n<tt><small>{calendar}</small></tt>";
+        "cpu" = {
+          "format" = "{usage}% ";
+          "tooltip" = true;
         };
 
+        "memory" = {
+          "format" = "{}% ";
+          "tooltip" = true;
+        };
+        
+        "clock" = {
+          "format" = "{:%H:%M}";
+          "tooltip-format" = "<big>{:%A, %d %B %Y}</big>\n<tt><small>{calendar}</small></tt>";
+        };
+        
+        "tray" = {
+          "icon-size" = 18;
+          "spacing" = 10;
+        };
       };
     };
-    # Add some basic styling
+    # A complete CSS overhaul for a professional look
     style = ''
       * {
         border: none;
         font-family: "JetBrainsMono Nerd Font";
         font-size: 14px;
-        color: #${theme.primary_foreground};
+        min-height: 0;
       }
 
       window#waybar {
         background-color: ${theme.frosted_glass};
         color: #${theme.primary_foreground};
-        transition-property: background-color;
-        transition-duration: .5s;
       }
 
+      #workspaces {
+        background-color: #${theme.secondary_background};
+        margin: 5px;
+        padding: 0px 5px;
+        border-radius: 10px;
+      }
+      
       #workspaces button {
-        padding: 0 5px;
-        background-color: transparent;
-        color: #${theme.primary_foreground};
-        border-radius: 0px;
+        color: #${theme.secondary_foreground};
+        padding: 0px 5px;
       }
 
       #workspaces button.active {
-        background-color: #${theme.primary_accent};
-        color: #${theme.primary_background};
+        color: #${theme.primary_accent};
       }
 
       #workspaces button:hover {
-        background: #${theme.secondary_background};
+        color: #${theme.primary_foreground};
+      }
+      
+      #window {
+        font-weight: bold;
       }
 
-      #submap {
-        background-color: #${theme.primary_accent};
-        color: #${theme.primary_background};
-        padding: 0 8px;
-        margin: 4px 0px;
-        border-radius: 10px;
+      /* Style for all modules on the right */
+      #pulseaudio,
+      #network,
+      #cpu,
+      #memory,
+      #clock,
+      #tray {
+        background-color: #${theme.secondary_background};
+        padding: 0 12px;
+        margin: 5px 0px;
       }
+      
+      /* Add spacing between the right modules */
+      #pulseaudio { margin-left: 8px; border-radius: 10px 0 0 10px; }
+      #network { margin-left: 0px; }
+      #cpu { margin-left: 0px; }
+      #memory { margin-left: 0px; }
+      #clock { margin-left: 0px; }
+      #tray { margin-left: 8px; border-radius: 10px; }
     '';
   };
 }

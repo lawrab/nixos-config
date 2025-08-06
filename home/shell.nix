@@ -5,7 +5,7 @@
   # Zsh Configuration
   programs.zsh = {
     enable = true;
-    enableAutosuggestions = true;
+    autosuggestion.enable = true;
     enableCompletion = true;
     syntaxHighlighting.enable = true;
 
@@ -16,13 +16,10 @@
     };
 
     # Initialize zoxide
-    initExtra = ''
+    initContent = ''
       eval "$(zoxide init zsh)"
     '';
   };
-
-  # Set Zsh as the default shell
-  users.defaultUserShell = pkgs.zsh;
 
   # Starship Prompt Configuration
   programs.starship = {

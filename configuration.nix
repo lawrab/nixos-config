@@ -5,6 +5,7 @@
   imports = [
     ./hardware-configuration.nix
     ./environment.nix
+    ./home.nix
   ];
 
   # Bootloader
@@ -36,11 +37,17 @@
     extraGroups = [ "networkmanager" "wheel" ];
   };
 
+   programs.zsh.enable = true; 
+
   # Home-Manager configuration
-  home-manager.users.lrabbets = import ./home.nix;
-  home-manager.useGlobalPkgs = true;
-  home-manager.useUserPackages = true;
-  home-manager.extraSpecialArgs = { inherit theme; };
+ home-manager = {
+    useGlobalPkgs = true;
+    useUserPackages = true;
+    extraSpecialArgs = { inherit theme; };
+    users.lrabbets = { ... }: {
+      # We now let home.nix define the configuration
+    };
+  };
 
   # Nix settings
   nix.settings.experimental-features = [ "nix-command" "flakes" ];
