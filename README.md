@@ -86,6 +86,7 @@ This configuration is managed by Nix Flakes. To apply it to a new or existing Ni
 
 ```bash
 sudo nixos-rebuild switch --flake .#larry-desktop
+```
 
 ## Acknowledgements
 
