@@ -31,6 +31,7 @@ This setup also includes a selection of packages for gaming, such as `Steam`, `P
 
 The configuration is managed using Nix Flakes and has been modularised to keep things organised and (mostly) sane.
 
+```
 .
 ├── flake.nix
 ├── flake.lock
@@ -61,6 +62,7 @@ The configuration is managed using Nix Flakes and has been modularised to keep t
 │
 └── wallpapers/
 └── f1.png
+```
 
 ## Theming
 
