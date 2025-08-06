@@ -35,13 +35,5 @@
   programs.starship = {
     enable = true;
     enableZshIntegration = true;
-    # Configure starship to show zoxide status
-    settings = {
-      zoxide = {
-        disabled = false;
-        show_score = true;
-        format = "󰄨 [$score]($style) ";
-      };
-    };
   };
 }
