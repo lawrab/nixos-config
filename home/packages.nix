@@ -18,7 +18,6 @@
     gamescope
     vulkan-tools
 
-    mako
     obsidian
     
     # ---- Utilities ----
