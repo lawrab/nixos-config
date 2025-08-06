@@ -9,7 +9,7 @@
         position = "top";
         height = 35;
         modules-left = [ "hyprland/workspaces" ];
-        modules-center = [ "hyprland/window" ];
+        modules-center = [ "mpris" "hyprland/window" ];
         modules-right = [ "pulseaudio" "network" "cpu" "memory" "clock" "tray" ]; # Moved tray to the end
 
         "hyprland/workspaces" = {
@@ -24,6 +24,18 @@
         "hyprland/window" = {
           "format" = "{}";
           "separate-outputs" = true;
+        };
+
+        "mpris" = {
+          "format" = "{player_icon} {title} - {artist}";
+          "format-paused" = " {title}"; # Shows a play icon when paused
+          "format-stopped" = ""; # Shows a stop icon when stopped
+          "player-icons" = {
+            "default" = ""; # Default music icon
+            "mpv" = "🎵";
+          };
+          "max-length" = 35;
+          "on-click" = "player-play-pause";
         };
 
         "pulseaudio" = {
