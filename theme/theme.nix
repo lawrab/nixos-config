@@ -1,27 +1,26 @@
-# theme/theme.nix
 {
-  # -- Core Palette --
-  # Use these for the main UI elements.
+  # -- Core Palette (AnnieRabbets Inspired) --
+  # A vibrant and clean theme based on the channel's branding.
 
-  primary_background = "121212"; # Your original black
-  primary_foreground = "EAEAEA"; # Your original white
-  primary_accent = "D90429";      # Your original red
+  primary_background = "1a1a2e"; # A deep, dark purple
+  primary_foreground = "e0e0e0"; # A soft, clean white
+  primary_accent = "e94560";      # A vibrant magenta/pink
 
   # -- Secondary Palette --
   # For less prominent elements, like borders, inactive text, etc.
 
-  secondary_background = "1c1c1c"; # Your original dark_gray
-  secondary_foreground = "cccccc";   # A softer, off-white for less important text
-  secondary_accent = "FFD700";       # A new gold/yellow for secondary highlights
+  secondary_background = "2a2a40"; # A slightly lighter purple
+  secondary_foreground = "a0a0c0";   # A muted lavender for secondary text
+  secondary_accent = "f0c430";       # A warm gold for highlights
 
   # -- UI Element-Specific Colors --
   # For more fine-grained control over your UI.
 
-  window_border_active = "D90429";
-  window_border_inactive = "1c1c1c";
+  window_border_active = "e94560";
+  window_border_inactive = "2a2a40";
   
   # -- Special Values --
   
-  transparent_black = "rgba(0, 0, 0, 0.8)";
-  frosted_glass = "rgba(0, 0, 0, 0.6)"; 
+  transparent_black = "rgba(26, 26, 46, 0.8)";
+  frosted_glass = "rgba(26, 26, 46, 0.6)"; 
 }
