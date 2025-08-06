@@ -49,6 +49,10 @@ in # This is the end of the 'let' block and the start of your main config
         "$mainMod, O, exec, obsidian"
         "$mainMod, L, exec, hyprlock"
 
+        # -- Screenshots --
+        ", Print, exec, grim - | wl-copy" # Capture entire screen to clipboard
+        "SHIFT, Print, exec, grim -g \"$(slurp)\" - | wl-copy" # Capture selected area to clipboard
+
         # -- Window Management --
         "$mainMod, Q, killactive,"
         "$mainMod, M, exit,"

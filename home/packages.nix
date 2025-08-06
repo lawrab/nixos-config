@@ -2,6 +2,11 @@
 
 {
     home.packages = with pkgs; [
+    # -- Screenshot Tools --
+    grim            # The screenshot tool for Wayland
+    slurp           # For selecting a region for grim
+    wl-clipboard    # For copying the screenshot to the clipboard
+
     # -- Gaming Setup with Steam --
     steam
     protonup-qt
