@@ -17,8 +17,9 @@
       ./home/1password.nix
       ./home/kitty.nix
       ./home/wofi.nix
-      ./hyprpaper/hyprpaper.nix
       ./home/shell.nix
+      ./hyprpaper/hyprpaper.nix
+      ./hyprlock/hyprlock.nix
     ];
 
     home.pointerCursor = {

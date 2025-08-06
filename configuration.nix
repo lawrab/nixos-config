@@ -61,6 +61,9 @@
     settings.default_session.command = "${pkgs.greetd.tuigreet}/bin/tuigreet --time --cmd Hyprland";
   };
 
+  # Enable PAM for hyprlock
+  security.pam.services.hyprlock = {};
+
   # -- Graphics and Vulkan Driver Configuration --
   # This section is crucial for gaming.
   # CORRECTED: Using the modern 'hardware.graphics' options.
