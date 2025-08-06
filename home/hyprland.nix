@@ -48,6 +48,7 @@ in # This is the end of the 'let' block and the start of your main config
         "$mainMod, E, exec, thunar"
         "$mainMod, O, exec, obsidian"
         "$mainMod, L, exec, hyprlock"
+        "$mainMod, R, exec, shortwave" 
 
         # -- Screenshots --
         ", Print, exec, screenshot full"

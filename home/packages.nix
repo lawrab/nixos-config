@@ -6,7 +6,10 @@
     grim            # The screenshot tool for Wayland
     slurp           # For selecting a region for grim
     wl-clipboard    # For copying the screenshot to the clipboard
-    loupe     # For image preview
+
+    # Media
+    loupe           # For image preview
+    shortwave       # Internet radio player
 
     # -- Gaming Setup with Steam --
     steam
