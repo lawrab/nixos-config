@@ -19,6 +19,8 @@
     vulkan-tools
 
     obsidian
+
+    papirus-icon-theme
     
     # ---- Utilities ----
     libnotify # For sending test notifications

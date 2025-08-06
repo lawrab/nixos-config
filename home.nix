@@ -21,15 +21,10 @@
       ./home/scripts.nix
       ./home/default-apps.nix
       ./home/service.nix
+      ./home/gtk.nix
       ./hyprpaper/hyprpaper.nix
       ./hyprlock/hyprlock.nix
     ];
-
-    home.pointerCursor = {
-      name = "Bibata-Modern-Classic";
-      package = pkgs.bibata-cursors;
-      size = 24;
-    };
 
     home.stateVersion = "25.05";
   };
