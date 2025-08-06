@@ -20,6 +20,7 @@
       ./home/shell.nix
       ./home/scripts.nix
       ./home/default-apps.nix
+      ./home/service.nix
       ./hyprpaper/hyprpaper.nix
       ./hyprlock/hyprlock.nix
     ];
