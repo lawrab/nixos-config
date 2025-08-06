@@ -18,6 +18,7 @@
       ./home/kitty.nix
       ./home/wofi.nix
       ./home/shell.nix
+      ./home/scripts.nix
       ./hyprpaper/hyprpaper.nix
       ./hyprlock/hyprlock.nix
     ];

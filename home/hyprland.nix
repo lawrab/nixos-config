@@ -50,8 +50,8 @@ in # This is the end of the 'let' block and the start of your main config
         "$mainMod, L, exec, hyprlock"
 
         # -- Screenshots --
-        ", Print, exec, grim - | wl-copy" # Capture entire screen to clipboard
-        "SHIFT, Print, exec, grim -g \"$(slurp)\" - | wl-copy" # Capture selected area to clipboard
+        ", Print, exec, screenshot full"
+        "SHIFT, Print, exec, screenshot select"
 
         # -- Window Management --
         "$mainMod, Q, killactive,"
