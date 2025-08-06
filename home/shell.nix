@@ -9,6 +9,16 @@
     enableCompletion = true;
     syntaxHighlighting.enable = true;
 
+    # Add your aliases here
+    shellAliases = {
+      ls = "eza --icons";
+      l = "eza --icons";
+      ll = "eza -l --icons --git";
+      la = "eza -la --icons --git";
+      lt = "eza --tree --level=2 --icons";
+      cat = "bat";
+    };
+
     # Oh My Zsh for plugin management
     oh-my-zsh = {
       enable = true;
@@ -25,9 +35,13 @@
   programs.starship = {
     enable = true;
     enableZshIntegration = true;
-
-    # You can customize your starship prompt here if you want
-    # For now, we'll stick with the default which is already great.
-    # settings = { ... };
+    # Configure starship to show zoxide status
+    settings = {
+      zoxide = {
+        disabled = false;
+        show_score = true;
+        format = "󰄨 [$score]($style) ";
+      };
+    };
   };
 }
