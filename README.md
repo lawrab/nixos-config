@@ -20,13 +20,17 @@ This configuration builds a complete desktop environment using the following key
 * **Bar:** [Waybar](https://github.com/Alexays/Waybar)
 * **Launcher:** [Wofi](https://hg.sr.ht/~scoopta/wofi)
 * **Terminal:** [Kitty](https://sw.kovidgoyal.net/kitty/)
+* **Shell:** [Zsh](https://www.zsh.org/) with [Oh My Zsh](https://ohmyz.sh/) and [Starship](https://starship.rs/) prompt
+* **Notification Daemon:** [Mako](https://github.com/emersion/mako)
 * **Wallpaper Manager:** [Hyprpaper](https://github.com/hyprwm/hyprpaper)
+* **File Manager:** [Thunar](https://docs.xfce.org/xfce/thunar/start)
+
+This setup also includes a selection of packages for gaming, such as `Steam`, `ProtonUp-Qt`, `GameMode`, and `Gamescope`.
 
 ## File Structure
 
 The configuration is managed using Nix Flakes and has been modularised to keep things organised and (mostly) sane.
 
-```
 .
 ├── flake.nix
 ├── flake.lock
@@ -37,11 +41,16 @@ The configuration is managed using Nix Flakes and has been modularised to keep t
 ├── environment.nix
 |
 ├── home/
+│   ├── 1password.nix
+│   ├── firefox.nix
 │   ├── git.nix
 │   ├── hyprland.nix
+│   ├── kitty.nix
 │   ├── packages.nix
+│   ├── shell.nix
 │   ├── vscode.nix
-│   └── waybar.nix
+│   ├── waybar.nix
+│   └── wofi.nix
 │
 ├── hyprpaper/
 │   ├── hyprpaper.conf
@@ -51,8 +60,7 @@ The configuration is managed using Nix Flakes and has been modularised to keep t
 │   └── theme.nix
 │
 └── wallpapers/
-    └── f1.png
-```
+└── f1.png
 
 ## Theming
 
@@ -68,7 +76,6 @@ This configuration is managed by Nix Flakes. To apply it to a new or existing Ni
 
 ```bash
 sudo nixos-rebuild switch --flake .#larry-desktop
-```
 
 ## Acknowledgements
 
