@@ -22,9 +22,16 @@
       }
 
       #inner-box {
+        color: #${theme.white};
         background-color: #${theme.black};
         margin: 5px;
         border-radius: 5px;
+      }
+
+      #outer-box {
+        margin: 0px;
+        background-color: #${theme.black};
+        border-radius: 10px;
       }
 
       #scroll {
@@ -35,8 +42,8 @@
 
       #entry {
         color: #${theme.white};
+        background-color: #${theme.dark_gray};
         padding: 10px;
-        border-radius: 5px;
       }
 
       #entry:selected {
