@@ -19,13 +19,16 @@ This configuration builds a complete desktop environment using the following key
 * **System Management:** [Home Manager](https://github.com/nix-community/home-manager)
 * **Bar:** [Waybar](https://github.com/Alexays/Waybar)
 * **Launcher:** [Wofi](https://hg.sr.ht/~scoopta/wofi)
+* **Lock Screen:** [Hyprlock](https://github.com/hyprwm/hyprlock)
 * **Terminal:** [Kitty](https://sw.kovidgoyal.net/kitty/)
 * **Shell:** [Zsh](https://www.zsh.org/) with [Oh My Zsh](https://ohmyz.sh/) and [Starship](https://starship.rs/) prompt
 * **Notification Daemon:** [Mako](https://github.com/emersion/mako)
 * **Wallpaper Manager:** [Hyprpaper](https://github.com/hyprwm/hyprpaper)
 * **File Manager:** [Thunar](https://docs.xfce.org/xfce/thunar/start)
+* **Image Viewer:** [Loupe](https://gitlab.gnome.org/GNOME/loupe)
+* **Audio:** [PipeWire](https://pipewire.org/)
 
-This setup also includes a selection of packages for gaming, such as `Steam`, `ProtonUp-Qt`, `GameMode`, and `Gamescope`.
+This setup also includes a custom screenshot script that saves files, copies to the clipboard, and sends a notification, as well as a selection of packages for gaming, such as `Steam`, `ProtonUp-Qt`, `GameMode`, and `Gamescope`.
 
 ## File Structure
 
@@ -43,15 +46,21 @@ The configuration is managed using Nix Flakes and has been modularised to keep t
 |
 ├── home/
 │   ├── 1password.nix
+│   ├── default-apps.nix
 │   ├── firefox.nix
 │   ├── git.nix
 │   ├── hyprland.nix
 │   ├── kitty.nix
 │   ├── packages.nix
+│   ├── scripts.nix
 │   ├── shell.nix
 │   ├── vscode.nix
 │   ├── waybar.nix
 │   └── wofi.nix
+│
+├── hyprlock/
+│   ├── hyprlock.conf
+│   └── hyprlock.nix
 │
 ├── hyprpaper/
 │   ├── hyprpaper.conf
@@ -63,7 +72,6 @@ The configuration is managed using Nix Flakes and has been modularised to keep t
 └── wallpapers/
 └── f1.png
 ```
-
 ## Theming
 
 To maintain a consistent look and feel, all colours are defined in a central `theme/theme.nix` file. This file is passed as a special argument to all modules, allowing applications like Hyprland, Waybar, and Kitty to share the same colour palette. To change the entire desktop theme, you only need to edit this one file.
