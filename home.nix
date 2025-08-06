@@ -19,6 +19,7 @@
       ./home/wofi.nix
       ./home/shell.nix
       ./home/scripts.nix
+      ./home/default-apps.nix
       ./hyprpaper/hyprpaper.nix
       ./hyprlock/hyprlock.nix
     ];

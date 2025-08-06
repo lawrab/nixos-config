@@ -6,6 +6,7 @@
     grim            # The screenshot tool for Wayland
     slurp           # For selecting a region for grim
     wl-clipboard    # For copying the screenshot to the clipboard
+    loupe     # For image preview
 
     # -- Gaming Setup with Steam --
     steam
