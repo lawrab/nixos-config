@@ -59,11 +59,12 @@
         border: none;
         font-family: "JetBrainsMono Nerd Font";
         font-size: 14px;
+        color: #${theme.primary_foreground};
       }
 
       window#waybar {
-        background-color:${theme.transparent_black};
-        color: #${theme.white};
+        background-color: ${theme.frosted_glass};
+        color: #${theme.primary_foreground};
         transition-property: background-color;
         transition-duration: .5s;
       }
@@ -71,30 +72,25 @@
       #workspaces button {
         padding: 0 5px;
         background-color: transparent;
-        color: #${theme.white};
+        color: #${theme.primary_foreground};
         border-radius: 0px;
       }
 
       #workspaces button.active {
-        background-color: #${theme.red}; /* Red background for active workspace */
-        color: #${theme.black}; /* Black text on the active button */
+        background-color: #${theme.primary_accent};
+        color: #${theme.primary_background};
       }
 
       #workspaces button:hover {
-        background: #${theme.dark_gray}; /* Dark gray hover */
+        background: #${theme.secondary_background};
       }
 
       #submap {
-        background-color: #${theme.red}; /* Red background */
-        color: #${theme.black}; /* Black text */
+        background-color: #${theme.primary_accent};
+        color: #${theme.primary_background};
         padding: 0 8px;
         margin: 4px 0px;
         border-radius: 10px;
-      }
-
-      .modules-right > * > * {
-        padding: 0 8px;
-        margin: 4px 0px;
       }
     '';
   };

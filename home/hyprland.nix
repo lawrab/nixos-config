@@ -32,7 +32,7 @@ in # This is the end of the 'let' block and the start of your main config
     enable = true;
     settings = {
       monitor = ",preferred,auto,1";
-      
+
       exec-once = [ 
         "waybar" 
         "mako"
@@ -83,12 +83,20 @@ in # This is the end of the 'let' block and the start of your main config
         gaps_in = 5;
         gaps_out = 10;
         border_size = 2;
-        "col.active_border" = "rgba(${theme.red}ee) rgba(cc0000ee) 45deg";
-        "col.inactive_border" = "rgba(${theme.dark_gray}aa)";
+        "col.active_border" = "rgba(${theme.window_border_active}ee) rgba(cc0000ee) 45deg";
+        "col.inactive_border" = "rgba(${theme.window_border_inactive}aa)";
         allow_tearing = true;
       };
 
-      decoration = { rounding = 10; };
+      decoration = { 
+        rounding = 10;
+        blur = {
+          enabled = true;
+          size = 5;
+          passes = 2;
+        };
+      };
+
       animations = {
         enabled = true; 
         bezier = "myBezier, 0.05, 0.9, 0.1, 1.05";
