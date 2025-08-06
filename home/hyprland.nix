@@ -47,6 +47,7 @@ in # This is the end of the 'let' block and the start of your main config
         "$mainMod, M, exit,"
         "$mainMod, D, exec, wofi --show drun"
         "$mainMod, E, exec, thunar"
+        "$mainMod, O, exec, obsidian"
         "$mainMod, left, movefocus, l"
         "$mainMod, right, movefocus, r"
         "$mainMod, up, movefocus, u"

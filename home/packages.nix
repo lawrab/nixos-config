@@ -9,8 +9,8 @@
     gamescope
     vulkan-tools
 
-    # ---- New App: Notification Daemon ----
     mako
+    obsidian
     
     # ---- Utilities ----
     libnotify # For sending test notifications
