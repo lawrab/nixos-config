@@ -22,6 +22,7 @@
     ./home/kitty.nix
     ./home/wofi.nix
     ./hyprpaper/hyprpaper.nix
+    ./home/shell.nix
   ];
 
   home.pointerCursor = {
