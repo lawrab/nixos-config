@@ -42,22 +42,42 @@ in # This is the end of the 'let' block and the start of your main config
       "$mainMod" = "SUPER";
       
       bind = [
+        # -- App Launchers --
         "$mainMod, RETURN, exec, kitty"
-        "$mainMod, Q, killactive,"
-        "$mainMod, M, exit,"
         "$mainMod, D, exec, wofi --show drun"
         "$mainMod, E, exec, thunar"
-        "$mainMod, L, exec, hyprlock"
         "$mainMod, O, exec, obsidian"
+        "$mainMod, L, exec, hyprlock"
+
+        # -- Window Management --
+        "$mainMod, Q, killactive,"
+        "$mainMod, M, exit,"
+        "$mainMod, F, fullscreen,"
+        "$mainMod, SPACE, togglefloating,"
+        "$mainMod, P, pseudo, # dwindle"
+        "$mainMod SHIFT, P, togglesplit, # dwindle"
+
+        # -- Focus / Move with Arrow Keys --
         "$mainMod, left, movefocus, l"
         "$mainMod, right, movefocus, r"
         "$mainMod, up, movefocus, u"
         "$mainMod, down, movefocus, d"
-        "$mainMod, slash, exec, hypr-keybinds"
+
         "$mainMod SHIFT, left, movewindow, l"
         "$mainMod SHIFT, right, movewindow, r"
         "$mainMod SHIFT, up, movewindow, u"
         "$mainMod SHIFT, down, movewindow, d"
+
+        # -- Resize Windows --
+        "$mainMod CTRL, left, resizeactive, -20 0"
+        "$mainMod CTRL, right, resizeactive, 20 0"
+        "$mainMod CTRL, up, resizeactive, 0 -20"
+        "$mainMod CTRL, down, resizeactive, 0 20"
+
+        # -- Keybinding Helper --
+        "$mainMod, slash, exec, hypr-keybinds"
+
+        # -- Workspace Navigation --
         "$mainMod, 1, workspace, 1"
         "$mainMod, 2, workspace, 2"
         "$mainMod, 3, workspace, 3"
