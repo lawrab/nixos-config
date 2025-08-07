@@ -36,8 +36,9 @@
     fzf  # A command-line fuzzy finder
     zoxide # A smarter cd command
 
-        # -- Gemini --
+    # -- AI --
     gemini-cli
+    ollama
 
     # -- Python --
     (python3.withPackages (ps: with ps; [

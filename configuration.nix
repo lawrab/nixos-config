@@ -34,7 +34,7 @@
   users.users.lrabbets = {
     isNormalUser = true;
     description = "Lawrence Rabbets";
-    extraGroups = [ "networkmanager" "wheel" ];
+    extraGroups = [ "networkmanager" "wheel" "ollama" ];
   };
 
    programs.zsh.enable = true; 
