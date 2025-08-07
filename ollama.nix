@@ -14,9 +14,6 @@
     acceleration = "cuda";
   };
 
-  # Add the 'ollama' group so users can interact with the service.
-  users.groups.ollama = {};
-
   # Add any users who should have access to Ollama to this group.
   # Make sure the user is also added to this group in 'configuration.nix'
   users.users.lrabbets.extraGroups = [ "ollama" ];
