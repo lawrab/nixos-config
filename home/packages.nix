@@ -35,5 +35,19 @@
     bat  # A cat clone with syntax highlighting
     fzf  # A command-line fuzzy finder
     zoxide # A smarter cd command
+
+        # -- Gemini --
+    gemini-cli
+
+    # -- Python --
+    (python3.withPackages (ps: with ps; [
+      # Core tools
+      pip
+      virtualenv
+
+      # Common libraries for pet projects
+      requests
+      pylint
+    ]))
   ];
 }
