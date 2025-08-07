@@ -22,6 +22,7 @@
       ./home/default-apps.nix
       ./home/service.nix
       ./home/gtk.nix
+      ./home/neovim.nix
       ./hyprpaper/hyprpaper.nix
       ./hyprlock/hyprlock.nix
     ];
