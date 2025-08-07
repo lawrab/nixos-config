@@ -1,128 +1,144 @@
-# NixOS & Hyprland Configuration: A Declarative Desktop
+<div align="center">
 
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
-[![NixOS Channel: Unstable](https://img.shields.io/badge/NixOS-unstable-blue.svg)](https://nixos.org/channels/nixos-unstable)
-[![Built with Nix](https://builtwithnix.org/badge.svg)](https://builtwithnix.org)
+# NixOS & Hyprland: A Declarative Desktop Journey
 
-This repository contains my personal NixOS configuration for a modern desktop environment, centered around the Hyprland Wayland compositor. I'm by no means an expert, and this configuration is very much a work in progress as I learn more about NixOS. I'm sharing it in the hope that it might be useful to others who are also on their Nix journey.
+**Welcome to my personal NixOS and Linux customisation adventure!**
 
-This configuration is a practical example of how to build a fully reproducible desktop system using NixOS and Nix Flakes, making it an ideal starting point for both new and experienced Nix users.
+This repository is the living blueprint of my desktop, crafted with [NixOS](https://nixos.org/) and [Hyprland](https://hyprland.org/). It's a constantly evolving setup designed for a lightweight, keyboard-driven, and visually cohesive experience.
 
-![Screenshot of the Hyprland desktop with Waybar and Kitty terminal.](screenshots/hyprlan-layout.png)
+</div>
 
-## Core Philosophy
+<div align="center">
 
-- **Declarative & Reproducible**: Every aspect of the system, from the window manager to application settings, is defined in code. This allows for perfect reproducibility and easy system rollbacks.
-- **Clean & Minimalist Aesthetic**: The theme is designed to be easy on the eyes, with a consistent dark palette and a focus on clarity.
-- **Pragmatic & Productive**: The chosen tools and keybindings are optimized for a fast and efficient development workflow.
+[![NixOS](https://img.shields.io/badge/NixOS-unstable-blue?logo=nixos&style=for-the-badge)](https://nixos.org/channels/nixos-unstable)
+[![Hyprland](https://img.shields.io/badge/Hyprland-Window%20Manager-8c8cff?logo=linux&style=for-the-badge)](https://hyprland.org/)
+[![Flakes](https://img.shields.io/badge/Nix-Flakes-blueviolet?logo=nixos&style=for-the-badge)](https://nixos.wiki/wiki/Flakes)
+[![Home Manager](https://img.shields.io/badge/Home%20Manager-Enabled-brightgreen?logo=nixos&style=for-the-badge)](https://github.com/nix-community/home-manager)
 
-## Key Features
+[![Licence: MIT](https://img.shields.io/github/license/lawrab/nixos-config?style=for-the-badge)](./LICENSE)
+[![Last Commit](https://img.shields.io/github/last-commit/lawrab/nixos-config?style=for-the-badge)](https://github.com/lawrab/nixos-config/commits/main)
+[![Repo Size](https://img.shields.io/github/repo-size/lawrab/nixos-config?style=for-the-badge)](https://github.com/lawrab/nixos-config)
+[![Maintained](https://img.shields.io/maintenance/yes/2025?style=for-the-badge)](https://github.com/lawrab/nixos-config/commits/main)
 
-- **Operating System**: [NixOS](https://nixos.org/) (Unstable channel for the latest packages)
-- **Window Manager**: [Hyprland](https://hyprland.org/) - A dynamic tiling Wayland compositor with fluid animations and extensive customization.
-- **Terminal**: [Kitty](https://sw.kovidgoyal.net/kitty/) - A fast, feature-rich, GPU-accelerated terminal emulator.
-- **Shell**: [Zsh](https://www.zsh.org/) with [Oh My Zsh](https://ohmyz.sh/) for plugin management and the [Starship](https://starship.rs/) prompt for a rich, context-aware command line.
-- **Application Launcher**: [Wofi](https://hg.sr.ht/~scoopta/wofi) - A versatile and speedy launcher for Wayland.
-- **Status Bar**: [Waybar](https://github.com/Alexays/Waybar) - A highly customizable status bar for Wayland compositors.
-- **Text Editor**: [Visual Studio Code](https://code.visualstudio.com/) with settings managed declaratively.
-- **Theming**: A unified, centrally-managed dark theme (`theme.nix`) ensures a consistent look and feel across GTK applications, Kitty, and Waybar.
+</div>
 
-## Getting Started: A Fresh Installation Guide
+> **A Friendly Disclaimer:**  
+> I’m a NixOS and Linux customisation enthusiast, not an expert. This setup is my learning playground and is guaranteed to contain experiments, quirks, and maybe even a few dragons. Please use it as inspiration, but always double-check before adopting anything critical for your own system!
 
-This guide will walk you through deploying this configuration on a new NixOS system.
+---
 
-### Prerequisites
+## ✨ What’s Inside? A Look at the Tech Stack
 
-- A machine with a fresh installation of NixOS. You can find the official installation instructions on the [NixOS website](https://nixos.org/download.html).
-- Git installed (`nix-shell -p git`).
-- A stable internet connection.
+This configuration brings together some of my favourite tools to create a seamless Wayland environment.
 
-### Installation
+| Category          | Component                                                                                              |
+| ----------------- | ------------------------------------------------------------------------------------------------------ |
+| **Core System**   | **OS:** [NixOS](https://nixos.org/) (Unstable) │ **WM:** [Hyprland](https://hyprland.org/) │ **Audio:** [PipeWire](https://pipewire.org/)          |
+| **Visuals**       | **Bar:** [Waybar](https://github.com/Alexays/Waybar) │ **Lock Screen:** [Hyprlock](https://github.com/hyprwm/hyprlock) │ **Wallpaper:** [Hyprpaper](https://github.com/hyprwm/hyprpaper) |
+| **Terminal & Shell** | **Terminal:** [Kitty](https://sw.kovidgoyal.net/kitty/) │ **Shell:** [Zsh](https://www.zsh.org/) + [Oh My Zsh](https://ohmyz.sh/) │ **Prompt:** [Starship](https://starship.rs/) |
+| **Tooling**       | **Launcher:** [Wofi](https://hg.sr.ht/~scoopta/wofi) │ **Notifications:** [Mako](https://github.com/emersion/mako) │ **File Manager:** [Thunar](https://docs.xfce.org/xfce/thunar/start) |
+| **Gaming & Apps** | **Gaming:** Steam, ProtonUp-Qt, Gamemode │ **Image Viewer:** [Loupe](https://gitlab.gnome.org/GNOME/loupe) │ **Passwords:** 1Password |
 
-There are two primary methods for applying this configuration. The first is recommended for its convenience.
+*...plus a custom screenshot script, hand-picked fonts, and countless quality-of-life tweaks!*
 
-#### Option 1: Symlinking the Configuration (Recommended)
+---
 
-This method involves cloning the repository and creating a symbolic link from `/etc/nixos` to your cloned directory. This makes your cloned repository the system's source of truth, allowing you to run `nixos-rebuild` without any extra flags.
+## 🗺️ Blueprint: How It's All Organised
+
+This flake-based configuration is designed to be modular and easy to navigate.
+
+```
+.
+├── flake.nix                # ❄️ Main flake entrypoint, defines inputs and outputs
+├── home.nix                 # 🏠 Home Manager's main configuration file
+├── configuration.nix        # ⚙️ Global system-wide settings
+│
+├── home/                    # 🧑‍💻 User-specific application configs (dotfiles)
+│   ├── hyprland.nix         # ▸ Window manager rules and keybindings
+│   ├── waybar.nix           # ▸ Status bar modules and styling
+│   ├── kitty.nix            # ▸ Terminal appearance and settings
+│   └── ...and many more
+│
+├── theme/
+│   └── theme.nix            # 🎨 The heart of the look! Centralised colours and styles
+│
+└── screenshots/
+    └── hyprlan-layout.png   # 🖼️ A preview of the desktop
+```
+
+---
+
+## 🎨 The Heart of the Look: Theming
+
+All colours and style choices are managed in a single file: [`theme/theme.nix`](theme/theme.nix). This file is imported as a special argument into most modules, ensuring that everything from the window borders to the Waybar stays perfectly in sync. Change a colour once, and the whole desktop updates on the next rebuild.
+
+---
+
+## 🚀 Installation Guide
+
+Ready to give it a try? Here’s how you can get this setup running.
+
+> **Prerequisite:** A running NixOS system with flakes enabled.
+
+There are two ways to apply this configuration:
+
+### Method 1: The Symlink Approach (Recommended for Local Use)
+
+This is the most convenient method for managing your system config. It makes your cloned folder the direct source of truth for NixOS.
 
 1.  **Clone the repository:**
-
     ```bash
-    git clone https://github.com/lrabbets/nixos-config.git ~/nixos-config
+    git clone https://github.com/lawrab/nixos-config.git ~/nixos-config
     ```
-
-2.  **Backup your existing configuration:**
-
-    It's always a good practice to back up the default configuration generated during installation.
-
+2.  **Back up your current config:**
     ```bash
     sudo mv /etc/nixos /etc/nixos.bak
     ```
-
-3.  **Create the symbolic link:**
-
+3.  **Create a symbolic link:**
     ```bash
     sudo ln -s ~/nixos-config /etc/nixos
     ```
-
-4.  **Rebuild the system:**
-
-    This command will evaluate your new configuration and build the new system generation.
-
+4.  **Rebuild your system:**
     ```bash
     sudo nixos-rebuild switch
     ```
 
-#### Option 2: Using the `--flake` Flag
+### Method 2: The Pure Flake Approach
 
-If you prefer to keep your configuration in a different location without symlinking, you can use the `--flake` flag to point the rebuild command to your configuration's location.
+This method is great if you don't want to touch `/etc/nixos` and prefer to specify the path every time.
 
 1.  **Clone the repository:**
-
     ```bash
-    git clone https://github.com/lrabbets/nixos-config.git ~/nixos-config
+    git clone https://github.com/lawrab/nixos-config.git ~/nixos-config
     ```
-
-2.  **Rebuild the system:**
-
-    The `#larry-desktop` at the end specifies which `nixosConfiguration` to build from your `flake.nix` file.
-
+2.  **Rebuild your system from the flake:** (replace `larry-desktop` with your hostname if you change it in `flake.nix`)
     ```bash
     sudo nixos-rebuild switch --flake ~/nixos-config#larry-desktop
     ```
 
-### Post-Installation
+---
 
-After the rebuild is complete, you will be greeted by a textual login prompt (greetd). Simply enter your username and password to log in to your new Hyprland desktop.
+## 📸 A Glimpse of the Desktop
 
-## Configuration Structure
+![A clean desktop layout showing a terminal, a status bar, and a code editor, all consistently themed.](./screenshots/hyprlan-layout.png)
 
-The repository is organized to promote modularity and separation of concerns:
+---
 
-```
-.
-├── flake.nix         # Main entry point for the Nix flake
-├── configuration.nix   # System-level configuration
-├── home.nix            # Home-Manager entry point
-├── theme/              # Centralized theme definition
-├── home/               # User-level package and application configs
-└── ...
-```
+## 🙏 Acknowledgements
 
--   `flake.nix`: Defines the flake's inputs (Nixpkgs, Home-Manager) and outputs (the NixOS configuration).
--   `configuration.nix`: Manages system-wide settings like the bootloader, networking, users, and system services.
--   `home.nix`: The central hub for [Home-Manager](https://github.com/nix-community/home-manager), which manages user-level packages and dotfiles.
--   `home/`: Contains individual modules for configuring specific applications and tools (e.g., `kitty.nix`, `waybar.nix`).
--   `theme/theme.nix`: A central file defining the color palette used throughout the entire system.
+This configuration wouldn't exist without the incredible work and documentation from the community. Huge thanks to:
+- The [NixOS Wiki](https://nixos.wiki/) and its contributors
+- The [Hyprland Wiki](https://wiki.hyprland.org/)
+- The passionate NixOS, Hyprland, and Linux communities on Reddit, Discord, and beyond.
 
-## Customization
+---
 
-One of the key benefits of this setup is the ease of customization.
+## 📜 Licence
 
--   **Changing Colors**: To change the entire system's color scheme, you only need to edit the values in `theme/theme.nix`. All other configuration files reference this single source of truth.
--   **Adding Packages**: To install new packages for your user, simply add them to the list in `home/packages.nix`.
--   **Modifying Keybindings**: Hyprland's keybindings are defined in `home/hyprland.nix`. You can easily add or change them there.
+This configuration is released under the [MIT Licence](./LICENSE). Feel free to fork, adapt, and learn from it, but please do so at your own risk!
 
-## License
+<div align="center">
 
-This configuration is released under the MIT License. See the [LICENSE](LICENSE) file for more details.
+**Happy Hacking!**
+
+</div>
