@@ -1,11 +1,20 @@
 {
   description = "Larry's NixOS Configuration";
+  
+  nixConfig = {
+    extra-substituters = [
+      "https://cuda-maintainers.cachix.org"
+    ];
+    extra-trusted-public-keys = [
+      "cuda-maintainers.cachix.org-1:0dq3bujKpuEPMCX6U4WylrUDZ9JyUG0VpVZa7CNfq5E="
+    ];
+  };
 
   inputs = {
-    nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable"; # Using unstable is common for Hyprland for latest features
+    nixpkgs.url = "github:nixos/nixpkgs/nixos-25.05"; 
 
     home-manager = {
-      url = "github:nix-community/home-manager"; # Recommend tracking the main branch
+      url = "github:nix-community/home-manager/release-25.05";
       inputs.nixpkgs.follows = "nixpkgs";
     };
   };
