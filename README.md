@@ -92,6 +92,34 @@ Ready to give it a try? Here’s how you can get this setup running.
 
 > **Prerequisite:** A running NixOS system with flakes enabled.
 
+### ⚠️ A Note on Build Times
+
+This configuration includes an *optional* setup for the [Ollama](https://ollama.com/) service to run large language models locally.
+
+**Warning:** Building the system with Ollama enabled will trigger a **very long build time** (potentially an hour) for the first installation. This is because it needs to compile the entire CUDA toolkit from source if a pre-built binary is not available for your system.
+
+#### How to Disable Ollama
+
+If you do not want to build with Ollama, you can disable it with a one-line change.
+
+1.  Open the `configuration.nix` file.
+2.  Find the `imports` section at the top of the file.
+3.  Add a `#` to the beginning of the `./ollama.nix` line to comment it out, like so:
+
+    ```nix
+    imports = [
+      ./hardware-configuration.nix
+      ./environment.nix
+      ./home.nix
+    
+      # --- Optional Services ---
+      # Uncomment the line below to enable the Ollama service.
+      # Be aware: this will trigger a very long build the first time.
+      # ./ollama.nix 
+    ];
+    ```
+4.  Save the file and rebuild your system as normal.
+
 ### Step 1: Clone the Repository
 
 ```bash

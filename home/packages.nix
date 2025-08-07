@@ -38,7 +38,6 @@
 
     # -- AI --
     gemini-cli
-    ollama
 
     # -- Python --
     (python3.withPackages (ps: with ps; [

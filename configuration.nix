@@ -6,6 +6,10 @@
     ./hardware-configuration.nix
     ./environment.nix
     ./home.nix
+    # --- Optional Services ---
+    # Uncomment the line below to enable the Ollama service.
+    # Be aware: this will trigger a very long build the first time.
+    ./ollama.nix
   ];
 
   # Bootloader

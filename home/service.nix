@@ -24,10 +24,4 @@
       "font"             = "JetBrainsMono Nerd Font 12";
     };
   };
-
-  # -- Ollama Service --
-  services.ollama = {
-    enable = true;
-    acceleration = "cuda";
-  };
 }
