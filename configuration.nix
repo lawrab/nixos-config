@@ -41,7 +41,7 @@
     extraGroups = [ "networkmanager" "wheel" "ollama" ];
   };
 
-   programs.zsh.enable = true; 
+  programs.zsh.enable = true; 
 
   # Home-Manager configuration
  home-manager = {
@@ -54,6 +54,7 @@
   };
 
   # Nix settings
+  nix.settings.trusted-users = [ "root" "lrabbets" ];
   nix.settings.experimental-features = [ "nix-command" "flakes" ];
   nixpkgs.config.allowUnfree = true;
 
