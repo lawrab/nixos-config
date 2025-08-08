@@ -1,5 +1,5 @@
 # home.nix
-{ pkgs, ... }:
+{ pkgs, pkgs-unstable, ... }:
 
 {
   # Set the default shell for the user at the system level

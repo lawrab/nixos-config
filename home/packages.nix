@@ -1,4 +1,4 @@
-{pkgs, ...}:
+{pkgs, pkgs-unstable, ...}:
 
 {
     home.packages = with pkgs; [
@@ -36,9 +36,6 @@
     fzf  # A command-line fuzzy finder
     zoxide # A smarter cd command
 
-    # -- AI --
-    gemini-cli
-
     # -- Python --
     (python3.withPackages (ps: with ps; [
       # Core tools
@@ -49,5 +46,26 @@
       requests
       pylint
     ]))
+  ] ++ [
+    # -- Packages from unstable channel --
+    # The unstable channel provides access to the latest versions of packages
+    # that may not be available in the stable release. This is useful for:
+    # - Newly released software (like claude-code)
+    # - Development tools that need frequent updates
+    # - Packages where you need cutting-edge features
+    #
+    # To use unstable packages:
+    # 1. Add the package with pkgs-unstable prefix: pkgs-unstable.package-name
+    # 2. Examples:
+    #    pkgs-unstable.neovim        # Latest Neovim with newest features
+    #    pkgs-unstable.nodejs_22     # Latest Node.js version
+    #    pkgs-unstable.vscode        # VS Code with latest updates
+    #    pkgs-unstable.discord       # Discord with latest features
+    #    pkgs-unstable.firefox       # Firefox with newest security patches
+    #
+    # Note: Mixing stable and unstable packages is generally safe, but unstable
+    # packages may occasionally break or have dependency conflicts.
+    
+    pkgs-unstable.claude-code  # Claude Code CLI - AI coding assistant from Anthropic
   ];
 }

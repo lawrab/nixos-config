@@ -23,14 +23,16 @@ This repository is the living blueprint of my desktop, crafted with [NixOS](http
 </div>
 
 > **A Friendly Disclaimer:**  
-> I’m a NixOS and Linux customisation enthusiast, not an expert. This setup is my learning playground and is guaranteed to contain experiments, quirks, and maybe even a few dragons. Please use it as inspiration, but always double-check before adopting anything critical for your own system!
+> I'm a NixOS and Linux customisation enthusiast, not an expert. This setup is my learning playground and is guaranteed to contain experiments, quirks, and maybe even a few dragons. Please use it as inspiration, but always double-check before adopting anything critical for your own system!
 
 ---
 
 ## Table of Contents
-- [What’s Inside? A Look at the Tech Stack](#-whats-inside-a-look-at-the-tech-stack)
+- [What's Inside? A Look at the Tech Stack](#-whats-inside-a-look-at-the-tech-stack)
 - [Blueprint: How It's All Organised](#️-blueprint-how-its-all-organised)
 - [The Heart of the Look: Theming](#-the-heart-of-the-look-theming)
+- [Using Unstable Packages](#-using-unstable-packages)
+- [Secrets Management](#-secrets-management)
 - [Installation Guide](#-installation-guide)
 - [Troubleshooting & FAQ](#-troubleshooting--faq)
 - [A Glimpse of the Desktop](#-a-glimpse-of-the-desktop)
@@ -39,7 +41,7 @@ This repository is the living blueprint of my desktop, crafted with [NixOS](http
 
 ---
 
-## ✨ What’s Inside? A Look at the Tech Stack
+## ✨ What's Inside? A Look at the Tech Stack
 
 This configuration brings together some of my favourite tools to create a seamless Wayland environment.
 
@@ -74,6 +76,8 @@ This flake-based configuration is designed to be modular and easy to navigate.
 ├── theme/
 │   └── theme.nix            # 🎨 The heart of the look! Centralised colours and styles
 │
+├── secrets.nix              # 🔒 Optional: API keys and sensitive configuration (not committed)
+│
 └── screenshots/
     └── hyprlan-layout.png   # 🖼️ A preview of the desktop
 ```
@@ -86,9 +90,101 @@ All colours and style choices are managed in a single file: [`theme/theme.nix`](
 
 ---
 
+## 📦 Using Unstable Packages
+
+This configuration includes support for installing packages from both the stable NixOS channel (25.05) and the unstable channel. This gives you access to the latest versions of software while maintaining system stability.
+
+### How It Works
+
+The flake.nix defines two package sets:
+- `pkgs` - Stable packages from NixOS 25.05
+- `pkgs-unstable` - Latest packages from nixos-unstable
+
+### When to Use Unstable Packages
+
+Use unstable packages for:
+- **New software** that isn't available in stable yet (like claude-code)
+- **Development tools** that benefit from frequent updates
+- **Applications** where you need the latest features or security patches
+
+### Adding Unstable Packages
+
+To add a package from unstable, use the `pkgs-unstable` prefix in your package lists:
+
+```nix
+# In home/packages.nix
+home.packages = with pkgs; [
+  # ... your stable packages
+] ++ [
+  # Packages from unstable
+  pkgs-unstable.claude-code    # Latest Claude Code CLI
+  pkgs-unstable.neovim         # Neovim with newest features
+  pkgs-unstable.discord        # Discord with latest updates
+  pkgs-unstable.vscode         # VS Code with latest extensions support
+];
+```
+
+### Examples of Packages That Benefit from Unstable
+
+- **claude-code** - AI coding assistant (currently only in unstable)
+- **neovim** - Text editor with latest plugin compatibility
+- **nodejs_22** - Latest Node.js runtime
+- **firefox** - Browser with newest security patches
+- **discord** - Chat app with latest features
+
+### Safety Notes
+
+- Mixing stable and unstable packages is generally safe
+- Unstable packages may occasionally break during updates
+- The system prioritizes stability for core components while allowing flexibility for user applications
+
+---
+
+## 🔒 Secrets Management
+
+This configuration includes support for managing sensitive information like API keys without committing them to the repository.
+
+### How It Works
+
+The configuration conditionally imports a `secrets.nix` file that contains sensitive data. If the file doesn't exist, the system builds normally without the secrets.
+
+### Setting Up Secrets
+
+1. **Create a `secrets.nix` file in the root directory:**
+
+```nix
+# secrets.nix
+{
+  anthropic_api_key = "your-actual-api-key-here";
+  # Add more secrets as needed
+}
+```
+
+2. **Set secure permissions:**
+
+```bash
+chmod 600 secrets.nix
+```
+
+3. **The secrets are automatically loaded** as environment variables when you rebuild your system.
+
+### Supported Secrets
+
+Currently, the configuration supports:
+- `ANTHROPIC_API_KEY` - For Claude AI integration
+
+### Security Notes
+
+- The `secrets.nix` file is automatically ignored by Git (see `.gitignore`)
+- Secrets are loaded as environment variables available system-wide
+- If you don't need secrets, simply don't create the file - everything will work fine
+- Use the provided `secrets.nix.example` as a template
+
+---
+
 ## 🚀 Installation Guide
 
-Ready to give it a try? Here’s how you can get this setup running.
+Ready to give it a try? Here's how you can get this setup running.
 
 > **Prerequisite:** A running NixOS system with flakes enabled.
 
@@ -124,6 +220,7 @@ If you do not want to build with Ollama, you can disable it with a one-line chan
 
 ```bash
 git clone https://github.com/lawrab/nixos-config.git ~/nixos-config
+cd ~/nixos-config
 ```
 
 ### Step 2: Update the Hostname
@@ -133,7 +230,28 @@ My configuration is set up for a machine with the hostname `larry-desktop`. You'
 1.  **Find your hostname:** Run `hostname` in your terminal.
 2.  **Update the flake:** Open `flake.nix` and change `"larry-desktop"` to your hostname.
 
-### Step 3: Rebuild the System
+### Step 3: Set Up Secrets (Optional)
+
+If you want to use features that require API keys:
+
+1. **Copy the example secrets file:**
+   ```bash
+   cp secrets.nix.example secrets.nix
+   ```
+
+2. **Edit the secrets file with your actual values:**
+   ```bash
+   nano secrets.nix  # or your preferred editor
+   ```
+
+3. **Secure the file:**
+   ```bash
+   chmod 600 secrets.nix
+   ```
+
+> **Note:** This step is completely optional. The system will build and work perfectly without any secrets configured.
+
+### Step 4: Rebuild the System
 
 There are two ways to apply this configuration:
 
@@ -166,11 +284,32 @@ sudo nixos-rebuild switch --flake ~/nixos-config#your-hostname
 
 ## ❔ Troubleshooting & FAQ
 
+### Common Issues
+
 -   **"flakes are not enabled" error:** If you get this error, you need to enable flakes in your `configuration.nix`. Add the following to your system configuration:
     ```nix
     nix.settings.experimental-features = [ "nix-command" "flakes" ];
     ```
--   **`nixos-rebuild` fails:** The build can fail for many reasons. Carefully read the error output, as it often points to the exact problem. 
+-   **`nixos-rebuild` fails:** The build can fail for many reasons. Carefully read the error output, as it often points to the exact problem.
+
+### Secrets-Related Issues
+
+-   **Environment variables not available:** Make sure you've rebuilt your system after creating `secrets.nix`. Log out and back in to ensure environment variables are loaded.
+-   **Secrets file not found warning:** This is normal if you haven't created a `secrets.nix` file. The system will work fine without it.
+-   **Permission denied on secrets.nix:** Run `chmod 600 secrets.nix` to fix file permissions.
+
+### Files You Can Safely Modify
+
+- `secrets.nix` - Your personal secrets (never committed)
+- `wallpapers/` - Add your own wallpapers here
+- `theme/theme.nix` - Customize colors and styling
+- Any configuration in `home/` - Tweak application settings
+
+### Files You Should Be Careful With
+
+- `hardware-configuration.nix` - Generated by NixOS, specific to your hardware
+- `flake.lock` - Manages dependency versions, let Nix handle this
+
 ---
 
 ## 📸 A Glimpse of the Desktop

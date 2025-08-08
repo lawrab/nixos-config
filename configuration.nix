@@ -1,5 +1,5 @@
 # configuration.nix
-{ config, pkgs, theme, ... }:
+{ config, pkgs, pkgs-unstable, theme, ... }:
 
 {
   imports = [
@@ -47,7 +47,7 @@
  home-manager = {
     useGlobalPkgs = true;
     useUserPackages = true;
-    extraSpecialArgs = { inherit theme; };
+    extraSpecialArgs = { inherit pkgs-unstable theme; };
     users.lrabbets = { ... }: {
       # We now let home.nix define the configuration
     };

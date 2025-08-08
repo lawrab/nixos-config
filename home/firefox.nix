@@ -17,7 +17,7 @@
       "FirefoxHome" = {
         "SearchEngine" = "DuckDuckGo";
         "TopSites" = [
-          { "url" = "https://gemini.google.com"; }
+          { "url" = "https://claude.ai"; }
           { "url" = "https://github.com"; }
           { "url" = "https://nixos.org"; }
         ];
