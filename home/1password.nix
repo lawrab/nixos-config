@@ -1,7 +1,7 @@
-{ pkgs, ... }:
+{ pkgs-unstable, ... }:
 {
   home.packages = [
-    pkgs._1password-cli
-    pkgs._1password-gui
+    pkgs-unstable._1password-cli
+    pkgs-unstable._1password-gui
   ];
 }

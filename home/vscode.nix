@@ -1,4 +1,4 @@
-{ pkgs, ... }:
+{ pkgs-unstable, ... }:
 
 {
   programs.vscode = {
@@ -9,7 +9,7 @@
     };
 
     # Add extensions here
-    profiles.default.extensions = with pkgs.vscode-extensions; [
+    profiles.default.extensions = with pkgs-unstable.vscode-extensions; [
       # Official Python support from Microsoft
       ms-python.python
       bbenoist.nix

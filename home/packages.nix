@@ -2,25 +2,6 @@
 
 {
     home.packages = with pkgs; [
-    # -- Screenshot Tools --
-    grim            # The screenshot tool for Wayland
-    slurp           # For selecting a region for grim
-    wl-clipboard    # For copying the screenshot to the clipboard
-
-    # Media
-    loupe           # For image preview
-    shortwave       # Internet radio player
-
-    # -- Gaming Setup with Steam --
-    steam
-    protonup-qt
-    gamemode
-    gamescope
-    vulkan-tools
-
-    obsidian
-
-    papirus-icon-theme
     
     # ---- Utilities ----
     libnotify # For sending test notifications
@@ -30,6 +11,8 @@
     # ---- Fonts ----
     # CORRECTED: Use the new nerd-fonts package for JetBrains Mono
     nerd-fonts.jetbrains-mono
+    
+    papirus-icon-theme
 
     eza  # A modern replacement for 'ls'
     bat  # A cat clone with syntax highlighting
@@ -67,5 +50,16 @@
     # packages may occasionally break or have dependency conflicts.
     
     pkgs-unstable.claude-code  # Claude Code CLI - AI coding assistant from Anthropic
+    pkgs-unstable.grim            # The screenshot tool for Wayland
+    pkgs-unstable.slurp           # For selecting a region for grim
+    pkgs-unstable.wl-clipboard    # For copying the screenshot to the clipboard
+    pkgs-unstable.loupe           # For image preview
+    pkgs-unstable.shortwave       # Internet radio player
+    pkgs-unstable.steam
+    pkgs-unstable.protonup-qt
+    pkgs-unstable.gamemode
+    pkgs-unstable.gamescope
+    pkgs-unstable.vulkan-tools
+    pkgs-unstable.obsidian
   ];
 }

@@ -1,5 +1,5 @@
 # home/neovim.nix
-{ pkgs, ... }:
+{ pkgs-unstable, ... }:
 
 {
   programs.neovim = {
@@ -9,7 +9,7 @@
     vimAlias = true;      # Creates a 'vim' alias to 'nvim'
 
     # Add a selection of popular and useful plugins
-    plugins = with pkgs.vimPlugins; [
+    plugins = with pkgs-unstable.vimPlugins; [
       # File explorer
       nvim-tree-lua
 
