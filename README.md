@@ -90,9 +90,9 @@ This flake-based configuration is designed to be modular and easy to navigate.
 All configuration files include comprehensive inline documentation to help you understand NixOS-specific patterns and quirks. Key files are documented with:
 
 ### Core System Files
-- **[`flake.nix`](./flake.nix)** - Main flake configuration with binary caches, channel mixing, and module organization
+- **[`flake.nix`](./flake.nix)** - Main flake configuration with binary caches, channel mixing, and module organisation
 - **[`configuration.nix`](./configuration.nix)** - System-wide settings including bootloader, networking, audio, graphics, and user management
-- **[`home.nix`](./home.nix)** - Home Manager integration and module imports organization
+- **[`home.nix`](./home.nix)** - Home Manager integration and module imports organisation
 
 ### Application Configurations
 Each configuration file in the `home/` directory includes documentation for:
@@ -159,7 +159,7 @@ home.packages = with pkgs; [
 
 - Mixing stable and unstable packages is generally safe
 - Unstable packages may occasionally break during updates
-- The system prioritizes stability for core components while allowing flexibility for user applications
+- The system prioritises stability for core components while allowing flexibility for user applications
 
 ---
 
@@ -325,7 +325,7 @@ sudo nixos-rebuild switch --flake ~/nixos-config#your-hostname
 
 - `secrets.nix` - Your personal secrets (never committed)
 - `wallpapers/` - Add your own wallpapers here
-- `theme/theme.nix` - Customize colors and styling
+- `theme/theme.nix` - Customise colours and styling
 - Any configuration in `home/` - Tweak application settings
 
 ### Files You Should Be Careful With
