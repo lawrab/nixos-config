@@ -5,26 +5,33 @@
   # Set the default shell for the user at the system level
   users.users.lrabbets.shell = pkgs.zsh;
 
-  # Home Manager configuration for the user
+  # Home Manager configuration for user environment
   home-manager.users.lrabbets = {
     imports = [
-      ./home/hyprland.nix
-      ./home/waybar.nix
-      ./home/packages.nix
-      ./home/git.nix
-      ./home/vscode.nix
-      ./home/firefox.nix
-      ./home/1password.nix
-      ./home/kitty.nix
-      ./home/wofi.nix
-      ./home/shell.nix
-      ./home/scripts.nix
-      ./home/default-apps.nix
-      ./home/service.nix
-      ./home/gtk.nix
-      ./home/neovim.nix
-      ./hyprpaper/hyprpaper.nix
-      ./hyprlock/hyprlock.nix
+      # Window manager and desktop environment
+      ./home/hyprland.nix      # Hyprland WM configuration
+      ./home/waybar.nix        # Status bar
+      ./home/wofi.nix          # Application launcher
+      ./hyprpaper/hyprpaper.nix # Wallpaper manager
+      ./hyprlock/hyprlock.nix   # Screen locker
+      
+      # Applications and tools
+      ./home/packages.nix      # System packages
+      ./home/firefox.nix       # Web browser
+      ./home/vscode.nix        # Code editor
+      ./home/neovim.nix        # Terminal editor
+      ./home/kitty.nix         # Terminal emulator
+      ./home/1password.nix     # Password manager
+      
+      # Shell and development environment
+      ./home/shell.nix         # Zsh configuration
+      ./home/git.nix           # Git settings
+      ./home/scripts.nix       # Custom scripts
+      
+      # System integration
+      ./home/default-apps.nix  # Default applications
+      ./home/service.nix       # User services
+      ./home/gtk.nix           # GTK theming
     ];
 
     home.stateVersion = "25.05";

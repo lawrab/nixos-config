@@ -3,87 +3,82 @@
 
 {
   imports = [
-    ./hardware-configuration.nix
-    ./environment.nix
-    ./home.nix
-    # --- Optional Services ---
-    # Uncomment the line below to enable the Ollama service.
-    # Be aware: this will trigger a very long build the first time.
-    ./ollama.nix
+    ./hardware-configuration.nix # Auto-generated hardware config
+    ./environment.nix # Environment and system packages
+    ./home.nix # Home-manager configuration
+    ./ollama.nix # Local AI model server (heavy build!)
   ];
 
-  # Bootloader
+  # Bootloader - systemd-boot is simpler than GRUB
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
 
   # Networking
   networking.hostName = "larry-desktop";
-  networking.networkmanager.enable = true;
+  networking.networkmanager.enable = true; # GUI network management
 
   # Timezone and Locale
   time.timeZone = "Europe/London";
   i18n.defaultLocale = "en_GB.UTF-8";
 
-  # Enable sound with Pipewire
-  services.pulseaudio.enable = false;
-  security.rtkit.enable = true;
+  # Sound via Pipewire (modern replacement for PulseAudio)
+  services.pulseaudio.enable = false; # Disable old audio system
+  security.rtkit.enable = true; # Real-time scheduling for audio
   services.pipewire = {
     enable = true;
-    alsa.enable = true;
-    alsa.support32Bit = true;
-    pulse.enable = true;
+    alsa.enable = true; # ALSA compatibility
+    alsa.support32Bit = true; # 32-bit app support
+    pulse.enable = true; # PulseAudio compatibility
   };
 
-  # Define user and link to home-manager config
+  # User account configuration
   users.users.lrabbets = {
     isNormalUser = true;
     description = "Lawrence Rabbets";
-    extraGroups = [ "networkmanager" "wheel" "ollama" ];
+    extraGroups = [ "networkmanager" "wheel" "ollama" ]; # wheel = sudo access
   };
 
-  programs.zsh.enable = true; 
+  programs.zsh.enable = true; # Enable Zsh system-wide
 
-  # Home-Manager configuration
+  # Home-Manager configuration - manages user environment
  home-manager = {
-    useGlobalPkgs = true;
-    useUserPackages = true;
-    extraSpecialArgs = { inherit pkgs-unstable theme; };
+    useGlobalPkgs = true; # Use system nixpkgs
+    useUserPackages = true; # Install to user profile
+    extraSpecialArgs = { inherit pkgs-unstable theme; }; # Pass variables to home config
     users.lrabbets = { ... }: {
-      # We now let home.nix define the configuration
+      # User configuration defined in home.nix
     };
   };
 
-  # Nix settings
-  nix.settings.trusted-users = [ "root" "lrabbets" ];
-  nix.settings.experimental-features = [ "nix-command" "flakes" ];
-  nixpkgs.config.allowUnfree = true;
+  # Nix configuration
+  nix.settings.trusted-users = [ "root" "lrabbets" ]; # Users who can configure Nix
+  nix.settings.experimental-features = [ "nix-command" "flakes" ]; # Enable new Nix CLI
+  nixpkgs.config.allowUnfree = true; # Allow proprietary software
 
-  # Enable Hyprland and a lightweight greeter
+  # Hyprland window manager (Wayland-based)
   programs.hyprland.enable = true;
-  programs.hyprland.xwayland.enable = true;
+  programs.hyprland.xwayland.enable = true; # X11 app compatibility
   services.greetd = {
     enable = true;
     settings.default_session.command = "${pkgs.greetd.tuigreet}/bin/tuigreet --time --cmd Hyprland";
   };
 
-  # Enable PAM for hyprlock
+  # Enable PAM authentication for screen locking
   security.pam.services.hyprlock = {};
 
-  # -- Graphics and Vulkan Driver Configuration --
-  # This section is crucial for gaming.
-  # CORRECTED: Using the modern 'hardware.graphics' options.
+  # Graphics configuration for gaming and GPU acceleration
   hardware.graphics = {
     enable = true;
-    enable32Bit = true; # Enable 32-bit support for Wine/Proton
+    enable32Bit = true; # Required for Wine/Steam Proton games
   };
 
-  # NVIDIA drivers
+  # NVIDIA driver configuration
   services.xserver.videoDrivers = ["nvidia"];
   hardware.nvidia = {
-    modesetting.enable = true;
-    open = false; # Use the proprietary driver
-    nvidiaSettings = true;
-    package = config.boot.kernelPackages.nvidiaPackages.stable;
+    modesetting.enable = true; # Required for Wayland
+    open = false; # Use proprietary driver (better gaming performance)
+    nvidiaSettings = true; # Include nvidia-settings GUI
+    package = config.boot.kernelPackages.nvidiaPackages.stable; # Stable driver version
   };
 
   system.stateVersion = "25.05";

@@ -1,7 +1,7 @@
 { pkgs, config, theme, ...}:
 
 let
-  # Read the list of keybindings from your Hyprland config
+  # Self-referencing: access our own config to generate a help script
   keybinds = config.wayland.windowManager.hyprland.settings.bind;
 
   # Function to format each keybinding line for display
@@ -20,7 +20,7 @@ let
   # Create the final list of formatted keybindings
   formatted-keybinds = pkgs.lib.map format-keybind keybinds;
 
-  # Create a script package named "hypr-keybinds"
+  # writeShellScriptBin creates an executable script in your PATH
   keybinds-script = pkgs.writeShellScriptBin "hypr-keybinds" ''
     echo -e "${pkgs.lib.concatStringsSep "\\n" formatted-keybinds}" | wofi --show dmenu --allow-markup -p "Hyprland Keybindings"
   '';
@@ -108,9 +108,10 @@ in # This is the end of the 'let' block and the start of your main config
         gaps_in = 5;
         gaps_out = 10;
         border_size = 2;
+        # Gradient borders: first color from theme, second hardcoded red
         "col.active_border" = "rgba(${theme.window_border_active}ee) rgba(cc0000ee) 45deg";
         "col.inactive_border" = "rgba(${theme.window_border_inactive}aa)";
-        allow_tearing = true;
+        allow_tearing = true; # Reduces input lag for gaming
       };
 
       decoration = { 
@@ -136,5 +137,6 @@ in # This is the end of the 'let' block and the start of your main config
     };
   };
 
+  # Add our generated script to user packages
   home.packages = [ keybinds-script ];
 }

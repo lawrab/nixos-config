@@ -19,13 +19,13 @@
       cat = "bat";
     };
 
-    # Oh My Zsh for plugin management
+    # Oh My Zsh provides themes and plugins for zsh
     oh-my-zsh = {
       enable = true;
-      plugins = [ "git" "sudo" ]; # Add any other plugins you like here
+      plugins = [ "git" "sudo" ]; # Plugin names from oh-my-zsh repository
     };
 
-    # Initialize zoxide
+    # initContent runs after zsh starts - for shell integrations
     initContent = ''
       eval "$(zoxide init zsh)"
     '';

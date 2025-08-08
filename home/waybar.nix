@@ -35,7 +35,7 @@
             "mpv" = "🎵";
           };
           "max-length" = 35;
-          "on-click" = "player-play-pause";
+          "on-click" = "player-play-pause"; # Requires playerctl
         };
 
         "pulseaudio" = {
@@ -76,7 +76,7 @@
         };
       };
     };
-    # A complete CSS overhaul for a professional look
+    # Waybar uses CSS for styling - standard CSS properties apply
     style = ''
       * {
         border: none;

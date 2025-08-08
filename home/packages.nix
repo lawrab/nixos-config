@@ -9,7 +9,7 @@
     xfce.thunar
 
     # ---- Fonts ----
-    # CORRECTED: Use the new nerd-fonts package for JetBrains Mono
+    # Nix 24.05+ uses nerd-fonts.font-name syntax
     nerd-fonts.jetbrains-mono
     
     papirus-icon-theme
@@ -20,6 +20,7 @@
     zoxide # A smarter cd command
 
     # -- Python --
+    # withPackages creates a Python environment with specific packages
     (python3.withPackages (ps: with ps; [
       # Core tools
       pip

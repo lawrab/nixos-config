@@ -30,6 +30,7 @@ This repository is the living blueprint of my desktop, crafted with [NixOS](http
 ## Table of Contents
 - [What's Inside? A Look at the Tech Stack](#-whats-inside-a-look-at-the-tech-stack)
 - [Blueprint: How It's All Organised](#️-blueprint-how-its-all-organised)
+- [Configuration Documentation](#-configuration-documentation)
 - [The Heart of the Look: Theming](#-the-heart-of-the-look-theming)
 - [Using Unstable Packages](#-using-unstable-packages)
 - [Secrets Management](#-secrets-management)
@@ -81,6 +82,28 @@ This flake-based configuration is designed to be modular and easy to navigate.
 └── screenshots/
     └── hyprlan-layout.png   # 🖼️ A preview of the desktop
 ```
+
+---
+
+## 📚 Configuration Documentation
+
+All configuration files include comprehensive inline documentation to help you understand NixOS-specific patterns and quirks. Key files are documented with:
+
+### Core System Files
+- **[`flake.nix`](./flake.nix)** - Main flake configuration with binary caches, channel mixing, and module organization
+- **[`configuration.nix`](./configuration.nix)** - System-wide settings including bootloader, networking, audio, graphics, and user management
+- **[`home.nix`](./home.nix)** - Home Manager integration and module imports organization
+
+### Application Configurations
+Each configuration file in the `home/` directory includes documentation for:
+- NixOS-specific configuration patterns (e.g., `writeShellScriptBin`, service integration)
+- Package naming quirks (underscores vs hyphens)
+- Integration points between tools (MPRIS, D-Bus, XDG)
+- Wayland-specific tool choices (Mako vs dunst, grim/slurp vs X11 tools)
+- CSS styling in Nix configurations
+- Self-referencing configuration patterns
+
+The documentation focuses on **why** things are configured a certain way rather than just **what** each option does, making it easier for others to understand and adapt the configuration.
 
 ---
 

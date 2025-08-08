@@ -1,26 +1,23 @@
+# theme.nix - Centralized color scheme for the entire desktop
+# 
+# This theme is imported as a specialArg in flake.nix and passed to all modules.
+# Change colors here and they'll update across Hyprland, Waybar, terminals, etc.
 {
-  # -- Core Palette (AnnieRabbets Inspired) --
-  # A vibrant and clean theme based on the channel's branding.
+  # Core color palette - primary interface elements
+  primary_background = "1a1a2e"; # Deep dark purple - main background
+  primary_foreground = "e0e0e0"; # Soft white - main text color
+  primary_accent = "e94560";      # Vibrant magenta/pink - active elements
 
-  primary_background = "1a1a2e"; # A deep, dark purple
-  primary_foreground = "e0e0e0"; # A soft, clean white
-  primary_accent = "e94560";      # A vibrant magenta/pink
+  # Secondary palette - subtle UI elements
+  secondary_background = "2a2a40"; # Lighter purple - secondary backgrounds
+  secondary_foreground = "a0a0c0"; # Muted lavender - secondary text
+  secondary_accent = "f0c430";     # Warm gold - highlights and warnings
 
-  # -- Secondary Palette --
-  # For less prominent elements, like borders, inactive text, etc.
-
-  secondary_background = "2a2a40"; # A slightly lighter purple
-  secondary_foreground = "a0a0c0";   # A muted lavender for secondary text
-  secondary_accent = "f0c430";       # A warm gold for highlights
-
-  # -- UI Element-Specific Colors --
-  # For more fine-grained control over your UI.
-
-  window_border_active = "e94560";
-  window_border_inactive = "2a2a40";
+  # Window manager specific colors
+  window_border_active = "e94560";   # Active window border (matches primary_accent)
+  window_border_inactive = "2a2a40"; # Inactive window border (matches secondary_background)
   
-  # -- Special Values --
-  
-  transparent_black = "rgba(26, 26, 46, 0.8)";
-  frosted_glass = "rgba(26, 26, 46, 0.6)"; 
+  # Transparency effects for modern UI
+  transparent_black = "rgba(26, 26, 46, 0.8)"; # Semi-transparent overlays
+  frosted_glass = "rgba(26, 26, 46, 0.6)";     # Glass effect backgrounds
 }

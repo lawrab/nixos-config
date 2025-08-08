@@ -1,6 +1,7 @@
 {
   description = "Larry's NixOS Configuration";
   
+  # Binary cache configuration for CUDA packages
   nixConfig = {
     extra-substituters = [
       "https://cuda-maintainers.cachix.org"
@@ -11,12 +12,14 @@
   };
 
   inputs = {
+    # Stable release branch for reliable system packages
     nixpkgs.url = "github:nixos/nixpkgs/nixos-25.05"; 
+    # Unstable branch for latest packages (Firefox, development tools, etc.)
     nixpkgs-unstable.url = "github:nixos/nixpkgs/nixos-unstable";
 
     home-manager = {
       url = "github:nix-community/home-manager/release-25.05";
-      inputs.nixpkgs.follows = "nixpkgs";
+      inputs.nixpkgs.follows = "nixpkgs"; # Use same nixpkgs version for consistency
     };
   };
 
@@ -25,22 +28,20 @@
       theme = import ./theme/theme.nix;
       system = "x86_64-linux";
       
+      # Import unstable packages with unfree software enabled
       pkgs-unstable = import nixpkgs-unstable {
         inherit system;
-        config.allowUnfree = true;
+        config.allowUnfree = true; # Allow proprietary software like Steam, Discord, etc.
       };
     in
   {
     nixosConfigurations = {
       "larry-desktop" = nixpkgs.lib.nixosSystem {
         system = "x86_64-linux";
-        specialArgs = { inherit inputs pkgs-unstable theme; }; # Pass inputs to modules
+        specialArgs = { inherit inputs pkgs-unstable theme; }; # Pass variables to all modules
         modules = [
-          # Main system configuration
-          ./configuration.nix
-
-          # Add Home-Manager module
-          home-manager.nixosModules.home-manager
+          ./configuration.nix # System-level configuration
+          home-manager.nixosModules.home-manager # User environment management
         ];
       };
     };

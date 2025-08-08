@@ -4,15 +4,15 @@
   programs.vscode = {
     enable = true;
 
+    # VSCode profiles separate settings/extensions per workflow
     profiles.default.userSettings = {
         "terminal.integrated.fontFamily" = "JetBrainsMono Nerd Font";
     };
 
-    # Add extensions here
+    # Extensions are managed declaratively - no manual installation
     profiles.default.extensions = with pkgs-unstable.vscode-extensions; [
-      # Official Python support from Microsoft
-      ms-python.python
-      bbenoist.nix
+      ms-python.python # Official Microsoft Python extension
+      bbenoist.nix     # Nix language support
     ];
   };
 }

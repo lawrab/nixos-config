@@ -14,6 +14,7 @@
       };
     };
     
+    # Policies enforce settings that users cannot change in Firefox UI
     policies = {
       "FirefoxHome" = {
         "SearchEngine" = "DuckDuckGo";
@@ -24,9 +25,10 @@
         ];
       };
       "ExtensionSettings" = {
+        # Extension IDs can be found at about:debugging#/runtime/this-firefox
         "uBlock0@raymondhill.net" = {
           "install_url" = "https://addons.mozilla.org/firefox/downloads/latest/ublock-origin/latest.xpi";
-          "installation_mode" = "force_installed";
+          "installation_mode" = "force_installed"; # Prevents user removal
         };
       };
     };

@@ -4,16 +4,16 @@
 {
   # -- User-level System Services --
   
-  # Enable the MPRIS proxy service so Waybar can see media players.
+  # MPRIS proxy forwards D-Bus media control signals to Waybar
   services.mpris-proxy.enable = true;
 
-  # Install playerctl to provide command-line controls for media players.
+  # playerctl provides CLI media controls (play, pause, next, etc.)
   home.packages = [ pkgs.playerctl ];
 
-# Declaratively configure and enable the Mako notification daemon.
+  # Mako is a Wayland notification daemon - replaces dunst on X11
   services.mako = {
     enable = true;
-    # All settings now live inside this 'settings' block.
+    # Settings go in a nested attrset, not top-level
     settings = {
       "background-color" = "#${theme.primary_background}";
       "text-color"       = "#${theme.primary_foreground}";

@@ -8,7 +8,7 @@
     viAlias = true;       # Creates a 'vi' alias to 'nvim'
     vimAlias = true;      # Creates a 'vim' alias to 'nvim'
 
-    # Add a selection of popular and useful plugins
+    # Plugin packages are separate from configuration
     plugins = with pkgs-unstable.vimPlugins; [
       # File explorer
       nvim-tree-lua
@@ -29,7 +29,7 @@
       nvim-lspconfig
     ];
 
-    # Corrected: Use extraLuaConfig for Lua code
+    # extraLuaConfig vs extraConfig: Lua goes here, Vimscript in extraConfig
     extraLuaConfig = ''
       -- Set leader key to space
       vim.g.mapleader = ' '

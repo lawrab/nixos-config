@@ -2,7 +2,7 @@
 { pkgs, ... }:
 
 let
-  # This creates an executable script named "screenshot" in your path
+  # writeShellScriptBin creates a derivation with an executable in bin/
   screenshotScript = pkgs.writeShellScriptBin "screenshot" ''
     #!/usr/bin/env bash
     set -euo pipefail
@@ -16,12 +16,12 @@ let
 
     case "$1" in
       select)
-        # Capture a selected area. The output of grim is piped to tee.
-        # tee writes the image to the file AND passes it to wl-copy.
+        # slurp lets user select area, grim captures it
+        # tee saves to file AND pipes to clipboard simultaneously
         grim -g "$(slurp)" -t png - | tee "$FILENAME" | wl-copy
         ;;
       full)
-        # Capture the full screen, with the same tee process.
+        # grim without -g captures entire screen
         grim -t png - | tee "$FILENAME" | wl-copy
         ;;
       *)

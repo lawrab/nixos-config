@@ -3,9 +3,10 @@
 {
   programs.wofi = {
     enable = true;
+    # Wofi styling uses CSS - selectors target specific UI elements
     style = ''
       window {
-        /* Make the main window transparent to see the box inside */
+        /* Transparent background lets inner box show through */
         background-color: transparent;
         border: 2px solid #${theme.primary_accent};
         border-radius: 10px;
@@ -52,11 +53,11 @@
       }
     '';
     settings = {
-      show = "drun";
+      show = "drun"; # Application launcher mode
       width = "40%";
       lines = 5;
       prompt = "Launch:";
-      layer = "overlay";
+      layer = "overlay"; # Appears above other windows
     };
   };
 }

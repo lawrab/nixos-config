@@ -1,20 +1,19 @@
-# ollama.nix
+# ollama.nix - Local AI model server with CUDA acceleration
 #
-# This is an optional service. To enable it, uncomment its import
-# statement in 'configuration.nix'.
+# WARNING: This triggers a very long build time (potentially an hour) on first install
+# because it compiles the entire CUDA toolkit from source if pre-built binaries
+# aren't available for your system.
 #
 { pkgs, ... }:
 
 {
-  # -- Ollama Service for Local LLMs --
-  # This service runs Ollama with CUDA acceleration for NVIDIA GPUs.
-  # It's a heavy build, so it's kept optional.
+  # Ollama service for running local LLMs (Llama, Mistral, etc.)
   services.ollama = {
     enable = true;
-    acceleration = "cuda";
+    acceleration = "cuda"; # Requires NVIDIA GPU with CUDA drivers
   };
 
-  # Add any users who should have access to Ollama to this group.
-  # Make sure the user is also added to this group in 'configuration.nix'
+  # Grant user access to Ollama service
+  # Note: User must also be added to "ollama" group in configuration.nix
   users.users.lrabbets.extraGroups = [ "ollama" ];
 }
