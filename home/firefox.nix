@@ -1,8 +1,9 @@
-{ ... }:
+{ pkgs-unstable, ... }:
 
 {
   programs.firefox = {
     enable = true;
+    package = pkgs-unstable.firefox;
 
     # Define settings for a specific profile
     profiles.default = {
