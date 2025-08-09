@@ -1,10 +1,10 @@
 <div align="center">
 
-# NixOS & Hyprland: A Declarative Desktop Journey
+# NixOS Configuration with Hyprland - A Declarative Desktop Journey
 
 **Welcome to my personal NixOS and Linux customisation adventure!**
 
-This repository is the living blueprint of my desktop, crafted with [NixOS](https://nixos.org/) and [Hyprland](https://hyprland.org/). It's a constantly evolving setup designed for a lightweight, keyboard-driven, and visually cohesive experience.
+This repository is the living blueprint of my desktop, crafted with [NixOS](https://nixos.org/) and [Hyprland](https://hyprland.org/). It's a constantly evolving setup designed for a lightweight, keyboard-driven, and visually cohesive Wayland desktop experience with flakes, Home Manager, and comprehensive dotfiles.
 
 </div>
 
@@ -37,14 +37,15 @@ This repository is the living blueprint of my desktop, crafted with [NixOS](http
 - [Installation Guide](#-installation-guide)
 - [Troubleshooting & FAQ](#-troubleshooting--faq)
 - [A Glimpse of the Desktop](#-a-glimpse-of-the-desktop)
+- [Key Features & Topics](#-key-features--topics)
 - [Acknowledgements](#-acknowledgements)
 - [Licence](#-licence)
 
 ---
 
-## ✨ What's Inside? A Look at the Tech Stack
+## ✨ What's Inside? NixOS Hyprland Tech Stack
 
-This configuration brings together some of my favourite tools to create a seamless Wayland environment.
+This NixOS configuration brings together carefully chosen tools to create a seamless Wayland desktop environment optimised for developers and power users.
 
 | Category          | Component                                                                                              |
 | ----------------- | ------------------------------------------------------------------------------------------------------ |
@@ -58,9 +59,9 @@ This configuration brings together some of my favourite tools to create a seamle
 
 ---
 
-## 🗺️ Blueprint: How It's All Organised
+## 🗺️ NixOS Configuration Structure & Organization
 
-This flake-based configuration is designed to be modular and easy to navigate.
+This flake-based NixOS configuration is designed with modularity and clarity in mind, making it easy for others to navigate, understand, and adapt.
 
 ```
 .
@@ -338,6 +339,35 @@ sudo nixos-rebuild switch --flake ~/nixos-config#your-hostname
 ## 📸 A Glimpse of the Desktop
 
 ![A clean desktop layout showing a terminal, a status bar, and a code editor, all consistently themed.](./screenshots/hyprlan-layout.png)
+
+---
+
+## 🎯 Key Features & Topics
+
+This NixOS configuration showcases:
+
+### Core Technologies
+- **Declarative System Management** - NixOS with flakes for reproducible builds
+- **Modern Window Manager** - Hyprland Wayland compositor with advanced features
+- **Home Manager Integration** - Comprehensive dotfiles and user configuration management
+- **Mixed Package Sources** - Stable and unstable channel support for latest software
+
+### Desktop Environment Features
+- **Wayland-Native Tools** - Modern alternatives: Waybar, Mako notifications, Wofi launcher
+- **Consistent Theming** - Centralised colour scheme across all applications
+- **Keyboard-Driven Workflow** - Optimised for productivity and minimal mouse usage
+- **Gaming Ready** - Steam, ProtonUp-Qt, and performance optimisations included
+
+### Developer-Friendly
+- **Comprehensive Documentation** - Inline comments explaining NixOS patterns and quirks
+- **Modular Architecture** - Easy to understand, modify, and extend configuration
+- **Secret Management** - Secure handling of API keys and sensitive configuration
+- **Build Optimization** - Binary cache configuration for faster rebuilds
+
+Perfect for developers, Linux enthusiasts, and anyone interested in modern declarative system configuration with Wayland desktop environments.
+
+### GitHub Topics
+`nixos` `hyprland` `wayland` `flakes` `home-manager` `linux-desktop` `dotfiles` `declarative-configuration` `wayland-compositor` `nix-flakes` `desktop-environment` `linux-customisation` `system-configuration` `waybar` `kitty-terminal` `developer-tools`
 
 ---
 
