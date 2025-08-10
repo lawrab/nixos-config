@@ -132,29 +132,35 @@ let
     
     # --- Script Logic ---
     MESSAGE="$1"
-    ICON="i3189" # Default icon
+    # Default icon - see https://developer.lametric.com/icons for full list
+    ICON="a2867" # Notification icon (same as your working example)
 
-    # JSON payload for the LaMetric API
-    JSON_PAYLOAD=$(cat <<EOF
-    {
-      "model": {
-        "frames": [
-          {
-            "icon": "$ICON",
-            "text": "$MESSAGE"
-          }
-        ]
-      }
-    }
-    EOF
-    )
+    # JSON payload for the LaMetric API with critical priority (required for dimmed mode)
+    JSON_PAYLOAD=" { \"priority\":\"critical\", \"model\": { \"frames\": [ { \"icon\":\"$ICON\", \"text\":\"$MESSAGE\"} ] } }"
 
-    # Send the notification using curl
-    curl -X POST \
+    # Send the notification using curl with timeout and error handling
+    echo "Sending notification to LaMetric at $LAMETRIC_IP..."
+    echo "JSON Payload: $JSON_PAYLOAD"
+    echo
+    echo "DEBUG: You can test manually with:"
+    echo "curl -X POST -u \"dev:$LAMETRIC_API_KEY\" -H \"Content-Type: application/json\" -d '$JSON_PAYLOAD' --connect-timeout 5 --max-time 10 --fail \"http://$LAMETRIC_IP:8080/api/v2/device/notifications\""
+    echo
+    
+    if curl -X POST \
          -u "dev:$LAMETRIC_API_KEY" \
          -H "Content-Type: application/json" \
          -d "$JSON_PAYLOAD" \
-         "http://$LAMETRIC_IP:8080/api/v2/device/notifications" --insecure
+         --connect-timeout 5 \
+         --max-time 10 \
+         --fail \
+         --silent \
+         --show-error \
+         "http://$LAMETRIC_IP:8080/api/v2/device/notifications"; then
+      echo "✓ Notification sent successfully"
+    else
+      echo "✗ Failed to send notification (check network/credentials)"
+      exit 1
+    fi
   '';
 
   # Script to create ~/.env file with user prompts
