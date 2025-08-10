@@ -8,9 +8,9 @@
         layer = "top";
         position = "top";
         height = 35;
-        modules-left = [ "hyprland/workspaces" ];
-        modules-center = [ "mpris" "hyprland/window" ];
-        modules-right = [ "pulseaudio" "network" "cpu" "memory" "clock" "tray" ]; # Moved tray to the end
+        modules-left = [ "hyprland/workspaces" "mpris" ];
+        modules-center = [ "hyprland/window" ];
+        modules-right = [ "pulseaudio" "custom/separator" "network" "cpu" "memory" "custom/separator" "custom/temps" "custom/separator" "clock" "custom/separator" "tray" ];
 
         "hyprland/workspaces" = {
           "format" = "{id}";
@@ -34,8 +34,9 @@
             "default" = ""; # Default music icon
             "mpv" = "🎵";
           };
-          "max-length" = 35;
-          "on-click" = "player-play-pause"; # Requires playerctl
+          "max-length" = 40;
+          "on-click" = "playerctl play-pause";
+          "tooltip-format" = "{player}: {title} - {artist}";
         };
 
         "pulseaudio" = {
@@ -64,6 +65,14 @@
           "format" = "{}% ";
           "tooltip" = true;
         };
+
+        "custom/temps" = {
+          "exec" = "waybar-temps";
+          "format" = "{}";
+          "interval" = 5;
+          "tooltip" = true;
+          "tooltip-format" = "CPU and GPU Temperatures";
+        };
         
         "clock" = {
           "format" = "{:%H:%M}";
@@ -73,6 +82,12 @@
         "tray" = {
           "icon-size" = 18;
           "spacing" = 10;
+        };
+
+        "custom/separator" = {
+          "format" = "|";
+          "interval" = "once";
+          "tooltip" = false;
         };
       };
     };
@@ -114,25 +129,69 @@
         font-weight: bold;
       }
 
-      /* Style for all modules on the right */
+      /* System info modules */
       #pulseaudio,
       #network,
       #cpu,
-      #memory,
-      #clock,
-      #tray {
+      #memory {
         background-color: #${theme.secondary_background};
         padding: 0 12px;
-        margin: 5px 0px;
+        margin: 5px 2px;
+        border-radius: 8px;
       }
-      
-      /* Add spacing between the right modules */
-      #pulseaudio { margin-left: 8px; border-radius: 10px 0 0 10px; }
-      #network { margin-left: 0px; }
-      #cpu { margin-left: 0px; }
-      #memory { margin-left: 0px; }
-      #clock { margin-left: 0px; }
-      #tray { margin-left: 8px; border-radius: 10px; }
+
+      /* Combined temperature module */
+      #custom-temps {
+        background-color: #${theme.secondary_background};
+        padding: 0 12px;
+        margin: 5px 2px;
+        border-radius: 8px;
+      }
+
+      /* Temperature warning colors */
+      #temperature.critical {
+        background-color: #ff6b6b;
+        color: #ffffff;
+        animation: temp-warning 1s ease-in-out infinite alternate;
+      }
+
+      @keyframes temp-warning {
+        from { background-color: #ff6b6b; }
+        to { background-color: #ff5252; }
+      }
+
+      #clock {
+        background-color: #${theme.secondary_background};
+        padding: 0 15px;
+        margin: 5px 8px;
+        border-radius: 10px;
+        font-weight: bold;
+      }
+
+      #tray {
+        background-color: #${theme.secondary_background};
+        padding: 0 8px;
+        margin: 5px 8px;
+        border-radius: 10px;
+      }
+
+      /* Custom separator styling */
+      #custom-separator {
+        color: #${theme.window_border_inactive};
+        background: transparent;
+        margin: 0 4px;
+        padding: 0 2px;
+        font-size: 16px;
+        opacity: 0.6;
+      }
+
+      /* Left modules styling */
+      #mpris {
+        background-color: #${theme.secondary_background};
+        padding: 0 12px;
+        margin: 5px 8px 5px 0px;
+        border-radius: 8px;
+      }
     '';
   };
 }
