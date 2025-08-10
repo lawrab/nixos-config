@@ -55,17 +55,18 @@
           "format-ethernet" = "";
           "format-disconnected" = "";
           "tooltip-format" = "{ifname} via {gwaddr} ";
-          "on-click" = "nm-connection-editor";
         };
 
         "cpu" = {
           "format" = "{usage}% ";
           "tooltip" = true;
+          "on-click" = "kitty -e btop";
         };
 
         "memory" = {
           "format" = "{}% ";
           "tooltip" = true;
+          "on-click" = "kitty -e bash -c 'free -h; read'";
         };
 
         "custom/temps" = {
@@ -74,11 +75,28 @@
           "interval" = 5;
           "tooltip" = true;
           "tooltip-format" = "CPU and GPU Temperatures";
+          "on-click" = "kitty -e bash -c 'sensors; read'";
         };
         
         "clock" = {
           "format" = "{:%H:%M}";
           "tooltip-format" = "<big>{:%A, %d %B %Y}</big>\n<tt><small>{calendar}</small></tt>";
+          "actions" = {
+            "on-click" = "mode";
+          };
+          "calendar" = {
+            "mode" = "year";
+            "mode-mon-col" = 3;
+            "weeks-pos" = "right";
+            "on-scroll" = 1;
+            "format" = {
+              "months" = "<span color='#ffead3'><b>{}</b></span>";
+              "days" = "<span color='#ecc6d9'><b>{}</b></span>";
+              "weeks" = "<span color='#99ffdd'><b>W{}</b></span>";
+              "weekdays" = "<span color='#ffcc66'><b>{}</b></span>";
+              "today" = "<span color='#ff6699'><b><u>{}</u></b></span>";
+            };
+          };
         };
         
         "tray" = {

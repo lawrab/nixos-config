@@ -7,6 +7,8 @@
     libnotify # For sending test notifications
     pwvucontrol # Pure Wayland PipeWire volume control
     xfce.thunar
+    btop # Better system monitor than htop/top
+    lm_sensors # Hardware temperature sensors
 
     # ---- Fonts ----
     # Nix 24.05+ uses nerd-fonts.font-name syntax
