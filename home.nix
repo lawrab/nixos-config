@@ -13,7 +13,7 @@
       ./home/waybar.nix        # Status bar
       ./home/wofi.nix          # Application launcher
       ./home/wlogout.nix       # Logout menu
-      ./hyprpaper/hyprpaper.nix # Wallpaper manager
+      ./swww/swww.nix          # Animated wallpaper manager
       ./hyprlock/hyprlock.nix   # Screen locker
       
       # Applications and tools
