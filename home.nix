@@ -30,6 +30,7 @@
       ./home/scripts.nix       # Custom scripts
       
       # System integration
+      ./home/environment.nix   # Environment variables and secrets
       ./home/default-apps.nix  # Default applications
       ./home/service.nix       # User services
       ./home/gtk.nix           # GTK theming
