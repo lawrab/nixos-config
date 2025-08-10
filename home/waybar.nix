@@ -7,7 +7,7 @@
       mainBar = {
         layer = "top";
         position = "top";
-        height = 35;
+        height = 48;
         modules-left = [ "hyprland/workspaces" "mpris" ];
         modules-center = [ "hyprland/window" ];
         modules-right = [ "pulseaudio" "custom/separator" "network" "cpu" "memory" "custom/separator" "custom/temps" "custom/separator" "clock" "custom/separator" "tray" ];
@@ -18,7 +18,9 @@
           "format-icons" = {
             "default" = "";
             "active" = "";
+            "urgent" = "";
           };
+          "sort-by-number" = true;
         };
         
         "hyprland/window" = {
@@ -108,21 +110,42 @@
       #workspaces {
         background-color: #${theme.secondary_background};
         margin: 5px;
-        padding: 0px 5px;
-        border-radius: 10px;
+        padding: 2px 8px;
+        border-radius: 12px;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
       }
       
       #workspaces button {
         color: #${theme.secondary_foreground};
-        padding: 0px 5px;
+        padding: 4px 8px;
+        margin: 0 2px;
+        border-radius: 8px;
+        background: transparent;
+        transition: all 0.3s ease;
+        min-width: 24px;
+        font-weight: 500;
+        border: 1px solid transparent;
       }
 
       #workspaces button.active {
-        color: #${theme.primary_accent};
+        color: #${theme.primary_foreground};
+        background-color: #${theme.primary_accent};
+        border: 2px solid #${theme.primary_accent};
+        font-weight: bold;
+        box-shadow: 0 0 10px rgba(233, 69, 96, 0.6);
       }
 
       #workspaces button:hover {
         color: #${theme.primary_foreground};
+        background-color: rgba(255, 255, 255, 0.1);
+        border: 1px solid rgba(255, 255, 255, 0.3);
+      }
+
+      #workspaces button.urgent {
+        color: #ffffff;
+        background-color: #ff6b6b;
+        border: 2px solid #ff5252;
+        font-weight: bold;
       }
       
       #window {

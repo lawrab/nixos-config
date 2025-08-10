@@ -91,6 +91,9 @@
     enable32Bit = true; # Required for Wine/Steam Proton games
   };
 
+  # Enable NVIDIA driver loading
+  services.xserver.videoDrivers = [ "nvidia" ];
+
   # NVIDIA driver configuration
   hardware.nvidia = {
     modesetting.enable = true; # Required for Wayland
