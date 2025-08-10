@@ -34,6 +34,7 @@ This repository is the living blueprint of my desktop, crafted with [NixOS](http
 - [The Heart of the Look: Theming](#-the-heart-of-the-look-theming)
 - [Using Unstable Packages](#-using-unstable-packages)
 - [Secrets Management](#-secrets-management)
+- [Network Storage Configuration](#-network-storage-configuration)
 - [Installation Guide](#-installation-guide)
 - [Troubleshooting & FAQ](#-troubleshooting--faq)
 - [A Glimpse of the Desktop](#-a-glimpse-of-the-desktop)
@@ -68,6 +69,8 @@ This flake-based NixOS configuration is designed with modularity and clarity in 
 ├── flake.nix                # ❄️ Main flake entrypoint, defines inputs and outputs
 ├── home.nix                 # 🏠 Home Manager's main configuration file
 ├── configuration.nix        # ⚙️ Global system-wide settings
+├── system-packages.nix      # 📦 System-wide packages (nfs-utils, cifs-utils, etc.)
+├── mounts.nix               # 💾 Network filesystem mounts (NFS/SMB shares)
 │
 ├── home/                    # 🧑‍💻 User-specific application configs (dotfiles)
 │   ├── hyprland.nix         # ▸ Window manager rules and keybindings
@@ -206,6 +209,63 @@ Currently, the configuration supports:
 
 ---
 
+## 💾 Network Storage Configuration
+
+This configuration includes support for NFS and SMB/CIFS network storage mounts, managed through a dedicated `mounts.nix` file.
+
+### Current Configuration
+
+The repository includes a **personal NFS mount** configured for my specific setup:
+
+- **Mount Point**: `/mnt/rabnas`
+- **NFS Share**: `rabnas.home:/volume1/data`
+- **Auto-mounting**: Mounts automatically when accessed, unmounts after 60 seconds of inactivity
+
+### Using This Repository as a Template
+
+⚠️ **Important**: If you're using this repository as a template, you'll need to modify or remove the NFS configuration:
+
+#### Option 1: Remove NFS Mount (Recommended for most users)
+
+1. **Delete the mount configuration** by removing the `fileSystems` section in [`mounts.nix`](./mounts.nix)
+2. **Keep the file structure** - the empty file won't cause issues
+3. **Remove system packages** (optional) - edit [`system-packages.nix`](./system-packages.nix) to remove `nfs-utils` and `cifs-utils` if you don't need them
+
+#### Option 2: Configure Your Own NFS/SMB Mounts
+
+1. **Edit [`mounts.nix`](./mounts.nix)** and update:
+   - `device = "your-nas-hostname:/path/to/share";` - Replace with your NAS details
+   - `"/mnt/rabnas"` - Change to your preferred mount point
+   - Add additional mounts as needed
+
+2. **Example configurations** are included in the file for:
+   - Additional NFS shares
+   - SMB/CIFS shares with authentication
+
+### Mount Features
+
+- **Auto-mounting**: Uses systemd automount for on-demand mounting
+- **Timeouts**: Reasonable timeouts prevent hanging if NAS is unavailable
+- **No boot mounting**: Mounts won't delay system startup
+- **Automatic unmounting**: Saves resources by unmounting idle shares
+
+### Testing Your Configuration
+
+After rebuilding your system, test the mount:
+
+```bash
+# Check if mount point exists
+ls -la /mnt/rabnas
+
+# Access the share to trigger auto-mount
+cd /mnt/rabnas
+
+# Check mount status
+mount | grep rabnas
+```
+
+---
+
 ## 🚀 Installation Guide
 
 Ready to give it a try? Here's how you can get this setup running.
@@ -338,6 +398,8 @@ Your system is now configured with automatic maintenance features:
 ### Files You Can Safely Modify
 
 - `secrets.nix` - Your personal secrets (never committed)
+- `mounts.nix` - Network storage mounts (remove or customize for your setup)
+- `system-packages.nix` - System-wide packages
 - `wallpapers/` - Add your own wallpapers here
 - `theme/theme.nix` - Customise colours and styling
 - Any configuration in `home/` - Tweak application settings

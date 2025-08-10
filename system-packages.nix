@@ -3,7 +3,7 @@
 
 {
   environment.systemPackages = with pkgs; [
-    nfs-utils   # For NFS
-    cifs-utils  # For SMB/CIFS
+    nfs-utils   # For NFS filesystem support
+    cifs-utils  # For SMB/CIFS filesystem support
   ];
 }

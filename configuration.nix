@@ -6,6 +6,7 @@
     ./hardware-configuration.nix # Auto-generated hardware config
     ./environment.nix # Environment and system packages
     ./system-packages.nix # System-wide packages
+    ./mounts.nix # Filesystem mount configuration
     ./home.nix # Home-manager configuration
     ./ollama.nix # Local AI model server (heavy build!)
   ];
