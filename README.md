@@ -81,7 +81,7 @@ This flake-based NixOS configuration is designed with modularity and clarity in 
 ├── secrets.nix              # 🔒 Optional: API keys and sensitive configuration (not committed)
 │
 └── screenshots/
-    └── hyprlan-layout.png   # 🖼️ A preview of the desktop
+    └── hyprland-layout.png  # 🖼️ A preview of the desktop
 ```
 
 ---
@@ -351,7 +351,7 @@ Your system is now configured with automatic maintenance features:
 
 ## 📸 A Glimpse of the Desktop
 
-![A clean desktop layout showing a terminal, a status bar, and a code editor, all consistently themed.](./screenshots/hyprlan-layout.png)
+![A clean desktop layout showing a terminal, a status bar, and a code editor, all consistently themed.](./screenshots/hyprland-layout.png)
 
 ---
 
