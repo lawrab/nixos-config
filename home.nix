@@ -12,6 +12,7 @@
       ./home/hyprland.nix      # Hyprland WM configuration
       ./home/waybar.nix        # Status bar
       ./home/wofi.nix          # Application launcher
+      ./home/wlogout.nix       # Logout menu
       ./hyprpaper/hyprpaper.nix # Wallpaper manager
       ./hyprlock/hyprlock.nix   # Screen locker
       
