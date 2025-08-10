@@ -81,7 +81,6 @@ This flake-based NixOS configuration is designed with modularity and clarity in 
 ├── theme/
 │   └── theme.nix            # 🎨 The heart of the look! Centralised colours and styles
 │
-├── secrets.nix              # 🔒 Optional: API keys and sensitive configuration (not committed)
 │
 └── screenshots/
     └── hyprland-layout.png  # 🖼️ A preview of the desktop
@@ -169,43 +168,69 @@ home.packages = with pkgs; [
 
 ## 🔒 Secrets Management
 
-This configuration includes support for managing sensitive information like API keys without committing them to the repository.
+This configuration includes support for managing sensitive information like API keys through shell environment variables using a simple `~/.env` file approach.
 
 ### How It Works
 
-The configuration conditionally imports a `secrets.nix` file that contains sensitive data. If the file doesn't exist, the system builds normally without the secrets.
+The system is configured to automatically source a `~/.env` file from your home directory on shell startup (both bash and zsh). This file is not created automatically - you create it yourself when needed.
 
 ### Setting Up Secrets
 
-1. **Create a `secrets.nix` file in the root directory:**
-
-```nix
-# secrets.nix
-{
-  anthropic_api_key = "your-actual-api-key-here";
-  # Add more secrets as needed
-}
-```
-
-2. **Set secure permissions:**
+1. **Build your system first:**
 
 ```bash
-chmod 600 secrets.nix
+sudo nixos-rebuild switch --flake ~/nixos-config#larry-desktop
 ```
 
-3. **The secrets are automatically loaded** as environment variables when you rebuild your system.
+2. **Create your environment file using the provided script:**
 
-### Supported Secrets
+```bash
+create-env
+```
+
+This interactive script will prompt you for each environment variable and only add the ones you provide values for.
+
+3. **Or create the file manually:**
+
+```bash
+nano ~/.env
+```
+
+Add your environment variables:
+
+```bash
+# ~/.env - User environment variables
+export ANTHROPIC_API_KEY="your-actual-api-key-here"
+export LAMETRIC_API_KEY="your-actual-lametric-key-here"
+export LAMETRIC_IP="your-lametric-device-ip-here"
+```
+
+4. **Set secure permissions:**
+
+```bash
+chmod 600 ~/.env
+```
+
+5. **Load in current session:**
+
+```bash
+source ~/.env
+```
+
+### Supported Environment Variables
 
 Currently, the configuration supports:
 - `ANTHROPIC_API_KEY` - For Claude AI integration
+- `LAMETRIC_API_KEY` - For LaMetric device integration
+- `LAMETRIC_IP` - LaMetric device IP address
 
 ### Security Notes
 
-- The `secrets.nix` file is automatically ignored by Git (see `.gitignore`)
-- Secrets are loaded as environment variables available system-wide
-- If you don't need secrets, simply don't create the file - everything will work fine
-- Use the provided `secrets.nix.example` as a template
+- The `.env` file is in your writable home directory, not in the git repository
+- Variables are loaded as environment variables in your shell sessions
+- Only variables you explicitly set are included in the file
+- If you don't need environment variables, the system works perfectly without the file
+- The `create-env` script automatically backs up existing files before recreating
 
 ---
 
@@ -314,26 +339,27 @@ My configuration is set up for a machine with the hostname `larry-desktop`. You'
 1.  **Find your hostname:** Run `hostname` in your terminal.
 2.  **Update the flake:** Open `flake.nix` and change `"larry-desktop"` to your hostname.
 
-### Step 3: Set Up Secrets (Optional)
+### Step 3: Configure Environment Variables (Optional - After Build)
 
-If you want to use features that require API keys:
+If you want to use features that require API keys, you can set them up after building:
 
-1. **Copy the example secrets file:**
+1. **Use the interactive script to create your environment file:**
    ```bash
-   cp secrets.nix.example secrets.nix
+   create-env
    ```
 
-2. **Edit the secrets file with your actual values:**
+2. **Or create the file manually:**
    ```bash
-   nano secrets.nix  # or your preferred editor
+   nano ~/.env
+   chmod 600 ~/.env
    ```
 
-3. **Secure the file:**
+3. **Load in current session:**
    ```bash
-   chmod 600 secrets.nix
+   source ~/.env
    ```
 
-> **Note:** This step is completely optional. The system will build and work perfectly without any secrets configured.
+> **Note:** This step is completely optional. The system will build and work perfectly without any environment variables configured.
 
 ### Step 4: Rebuild the System
 
@@ -389,15 +415,15 @@ Your system is now configured with automatic maintenance features:
     ```
 -   **`nixos-rebuild` fails:** The build can fail for many reasons. Carefully read the error output, as it often points to the exact problem.
 
-### Secrets-Related Issues
+### Environment Variable Issues
 
--   **Environment variables not available:** Make sure you've rebuilt your system after creating `secrets.nix`. Log out and back in to ensure environment variables are loaded.
--   **Secrets file not found warning:** This is normal if you haven't created a `secrets.nix` file. The system will work fine without it.
--   **Permission denied on secrets.nix:** Run `chmod 600 secrets.nix` to fix file permissions.
+-   **Environment variables not available:** Make sure you've created `~/.env` with your actual API keys and either restarted your shell or run `source ~/.env`.
+-   **Script not found:** If `create-env` command isn't found, rebuild your system first to install the script.
+-   **Permission denied on .env:** Run `chmod 600 ~/.env` to fix file permissions.
 
 ### Files You Can Safely Modify
 
-- `secrets.nix` - Your personal secrets (never committed)
+- `~/.env` - Your personal environment variables (create as needed)
 - `mounts.nix` - Network storage mounts (remove or customize for your setup)
 - `system-packages.nix` - System-wide packages
 - `wallpapers/` - Add your own wallpapers here

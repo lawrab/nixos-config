@@ -1,7 +1,6 @@
 # === NixOS Configuration Specific ===
-# Secrets and sensitive configuration
-secrets.nix
-home/secrets.nix
+# User environment variables (may contain sensitive information)
+.env
 
 # Build artifacts and temporary files
 result/

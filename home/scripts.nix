@@ -115,6 +115,97 @@ let
     echo "--- Check if NVIDIA modules are loaded ---"
     lsmod | grep nvidia || echo "No nvidia modules loaded"
   '';
+
+  lametricNotifyScript = pkgs.writeShellScriptBin "lametric-notify" ''
+    #!/usr/bin/env bash
+    set -euo pipefail
+
+    # Check if IP and API key are set
+    if [ -z "''${LAMETRIC_IP:-}" ]; then
+      notify-send -u critical "LaMetric Error" "LAMETRIC_IP is not set in ~/.env"
+      exit 1
+    fi
+    if [ -z "''${LAMETRIC_API_KEY:-}" ]; then
+      notify-send -u critical "LaMetric Error" "LAMETRIC_API_KEY is not set in ~/.env"
+      exit 1
+    fi
+    
+    # --- Script Logic ---
+    MESSAGE="$1"
+    ICON="i3189" # Default icon
+
+    # JSON payload for the LaMetric API
+    JSON_PAYLOAD=$(cat <<EOF
+    {
+      "model": {
+        "frames": [
+          {
+            "icon": "$ICON",
+            "text": "$MESSAGE"
+          }
+        ]
+      }
+    }
+    EOF
+    )
+
+    # Send the notification using curl
+    curl -X POST \
+         -u "dev:$LAMETRIC_API_KEY" \
+         -H "Content-Type: application/json" \
+         -d "$JSON_PAYLOAD" \
+         "http://$LAMETRIC_IP:8080/api/v2/device/notifications" --insecure
+  '';
+
+  # Script to create ~/.env file with user prompts
+  createEnvScript = pkgs.writeShellScriptBin "create-env" ''
+    #!/usr/bin/env bash
+    
+    ENV_FILE="$HOME/.env"
+    
+    echo "Creating environment variables file at $ENV_FILE"
+    echo "Press Enter to skip any variable you don't want to set."
+    echo
+    
+    # Create or backup existing file
+    if [ -f "$ENV_FILE" ]; then
+      echo "Backing up existing $ENV_FILE to $ENV_FILE.backup"
+      cp "$ENV_FILE" "$ENV_FILE.backup"
+    fi
+    
+    # Start with header
+    cat > "$ENV_FILE" << 'EOF'
+# User environment variables
+# This file is sourced by bash and zsh on shell initialization
+# Edit this file to add or modify environment variables
+
+EOF
+    
+    # Prompt for each variable
+    declare -A variables=(
+      ["ANTHROPIC_API_KEY"]="Anthropic API key for Claude"
+      ["LAMETRIC_API_KEY"]="LaMetric device API key"  
+      ["LAMETRIC_IP"]="LaMetric device IP address"
+    )
+    
+    for var in "''${!variables[@]}"; do
+      echo -n "Enter $var (''${variables[$var]}): "
+      read -r value
+      
+      if [ -n "$value" ]; then
+        echo "export $var=\"$value\"" >> "$ENV_FILE"
+        echo "✓ Set $var"
+      else
+        echo "⏭ Skipped $var"
+      fi
+    done
+    
+    echo
+    echo "Environment file created at $ENV_FILE"
+    echo "Variables will be available in new shell sessions."
+    echo "Run 'source ~/.env' to load them in the current session."
+  '';
+  
 in
 {
   # Add the script package to your user's profile
@@ -122,5 +213,7 @@ in
     screenshotScript
     findTempSensors
     waybarTempsScript
+    lametricNotifyScript
+    createEnvScript
   ];
 }
