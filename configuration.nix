@@ -55,6 +55,25 @@
   nix.settings.experimental-features = [ "nix-command" "flakes" ]; # Enable new Nix CLI
   nixpkgs.config.allowUnfree = true; # Allow proprietary software
 
+  # Automatic garbage collection - runs weekly and keeps only last 3 generations
+  nix.gc = {
+    automatic = true;
+    dates = "weekly"; # Run every Sunday at 03:15
+    options = "--delete-generations +3"; # Keep only the last 3 generations (very aggressive)
+  };
+
+  # Automatic store optimization to reduce disk usage
+  nix.settings.auto-optimise-store = true;
+
+  # Automatic system updates - pulls latest flake inputs and rebuilds
+  system.autoUpgrade = {
+    enable = true;
+    dates = "04:30"; # Run daily at 4:30 AM
+    randomizedDelaySec = "30min"; # Add up to 30min random delay to avoid load spikes
+    allowReboot = false; # Don't automatically reboot (manual reboot required for kernel updates)
+    flake = "github:lawrab/nixos-config"; # Your flake repository
+  };
+
   # Hyprland window manager (Wayland-based)
   programs.hyprland.enable = true;
   programs.hyprland.xwayland.enable = true; # X11 app compatibility

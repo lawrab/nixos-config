@@ -1,1 +1,84 @@
+# === NixOS Configuration Specific ===
+# Secrets and sensitive configuration
+secrets.nix
 home/secrets.nix
+
+# Build artifacts and temporary files
+result/
+result-*
+.direnv/
+shell.nix.backup
+
+# === AI Assistant Memory Files ===
+# Claude (Anthropic)
+CLAUDE.md
+.claude/
+.claude-session/
+claude-memory.json
+
+# ChatGPT/OpenAI
+.openai/
+gpt-memory.json
+.chatgpt/
+
+# Gemini (Google)
+GEMINI.md
+.gemini/
+gemini-memory.json
+
+# GitHub Copilot
+.copilot/
+copilot-memory.json
+
+# Cursor IDE
+.cursor/
+cursor-memory.json
+
+# Codeium
+.codeium/
+codeium-memory.json
+
+# Tabnine
+.tabnine/
+tabnine-memory.json
+
+# Amazon CodeWhisperer
+.codewhisperer/
+codewhisperer-memory.json
+
+# JetBrains AI Assistant
+.jetbrains-ai/
+jetbrains-ai-memory.json
+
+# Generic AI memory patterns
+*-ai-memory.json
+*-assistant-memory.json
+*.ai-session
+*.ai-context
+ai-session-*
+
+# === Development Tools ===
+# Editor and IDE files
+.vscode/settings.json
+.vscode/launch.json
+.idea/
+*.swp
+*.swo
+*~
+
+# OS generated files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# Backup files
+*.backup
+*.bak
+*.tmp
+
+# Log files
+*.log

@@ -304,6 +304,19 @@ This method is great if you don't want to touch `/etc/nixos` and prefer to speci
 sudo nixos-rebuild switch --flake ~/nixos-config#your-hostname
 ```
 
+### Step 5: Automatic Maintenance (Optional Setup)
+
+Your system is now configured with automatic maintenance features:
+
+- **🗑️ Garbage Collection**: Runs weekly (Sundays at 03:15) and aggressively keeps only the last 3 generations
+- **🔄 System Updates**: Daily updates (04:30 ±30min) pull the latest configuration from your GitHub repository
+- **🛠️ Store Optimization**: Automatically deduplicates files to save disk space
+
+**Important Notes:**
+- Updates will only apply if your PC is on at the scheduled times, otherwise they'll run at next boot
+- No automatic reboots - you'll need to manually restart for kernel updates
+- Manual cleanup: `sudo nix-collect-garbage -d` (system) and `nix-collect-garbage -d` (home-manager)
+
 ---
 
 ## ❔ Troubleshooting & FAQ
@@ -363,6 +376,7 @@ This NixOS configuration showcases:
 - **Modular Architecture** - Easy to understand, modify, and extend configuration
 - **Secret Management** - Secure handling of API keys and sensitive configuration
 - **Build Optimization** - Binary cache configuration for faster rebuilds
+- **Automatic Maintenance** - Weekly garbage collection and daily system updates keep the system clean and current
 
 Perfect for developers, Linux enthusiasts, and anyone interested in modern declarative system configuration with Wayland desktop environments.
 
