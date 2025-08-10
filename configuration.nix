@@ -92,7 +92,6 @@
   };
 
   # NVIDIA driver configuration
-  services.xserver.videoDrivers = ["nvidia"];
   hardware.nvidia = {
     modesetting.enable = true; # Required for Wayland
     open = false; # Use proprietary driver (better gaming performance)

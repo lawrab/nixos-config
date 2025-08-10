@@ -5,7 +5,7 @@
     
     # ---- Utilities ----
     libnotify # For sending test notifications
-    pavucontrol # For audio control via Waybar
+    pwvucontrol # Pure Wayland PipeWire volume control
     xfce.thunar
 
     # ---- Fonts ----
