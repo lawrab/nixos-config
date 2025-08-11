@@ -120,6 +120,11 @@ let
     #!/usr/bin/env bash
     set -euo pipefail
 
+    # Source environment variables from ~/.env
+    if [ -f "$HOME/.env" ]; then
+      source "$HOME/.env"
+    fi
+
     # Check if IP and API key are set
     if [ -z "''${LAMETRIC_IP:-}" ]; then
       notify-send -u critical "LaMetric Error" "LAMETRIC_IP is not set in ~/.env"
@@ -216,6 +221,11 @@ EOF
     #!/usr/bin/env bash
     set -euo pipefail
 
+    # Source environment variables from ~/.env
+    if [ -f "$HOME/.env" ]; then
+      source "$HOME/.env"
+    fi
+
     # Check if IP and API key are set
     if [ -z "''${LAMETRIC_IP:-}" ]; then
       notify-send -u critical "LaMetric Error" "LAMETRIC_IP is not set in ~/.env"
@@ -253,13 +263,15 @@ EOF
         ;;
     esac
 
-    # Get radio widget ID (assuming it's the first widget)
-    WIDGET_ID=$(curl -s -u "dev:$LAMETRIC_API_KEY" \
-      "http://$LAMETRIC_IP:8080/api/v2/device/apps/com.lametric.radio" \
-      | jq -r '.widgets[0].id' 2>/dev/null || echo "")
+    # Get radio widget ID from the radio app
+    RESPONSE=$(curl -s -u "dev:$LAMETRIC_API_KEY" \
+      "http://$LAMETRIC_IP:8080/api/v2/device/apps/com.lametric.radio" 2>/dev/null)
+    
+    # Extract widget ID using grep and sed (more reliable than assuming position)
+    WIDGET_ID=$(echo "$RESPONSE" | grep -o '"widgets"[^}]*"[a-f0-9]\{32\}"' | grep -o '[a-f0-9]\{32\}' | head -1)
 
-    if [ -z "$WIDGET_ID" ] || [ "$WIDGET_ID" = "null" ]; then
-      notify-send -u critical "LaMetric Error" "Could not find radio widget ID"
+    if [ -z "$WIDGET_ID" ]; then
+      notify-send -u critical "LaMetric Error" "Could not find radio widget ID. Response: $RESPONSE"
       exit 1
     fi
 

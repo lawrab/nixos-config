@@ -34,7 +34,7 @@ in # This is the end of the 'let' block and the start of your main config
       monitor = ",preferred,auto,1";
 
       exec-once = [ 
-        "waybar" 
+        "waybar"
         "swww init"  # Initialize swww daemon
         "swww img /home/lrabbets/nixos-config/wallpapers/f1.png"  # Set initial wallpaper (will be replaced with animated one)
       ];

@@ -232,6 +232,34 @@ Currently, the configuration supports:
 - If you don't need environment variables, the system works perfectly without the file
 - The `create-env` script automatically backs up existing files before recreating
 
+### Disabling LaMetric Integration
+
+If you don't have a LaMetric Time device, you can disable the LaMetric music controls in Waybar:
+
+1. **Edit the Waybar configuration:**
+   ```bash
+   nano ~/nixos-config/home/waybar.nix
+   ```
+
+2. **Remove LaMetric from modules-left:**
+   ```nix
+   # Change this line:
+   modules-left = [ "hyprland/workspaces" "mpris" "custom/lametric-music" ];
+   
+   # To this:
+   modules-left = [ "hyprland/workspaces" "mpris" ];
+   ```
+
+3. **Remove the LaMetric module configuration (optional):**
+   You can also remove the entire `"custom/lametric-music"` section and its styling to clean up the configuration.
+
+4. **Rebuild your system:**
+   ```bash
+   sudo nixos-rebuild switch
+   ```
+
+The LaMetric scripts (`lametric-music` and `lametric-notify`) will still be available in case you get a device later, but they won't appear in your status bar.
+
 ---
 
 ## 💾 Network Storage Configuration
