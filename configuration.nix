@@ -4,7 +4,6 @@
 {
   imports = [
     ./hardware-configuration.nix # Auto-generated hardware config
-    ./environment.nix # Environment and system packages
     ./system-packages.nix # System-wide packages
     ./mounts.nix # Filesystem mount configuration
     ./home.nix # Home-manager configuration
@@ -43,9 +42,10 @@
   programs.zsh.enable = true; # Enable Zsh system-wide
 
   # Home-Manager configuration - manages user environment
- home-manager = {
+  home-manager = {
     useGlobalPkgs = true; # Use system nixpkgs
     useUserPackages = true; # Install to user profile
+    backupFileExtension = "backup"; # Backup existing files instead of failing
     extraSpecialArgs = { inherit pkgs-unstable theme; }; # Pass variables to home config
     users.lrabbets = { ... }: {
       # User configuration defined in home.nix

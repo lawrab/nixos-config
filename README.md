@@ -67,23 +67,28 @@ This flake-based NixOS configuration is designed with modularity and clarity in 
 ```
 .
 ├── flake.nix                # ❄️ Main flake entrypoint, defines inputs and outputs
-├── home.nix                 # 🏠 Home Manager's main configuration file
-├── configuration.nix        # ⚙️ Global system-wide settings
+├── configuration.nix        # ⚙️ System-wide settings and module imports
+├── home.nix                 # 🏠 Home Manager integration and user module imports
 ├── system-packages.nix      # 📦 System-wide packages (nfs-utils, cifs-utils, etc.)
 ├── mounts.nix               # 💾 Network filesystem mounts (NFS/SMB shares)
+├── ollama.nix               # 🤖 Local AI model server configuration
 │
 ├── home/                    # 🧑‍💻 User-specific application configs (dotfiles)
-│   ├── hyprland.nix         # ▸ Window manager rules and keybindings
-│   ├── waybar.nix           # ▸ Status bar modules and styling
-│   ├── kitty.nix            # ▸ Terminal appearance and settings
-│   └── ...and many more
+│   ├── browsers.nix         # 🌐 Firefox & Brave browser configuration
+│   ├── hyprland.nix         # 🪟 Window manager rules and keybindings
+│   ├── waybar.nix           # 📊 Status bar modules and styling
+│   ├── packages.nix         # 📦 User packages organized by category
+│   ├── environment.nix      # 🔧 Environment variables and shell setup
+│   ├── shell.nix            # 🐚 Zsh configuration and aliases
+│   ├── gtk.nix              # 🎨 GTK theming with consolidated CSS
+│   ├── scripts.nix          # 📜 Custom shell scripts and utilities
+│   └── ...and more application configs
 │
 ├── theme/
-│   └── theme.nix            # 🎨 The heart of the look! Centralised colours and styles
-│
+│   └── theme.nix            # 🎨 Centralized color scheme and styling
 │
 └── screenshots/
-    └── hyprland-layout.png  # 🖼️ A preview of the desktop
+    └── hyprland-layout.png  # 🖼️ Desktop preview
 ```
 
 ---
@@ -95,16 +100,31 @@ All configuration files include comprehensive inline documentation to help you u
 ### Core System Files
 - **[`flake.nix`](./flake.nix)** - Main flake configuration with binary caches, channel mixing, and module organisation
 - **[`configuration.nix`](./configuration.nix)** - System-wide settings including bootloader, networking, audio, graphics, and user management
-- **[`home.nix`](./home.nix)** - Home Manager integration and module imports organisation
+- **[`home.nix`](./home.nix)** - Home Manager integration and user module imports
+
+### Key User Configuration Files
+- **[`home/browsers.nix`](./home/browsers.nix)** - Consolidated Firefox and Brave configuration with matching settings
+- **[`home/packages.nix`](./home/packages.nix)** - User packages organized by category (utilities, development, gaming, etc.)
+- **[`home/environment.nix`](./home/environment.nix)** - Environment variables for Wayland compatibility and dark mode
+- **[`home/shell.nix`](./home/shell.nix)** - Zsh configuration with Oh My Zsh, aliases, and shell integrations
+- **[`home/gtk.nix`](./home/gtk.nix)** - GTK theming with consolidated CSS for consistent dark mode
 
 ### Application Configurations
 Each configuration file in the `home/` directory includes documentation for:
-- NixOS-specific configuration patterns (e.g., `writeShellScriptBin`, service integration)
-- Package naming quirks (underscores vs hyphens)
-- Integration points between tools (MPRIS, D-Bus, XDG)
-- Wayland-specific tool choices (Mako vs dunst, grim/slurp vs X11 tools)
-- CSS styling in Nix configurations
-- Self-referencing configuration patterns
+- **NixOS-specific patterns** - `writeShellScriptBin`, service integration, and package organization
+- **Wayland-first approach** - Native Wayland tools (Mako, grim/slurp) instead of X11 alternatives
+- **Modular design** - Clean separation of concerns with consolidated configurations
+- **Theme consistency** - Centralized theming system propagated across all applications
+- **Package categorization** - Organized by stability (stable vs unstable) and purpose
+- **Environment variables** - Proper Wayland compatibility and dark mode enforcement
+
+### Recent Optimizations (2025)
+The configuration has been recently optimized for:
+- **Consolidated theming** - GTK CSS shared between GTK3/GTK4, unified dark mode variables
+- **Organized packages** - Categorized by function with clear stable/unstable separation  
+- **Streamlined shell setup** - Unified zsh initialization without conflicts
+- **Browser consolidation** - Firefox and Brave managed together with matching configurations
+- **Environment cleanup** - All user environment variables managed in one location
 
 The documentation focuses on **why** things are configured a certain way rather than just **what** each option does, making it easier for others to understand and adapt the configuration.
 

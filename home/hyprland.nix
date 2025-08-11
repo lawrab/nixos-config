@@ -33,10 +33,20 @@ in # This is the end of the 'let' block and the start of your main config
     settings = {
       monitor = ",preferred,auto,1";
 
+      # Environment variables to ensure applications detect dark mode
+      env = [
+        "GTK_THEME,Adwaita:dark"
+        "QT_STYLE_OVERRIDE,Adwaita-dark"
+        "COLOR_SCHEME,prefer-dark"
+        "GTK_APPLICATION_PREFER_DARK_THEME,1"
+      ];
+
       exec-once = [ 
         "waybar"
         "swww init"  # Initialize swww daemon
         "swww img /home/lrabbets/nixos-config/wallpapers/f1.png"  # Set initial wallpaper (will be replaced with animated one)
+        "gsettings set org.gnome.desktop.interface gtk-theme 'Adwaita-dark'"  # Set GTK dark theme
+        "gsettings set org.gnome.desktop.interface color-scheme 'prefer-dark'"  # Set color scheme preference
       ];
 
       "$mainMod" = "SUPER";
@@ -47,6 +57,8 @@ in # This is the end of the 'let' block and the start of your main config
         "$mainMod, D, exec, wofi --show drun"
         "$mainMod, E, exec, thunar"
         "$mainMod, O, exec, obsidian"
+        "$mainMod, B, exec, brave-dark"
+        "$mainMod SHIFT, B, exec, firefox"
         "$mainMod, L, exec, hyprlock"
         "$mainMod, R, exec, shortwave"
         "$mainMod, X, exec, wlogout" 
@@ -136,6 +148,11 @@ in # This is the end of the 'let' block and the start of your main config
           "workspaces, 1, 6, default"
         ];
       };
+
+      # Window rules - automatically assign applications to specific workspaces
+      windowrulev2 = [
+        "workspace 2,class:^(brave-browser)$"
+      ];
     };
   };
 

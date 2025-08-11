@@ -18,7 +18,7 @@
       
       # Applications and tools
       ./home/packages.nix      # System packages
-      ./home/firefox.nix       # Web browser
+      ./home/browsers.nix      # Web browsers (Firefox & Brave)
       ./home/vscode.nix        # Code editor
       ./home/neovim.nix        # Terminal editor
       ./home/kitty.nix         # Terminal emulator

@@ -25,8 +25,12 @@
       plugins = [ "git" "sudo" ]; # Plugin names from oh-my-zsh repository
     };
 
-    # initContent runs after zsh starts - for shell integrations
+    # initContent runs after zsh starts - for shell integrations and environment
     initContent = ''
+      # Source user environment variables if the file exists
+      [ -f ~/.env ] && source ~/.env
+      
+      # Initialize tools
       eval "$(zoxide init zsh)"
     '';
   };
