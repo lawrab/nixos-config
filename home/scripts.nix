@@ -211,6 +211,78 @@ EOF
     echo "Variables will be available in new shell sessions."
     echo "Run 'source ~/.env' to load them in the current session."
   '';
+
+  lametricMusicScript = pkgs.writeShellScriptBin "lametric-music" ''
+    #!/usr/bin/env bash
+    set -euo pipefail
+
+    # Check if IP and API key are set
+    if [ -z "''${LAMETRIC_IP:-}" ]; then
+      notify-send -u critical "LaMetric Error" "LAMETRIC_IP is not set in ~/.env"
+      exit 1
+    fi
+    if [ -z "''${LAMETRIC_API_KEY:-}" ]; then
+      notify-send -u critical "LaMetric Error" "LAMETRIC_API_KEY is not set in ~/.env"
+      exit 1
+    fi
+
+    COMMAND="''${1:-}"
+    if [ -z "$COMMAND" ]; then
+      echo "Usage: $0 {play|stop|next|prev}"
+      exit 1
+    fi
+
+    # Map commands to LaMetric radio API actions
+    case "$COMMAND" in
+      play)
+        ACTION="radio.play"
+        ;;
+      stop)
+        ACTION="radio.stop"
+        ;;
+      next)
+        ACTION="radio.next"
+        ;;
+      prev)
+        ACTION="radio.prev"
+        ;;
+      *)
+        echo "Invalid command: $COMMAND"
+        echo "Usage: $0 {play|stop|next|prev}"
+        exit 1
+        ;;
+    esac
+
+    # Get radio widget ID (assuming it's the first widget)
+    WIDGET_ID=$(curl -s -u "dev:$LAMETRIC_API_KEY" \
+      "http://$LAMETRIC_IP:8080/api/v2/device/apps/com.lametric.radio" \
+      | jq -r '.widgets[0].id' 2>/dev/null || echo "")
+
+    if [ -z "$WIDGET_ID" ] || [ "$WIDGET_ID" = "null" ]; then
+      notify-send -u critical "LaMetric Error" "Could not find radio widget ID"
+      exit 1
+    fi
+
+    # JSON payload for the action
+    JSON_PAYLOAD="{\"id\":\"$ACTION\"}"
+
+    # Send the command
+    if curl -X POST \
+         -u "dev:$LAMETRIC_API_KEY" \
+         -H "Content-Type: application/json" \
+         -d "$JSON_PAYLOAD" \
+         --connect-timeout 5 \
+         --max-time 10 \
+         --fail \
+         --silent \
+         --show-error \
+         "http://$LAMETRIC_IP:8080/api/v2/device/apps/com.lametric.radio/widgets/$WIDGET_ID/actions"; then
+      echo "✓ Music command '$COMMAND' sent successfully"
+    else
+      echo "✗ Failed to send music command"
+      exit 1
+    fi
+  '';
   
 in
 {
@@ -221,5 +293,6 @@ in
     waybarTempsScript
     lametricNotifyScript
     createEnvScript
+    lametricMusicScript
   ];
 }

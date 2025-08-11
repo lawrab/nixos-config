@@ -8,7 +8,7 @@
         layer = "top";
         position = "top";
         height = 48;
-        modules-left = [ "hyprland/workspaces" "mpris" ];
+        modules-left = [ "hyprland/workspaces" "mpris" "custom/lametric-music" ];
         modules-center = [ "hyprland/window" ];
         modules-right = [ "pulseaudio" "custom/separator" "network" "cpu" "memory" "custom/separator" "custom/temps" "custom/separator" "clock" "custom/separator" "tray" ];
 
@@ -108,6 +108,18 @@
           "format" = "|";
           "interval" = "once";
           "tooltip" = false;
+        };
+
+        "custom/lametric-music" = {
+          "format" = "♪ {}";
+          "exec" = "echo 'LaMetric'";
+          "interval" = "once";
+          "tooltip" = true;
+          "tooltip-format" = "LaMetric Music Controls - Click for options";
+          "on-click" = "lametric-music play";
+          "on-click-right" = "lametric-music stop";
+          "on-scroll-up" = "lametric-music next";
+          "on-scroll-down" = "lametric-music prev";
         };
       };
     };
@@ -232,6 +244,20 @@
         padding: 0 12px;
         margin: 5px 8px 5px 0px;
         border-radius: 8px;
+      }
+
+      #custom-lametric-music {
+        background-color: #${theme.secondary_background};
+        padding: 0 12px;
+        margin: 5px 8px 5px 0px;
+        border-radius: 8px;
+        color: #${theme.primary_accent};
+        font-weight: bold;
+      }
+
+      #custom-lametric-music:hover {
+        background-color: rgba(233, 69, 96, 0.2);
+        transition: all 0.3s ease;
       }
     '';
   };
