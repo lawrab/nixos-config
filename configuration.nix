@@ -57,17 +57,17 @@
   nix.settings.experimental-features = [ "nix-command" "flakes" ]; # Enable new Nix CLI
   nixpkgs.config.allowUnfree = true; # Allow proprietary software
 
-  # Automatic garbage collection - runs daily and keeps only last 3 generations
+  # Automatic garbage collection - runs daily and keeps only last 3 days
   nix.gc = {
     automatic = true;
     dates = "daily"; # Run every day at 03:15
-    options = "--delete-generations +3"; # Keep only the last 3 generations (very aggressive)
+    options = "--delete-older-than 3d"; # Keep only last 3 days (very aggressive)
   };
   
   # Run user garbage collection alongside system cleanup
   systemd.user.services.nix-gc-user = {
     description = "Nix Garbage Collector (User)";
-    script = "${pkgs.nix}/bin/nix-collect-garbage -d";
+    script = "${pkgs.nix}/bin/nix-collect-garbage --delete-older-than 3d";
     serviceConfig = {
       Type = "oneshot";
       User = "lrabbets";
