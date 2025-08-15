@@ -7,7 +7,7 @@
       mainBar = {
         layer = "top";
         position = "top";
-        height = 48;
+        height = 38;
         modules-left = [ "hyprland/workspaces" "mpris" "custom/lametric-music" ];
         modules-center = [ "hyprland/window" ];
         modules-right = [ "pulseaudio" "custom/separator" "network" "cpu" "memory" "custom/separator" "custom/temps" "custom/separator" "clock" "custom/separator" "tray" ];
@@ -21,6 +21,7 @@
             "urgent" = "";
           };
           "sort-by-number" = true;
+          "swap-icon-label" = false;
         };
         
         "hyprland/window" = {
@@ -100,7 +101,7 @@
         };
         
         "tray" = {
-          "icon-size" = 18;
+          "icon-size" = 14;
           "spacing" = 10;
         };
 
@@ -128,7 +129,7 @@
       * {
         border: none;
         font-family: "JetBrainsMono Nerd Font";
-        font-size: 14px;
+        font-size: 12px;
         min-height: 0;
       }
 
@@ -139,15 +140,15 @@
 
       #workspaces {
         background-color: #${theme.secondary_background};
-        margin: 5px;
-        padding: 2px 8px;
-        border-radius: 12px;
+        margin: 2px;
+        padding: 1px 6px;
+        border-radius: 8px;
         box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
       }
       
       #workspaces button {
         color: #${theme.secondary_foreground};
-        padding: 4px 8px;
+        padding: 2px 6px;
         margin: 0 2px;
         border-radius: 8px;
         background: transparent;
@@ -188,16 +189,16 @@
       #cpu,
       #memory {
         background-color: #${theme.secondary_background};
-        padding: 0 12px;
-        margin: 5px 2px;
+        padding: 0 8px;
+        margin: 2px 2px;
         border-radius: 8px;
       }
 
       /* Combined temperature module */
       #custom-temps {
         background-color: #${theme.secondary_background};
-        padding: 0 12px;
-        margin: 5px 2px;
+        padding: 0 8px;
+        margin: 2px 2px;
         border-radius: 8px;
       }
 
@@ -215,17 +216,17 @@
 
       #clock {
         background-color: #${theme.secondary_background};
-        padding: 0 15px;
-        margin: 5px 8px;
-        border-radius: 10px;
+        padding: 0 10px;
+        margin: 2px 8px;
+        border-radius: 8px;
         font-weight: bold;
       }
 
       #tray {
         background-color: #${theme.secondary_background};
         padding: 0 8px;
-        margin: 5px 8px;
-        border-radius: 10px;
+        margin: 2px 8px;
+        border-radius: 8px;
       }
 
       /* Custom separator styling */
@@ -234,22 +235,22 @@
         background: transparent;
         margin: 0 4px;
         padding: 0 2px;
-        font-size: 16px;
-        opacity: 0.6;
+        font-size: 14px;
+        opacity: 0.4;
       }
 
       /* Left modules styling */
       #mpris {
         background-color: #${theme.secondary_background};
-        padding: 0 12px;
-        margin: 5px 8px 5px 0px;
+        padding: 0 8px;
+        margin: 2px 8px 2px 0px;
         border-radius: 8px;
       }
 
       #custom-lametric-music {
         background-color: #${theme.secondary_background};
-        padding: 0 12px;
-        margin: 5px 8px 5px 0px;
+        padding: 0 8px;
+        margin: 2px 8px 2px 0px;
         border-radius: 8px;
         color: #${theme.primary_accent};
         font-weight: bold;

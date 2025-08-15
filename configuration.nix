@@ -57,10 +57,10 @@
   nix.settings.experimental-features = [ "nix-command" "flakes" ]; # Enable new Nix CLI
   nixpkgs.config.allowUnfree = true; # Allow proprietary software
 
-  # Automatic garbage collection - runs weekly and keeps only last 3 generations
+  # Automatic garbage collection - runs daily and keeps only last 3 generations
   nix.gc = {
     automatic = true;
-    dates = "weekly"; # Run every Sunday at 03:15
+    dates = "daily"; # Run every day at 03:15
     options = "--delete-generations +3"; # Keep only the last 3 generations (very aggressive)
   };
 
