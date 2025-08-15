@@ -63,6 +63,26 @@
     dates = "daily"; # Run every day at 03:15
     options = "--delete-generations +3"; # Keep only the last 3 generations (very aggressive)
   };
+  
+  # Run user garbage collection alongside system cleanup
+  systemd.user.services.nix-gc-user = {
+    description = "Nix Garbage Collector (User)";
+    script = "${pkgs.nix}/bin/nix-collect-garbage -d";
+    serviceConfig = {
+      Type = "oneshot";
+      User = "lrabbets";
+    };
+  };
+  
+  systemd.user.timers.nix-gc-user = {
+    description = "Nix Garbage Collection Timer (User)";
+    wantedBy = [ "timers.target" ];
+    timerConfig = {
+      OnCalendar = "daily";
+      RandomizedDelaySec = "1800"; # 30min random delay
+      Persistent = true;
+    };
+  };
 
   # Automatic store optimization to reduce disk usage
   nix.settings.auto-optimise-store = true;
