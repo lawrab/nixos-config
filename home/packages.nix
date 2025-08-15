@@ -44,7 +44,7 @@
       slurp              # Screen area selection
       wl-clipboard       # Wayland clipboard
       loupe              # Image viewer
-      shortwave          # Internet radio
+      cider              # Apple Music client
     ]) ++
     
     # Gaming (Unstable - Latest Compatibility)

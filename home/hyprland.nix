@@ -60,7 +60,7 @@ in # This is the end of the 'let' block and the start of your main config
         "$mainMod, B, exec, brave-dark"
         "$mainMod SHIFT, B, exec, firefox"
         "$mainMod, L, exec, hyprlock"
-        "$mainMod, R, exec, shortwave"
+        "$mainMod, R, exec, cider"
         "$mainMod, X, exec, wlogout" 
 
         # -- Screenshots --
