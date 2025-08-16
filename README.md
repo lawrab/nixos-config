@@ -2,6 +2,8 @@
 
 # NixOS Configuration with Hyprland - A Declarative Desktop Journey
 
+⚠️ **GPU Undervolting Warning**: This configuration includes GPU undervolting settings that automatically limit the NVIDIA GPU clock speed to 1905 MHz. This is configured for a specific hardware setup and may not be suitable for all systems. See the [GPU Configuration section](#-gpu-configuration--undervolting) below for instructions on how to disable or modify this setting.
+
 **Welcome to my personal NixOS and Linux customisation adventure!**
 
 This repository is the living blueprint of my desktop, crafted with [NixOS](https://nixos.org/) and [Hyprland](https://hyprland.org/). It's a constantly evolving setup designed for a lightweight, keyboard-driven, and visually cohesive Wayland desktop experience with flakes, Home Manager, and comprehensive dotfiles.
@@ -35,6 +37,7 @@ This repository is the living blueprint of my desktop, crafted with [NixOS](http
 - [Using Unstable Packages](#-using-unstable-packages)
 - [Secrets Management](#-secrets-management)
 - [Network Storage Configuration](#-network-storage-configuration)
+- [GPU Configuration & Undervolting](#-gpu-configuration--undervolting)
 - [Installation Guide](#-installation-guide)
 - [Troubleshooting & FAQ](#-troubleshooting--faq)
 - [A Glimpse of the Desktop](#-a-glimpse-of-the-desktop)
@@ -336,6 +339,126 @@ cd /mnt/rabnas
 # Check mount status
 mount | grep rabnas
 ```
+
+---
+
+## ⚙️ GPU Configuration & Undervolting
+
+This configuration includes GPU undervolting settings specifically configured for NVIDIA graphics cards. The system automatically limits the GPU clock speed to 1905 MHz on boot.
+
+### Current GPU Configuration
+
+The configuration includes:
+- **Coolbits "28"** - Enables GPU overclocking/undervolting controls
+- **Power Management** - Basic NVIDIA power management features  
+- **Automatic Clock Limiting** - Systemd service that sets GPU clock to 1905 MHz on startup
+
+### ⚠️ Important Hardware Compatibility Notes
+
+**This GPU configuration is specific to my hardware setup and may not be appropriate for your system.** Different graphics cards have different safe operating limits.
+
+### How to Disable GPU Undervolting
+
+If you want to use this configuration but don't want the GPU undervolting, follow these steps:
+
+#### Option 1: Disable the Systemd Service Only
+
+To keep NVIDIA drivers but remove automatic undervolting:
+
+1. **Edit configuration.nix:**
+   ```bash
+   nano ~/nixos-config/configuration.nix
+   ```
+
+2. **Comment out or remove the entire systemd service section:**
+   ```nix
+   # GPU clock speed configuration via systemd service
+   # systemd.services.gpu-undervolt = {
+   #   description = "GPU Undervolting Service";
+   #   after = [ "graphical-session.target" ];
+   #   wantedBy = [ "multi-user.target" ];
+   #   serviceConfig = {
+   #     Type = "oneshot";
+   #     RemainAfterExit = true;
+   #     ExecStart = "/run/current-system/sw/bin/nvidia-smi -lgc 1905";
+   #     User = "root";
+   #   };
+   # };
+   ```
+
+3. **Rebuild your system:**
+   ```bash
+   sudo nixos-rebuild switch
+   ```
+
+#### Option 2: Disable Coolbits (Remove Overclocking Controls)
+
+To also remove the ability to modify GPU clocks manually:
+
+1. **Edit configuration.nix and remove the screenSection:**
+   ```nix
+   # Remove or comment out these lines:
+   # services.xserver.screenSection = ''
+   #   Option "Coolbits" "28"
+   # '';
+   ```
+
+2. **Rebuild your system:**
+   ```bash
+   sudo nixos-rebuild switch
+   ```
+
+#### Option 3: Different Hardware (AMD/Intel)
+
+If you have AMD or Intel graphics instead of NVIDIA:
+
+1. **Remove the entire NVIDIA configuration section** from `configuration.nix`:
+   ```nix
+   # Remove these sections:
+   # services.xserver.videoDrivers = [ "nvidia" ];
+   # services.xserver.screenSection = ''
+   #   Option "Coolbits" "28"
+   # '';
+   # hardware.nvidia = { ... };
+   # systemd.services.gpu-undervolt = { ... };
+   ```
+
+2. **For AMD graphics, add:**
+   ```nix
+   services.xserver.videoDrivers = [ "amdgpu" ];
+   ```
+
+3. **For Intel graphics, add:**
+   ```nix
+   services.xserver.videoDrivers = [ "intel" ];
+   ```
+
+### Modifying Clock Speeds for Your Hardware
+
+If you want to keep undervolting but adjust the clock speed for your specific GPU:
+
+1. **Research your GPU's safe operating limits** using tools like:
+   - `nvidia-smi -q -d CLOCK` - Check current clock speeds
+   - GPU-Z or similar tools to find your card's specifications
+   - Online forums and reviews for your specific GPU model
+
+2. **Edit the clock speed** in the systemd service:
+   ```nix
+   ExecStart = "/run/current-system/sw/bin/nvidia-smi -lgc YOUR_SAFE_CLOCK_SPEED";
+   ```
+
+3. **Test thoroughly** after rebuilding to ensure system stability
+
+### Manual GPU Control
+
+With Coolbits enabled, you can manually control GPU settings using:
+
+- **nvidia-settings** - GUI for GPU configuration
+- **nvidia-smi** - Command line GPU management
+  ```bash
+  nvidia-smi -lgc 1800   # Set graphics clock to 1800 MHz
+  nvidia-smi -q          # Query current GPU status
+  ```
 
 ---
 

@@ -115,6 +115,9 @@
 
   # Enable NVIDIA driver loading
   services.xserver.videoDrivers = [ "nvidia" ];
+  services.xserver.screenSection = ''
+    Option "Coolbits" "28"
+  '';
 
   # NVIDIA driver configuration
   hardware.nvidia = {
@@ -122,6 +125,22 @@
     open = false; # Use proprietary driver (better gaming performance)
     nvidiaSettings = true; # Include nvidia-settings GUI
     package = config.boot.kernelPackages.nvidiaPackages.stable; # Stable driver version
+    
+    # Enable power management for GPU control
+    powerManagement.enable = true;
+  };
+
+  # GPU clock speed configuration via systemd service
+  systemd.services.gpu-undervolt = {
+    description = "GPU Undervolting Service";
+    after = [ "graphical-session.target" ];
+    wantedBy = [ "multi-user.target" ];
+    serviceConfig = {
+      Type = "oneshot";
+      RemainAfterExit = true;
+      ExecStart = "/run/current-system/sw/bin/nvidia-smi -lgc 1905";
+      User = "root";
+    };
   };
 
   system.stateVersion = "25.05";
