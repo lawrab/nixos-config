@@ -59,5 +59,10 @@
     # Productivity Applications (Unstable)
     (with pkgs-unstable; [
       obsidian           # Note-taking and knowledge management
+    ]) ++
+    
+    # Communication (Unstable)
+    (with pkgs-unstable; [
+      discord            # Voice and text chat
     ]);
 }
