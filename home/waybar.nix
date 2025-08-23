@@ -7,17 +7,18 @@
       mainBar = {
         layer = "top";
         position = "top";
-        height = 38;
+        height = 30;
+        spacing = 4;
         modules-left = [ "hyprland/workspaces" "mpris" "custom/lametric-music" ];
         modules-center = [ "hyprland/window" ];
-        modules-right = [ "pulseaudio" "custom/separator" "network" "cpu" "memory" "custom/separator" "custom/temps" "custom/separator" "clock" "custom/separator" "tray" ];
+        modules-right = [ "pulseaudio" "network" "cpu" "memory" "custom/temps" "clock" "tray" ];
 
         "hyprland/workspaces" = {
           "format" = "{id}";
           "on-click" = "activate";
           "format-icons" = {
-            "default" = "";
-            "active" = "";
+            "default" = "";
+            "active" = "";
             "urgent" = "";
           };
           "sort-by-number" = true;
@@ -27,14 +28,15 @@
         "hyprland/window" = {
           "format" = "{}";
           "separate-outputs" = true;
+          "max-length" = 50;
         };
 
         "mpris" = {
           "format" = "{player_icon} {title} - {artist}";
-          "format-paused" = " {title}"; # Shows a play icon when paused
-          "format-stopped" = ""; # Shows a stop icon when stopped
+          "format-paused" = " {title}";
+          "format-stopped" = "";
           "player-icons" = {
-            "default" = ""; # Default music icon
+            "default" = "";
             "mpv" = "🎵";
           };
           "max-length" = 40;
@@ -43,29 +45,31 @@
         };
 
         "pulseaudio" = {
-          "format" = "{volume}% {icon}";
-          "format-muted" = " Muted";
+          "format" = "{icon} {volume}%";
+          "format-muted" = " Muted";
           "format-icons" = {
-            "default" = [ "" "" ];
+            "default" = [ "" "" "" ];
           };
           "on-click" = "pwvucontrol";
         };
 
         "network" = {
-          "format-wifi" = "{essid} ";
-          "format-ethernet" = "";
-          "format-disconnected" = "";
-          "tooltip-format" = "{ifname} via {gwaddr} ";
+          "format-wifi" = " {essid}";
+          "format-ethernet" = "";
+          "format-disconnected" = "";
+          "tooltip-format" = "{ifname} via {gwaddr}";
         };
 
         "cpu" = {
-          "format" = "{usage}% ";
+          "format" = "󰻠 {usage}%";
+          "interval" = 2;
           "tooltip" = true;
           "on-click" = "kitty -e btop";
         };
 
         "memory" = {
-          "format" = "{}% ";
+          "format" = "󰍛 {}%";
+          "interval" = 5;
           "tooltip" = true;
           "on-click" = "kitty -e bash -c 'free -h; read'";
         };
@@ -80,11 +84,8 @@
         };
         
         "clock" = {
-          "format" = "{:%H:%M}";
+          "format" = " {:%H:%M}";
           "tooltip-format" = "<big>{:%A, %d %B %Y}</big>\n<tt><small>{calendar}</small></tt>";
-          "actions" = {
-            "on-click" = "mode";
-          };
           "calendar" = {
             "mode" = "year";
             "mode-mon-col" = 3;
@@ -101,14 +102,8 @@
         };
         
         "tray" = {
-          "icon-size" = 14;
+          "icon-size" = 16;
           "spacing" = 10;
-        };
-
-        "custom/separator" = {
-          "format" = "|";
-          "interval" = "once";
-          "tooltip" = false;
         };
 
         "custom/lametric-music" = {
@@ -124,18 +119,54 @@
         };
       };
     };
-    # Waybar uses CSS for styling with Catppuccin base theme
+    # Clean and elegant styling with Catppuccin
     style = ''
       @import "catppuccin.css";
       
-      /* Custom overrides only for unique elements */
       * {
         font-family: "JetBrainsMono Nerd Font";
-        font-size: 12px;
+        font-size: 13px;
+        min-height: 0;
+        border: none;
       }
 
-      /* Custom temperature warning animation */
-      #temperature.critical {
+      window#waybar {
+        background-color: @base;
+        color: @text;
+        padding: 4px 8px;
+      }
+
+      #workspaces button {
+        padding: 4px 8px;
+        margin: 4px 2px;
+        background: transparent;
+        color: @subtext0;
+      }
+
+      #workspaces button.active {
+        background: @mauve;
+        color: @base;
+        border-radius: 4px;
+      }
+
+      #workspaces button:hover {
+        background: @surface1;
+        color: @text;
+        border-radius: 4px;
+      }
+
+      #cpu, #memory, #custom-temps, #pulseaudio, 
+      #network, #clock, #mpris, #custom-lametric-music {
+        padding: 4px 10px;
+        margin: 4px 3px;
+        background: @surface0;
+        color: @text;
+        border-radius: 4px;
+      }
+
+      #custom-temps.critical {
+        background: @red;
+        color: @base;
         animation: temp-warning 1s ease-in-out infinite alternate;
       }
 
@@ -144,24 +175,22 @@
         to { opacity: 0.7; }
       }
 
-      /* Custom separator styling */
-      #custom-separator {
+      #window {
         background: transparent;
-        margin: 0 4px;
-        padding: 0 2px;
-        font-size: 14px;
-        opacity: 0.4;
+        color: @subtext1;
+        font-style: italic;
       }
 
-      /* LaMetric music controls hover effect */
-      #custom-lametric-music:hover {
-        transition: all 0.3s ease;
+      #tray {
+        padding: 4px 10px;
+        margin: 4px 3px;
+        background: @surface0;
+        border-radius: 4px;
       }
     '';
   };
 
-  # Enable Catppuccin theming for Waybar with createLink mode
-  # This creates ~/.config/waybar/catppuccin.css for import
+  # Enable Catppuccin theming for Waybar
   catppuccin.waybar = {
     enable = true;
     mode = "createLink";
