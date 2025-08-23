@@ -21,9 +21,12 @@
       url = "github:nix-community/home-manager/release-25.05";
       inputs.nixpkgs.follows = "nixpkgs"; # Use same nixpkgs version for consistency
     };
+
+    # Catppuccin theming for comprehensive application support
+    catppuccin.url = "github:catppuccin/nix";
   };
 
-  outputs = { self, nixpkgs, nixpkgs-unstable, home-manager, ... }@inputs: 
+  outputs = { self, nixpkgs, nixpkgs-unstable, home-manager, catppuccin, ... }@inputs: 
     let
       theme = import ./theme/theme.nix;
       system = "x86_64-linux";
@@ -38,10 +41,11 @@
     nixosConfigurations = {
       "larry-desktop" = nixpkgs.lib.nixosSystem {
         system = "x86_64-linux";
-        specialArgs = { inherit inputs pkgs-unstable theme; }; # Pass variables to all modules
+        specialArgs = { inherit inputs pkgs-unstable theme catppuccin; }; # Pass variables to all modules
         modules = [
           ./configuration.nix # System-level configuration
           home-manager.nixosModules.home-manager # User environment management
+          catppuccin.nixosModules.catppuccin # Catppuccin theming support
         ];
       };
     };

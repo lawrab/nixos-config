@@ -40,6 +40,10 @@
         default = "ddg";
         force = true; # Force DuckDuckGo as default
       };
+      
+      extensions = {
+        force = true; # Acknowledge that this will override all previous extensions settings
+      };
     };
     
     policies = {
@@ -92,6 +96,9 @@
         "$@"
     '')
   ];
+
+  # Enable Catppuccin theming for Firefox
+  catppuccin.firefox.enable = true;
 
   # Note: Brave configuration files are managed manually due to Home Manager conflicts
   # The brave-dark wrapper script provides automatic dark mode via command-line flags

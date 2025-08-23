@@ -124,114 +124,28 @@
         };
       };
     };
-    # Waybar uses CSS for styling - standard CSS properties apply
+    # Waybar uses CSS for styling with Catppuccin base theme
     style = ''
+      @import "catppuccin.css";
+      
+      /* Custom overrides only for unique elements */
       * {
-        border: none;
         font-family: "JetBrainsMono Nerd Font";
         font-size: 12px;
-        min-height: 0;
       }
 
-      window#waybar {
-        background-color: ${theme.frosted_glass};
-        color: #${theme.primary_foreground};
-      }
-
-      #workspaces {
-        background-color: #${theme.secondary_background};
-        margin: 2px;
-        padding: 1px 6px;
-        border-radius: 8px;
-        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
-      }
-      
-      #workspaces button {
-        color: #${theme.secondary_foreground};
-        padding: 2px 6px;
-        margin: 0 2px;
-        border-radius: 8px;
-        background: transparent;
-        transition: all 0.3s ease;
-        min-width: 24px;
-        font-weight: 500;
-        border: 1px solid transparent;
-      }
-
-      #workspaces button.active {
-        color: #${theme.primary_foreground};
-        background-color: #${theme.primary_accent};
-        border: 2px solid #${theme.primary_accent};
-        font-weight: bold;
-        box-shadow: 0 0 10px rgba(233, 69, 96, 0.6);
-      }
-
-      #workspaces button:hover {
-        color: #${theme.primary_foreground};
-        background-color: rgba(255, 255, 255, 0.1);
-        border: 1px solid rgba(255, 255, 255, 0.3);
-      }
-
-      #workspaces button.urgent {
-        color: #ffffff;
-        background-color: #ff6b6b;
-        border: 2px solid #ff5252;
-        font-weight: bold;
-      }
-      
-      #window {
-        font-weight: bold;
-      }
-
-      /* System info modules */
-      #pulseaudio,
-      #network,
-      #cpu,
-      #memory {
-        background-color: #${theme.secondary_background};
-        padding: 0 8px;
-        margin: 2px 2px;
-        border-radius: 8px;
-      }
-
-      /* Combined temperature module */
-      #custom-temps {
-        background-color: #${theme.secondary_background};
-        padding: 0 8px;
-        margin: 2px 2px;
-        border-radius: 8px;
-      }
-
-      /* Temperature warning colors */
+      /* Custom temperature warning animation */
       #temperature.critical {
-        background-color: #ff6b6b;
-        color: #ffffff;
         animation: temp-warning 1s ease-in-out infinite alternate;
       }
 
       @keyframes temp-warning {
-        from { background-color: #ff6b6b; }
-        to { background-color: #ff5252; }
-      }
-
-      #clock {
-        background-color: #${theme.secondary_background};
-        padding: 0 10px;
-        margin: 2px 8px;
-        border-radius: 8px;
-        font-weight: bold;
-      }
-
-      #tray {
-        background-color: #${theme.secondary_background};
-        padding: 0 8px;
-        margin: 2px 8px;
-        border-radius: 8px;
+        from { opacity: 1; }
+        to { opacity: 0.7; }
       }
 
       /* Custom separator styling */
       #custom-separator {
-        color: #${theme.window_border_inactive};
         background: transparent;
         margin: 0 4px;
         padding: 0 2px;
@@ -239,28 +153,17 @@
         opacity: 0.4;
       }
 
-      /* Left modules styling */
-      #mpris {
-        background-color: #${theme.secondary_background};
-        padding: 0 8px;
-        margin: 2px 8px 2px 0px;
-        border-radius: 8px;
-      }
-
-      #custom-lametric-music {
-        background-color: #${theme.secondary_background};
-        padding: 0 8px;
-        margin: 2px 8px 2px 0px;
-        border-radius: 8px;
-        color: #${theme.primary_accent};
-        font-weight: bold;
-      }
-
+      /* LaMetric music controls hover effect */
       #custom-lametric-music:hover {
-        background-color: rgba(233, 69, 96, 0.2);
         transition: all 0.3s ease;
       }
     '';
   };
 
+  # Enable Catppuccin theming for Waybar with createLink mode
+  # This creates ~/.config/waybar/catppuccin.css for import
+  catppuccin.waybar = {
+    enable = true;
+    mode = "createLink";
+  };
 }

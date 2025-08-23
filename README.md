@@ -16,6 +16,7 @@ This repository is the living blueprint of my desktop, crafted with [NixOS](http
 [![Hyprland](https://img.shields.io/badge/Hyprland-Window%20Manager-8c8cff?logo=linux&style=for-the-badge)](https://hyprland.org/)
 [![Flakes](https://img.shields.io/badge/Nix-Flakes-blueviolet?logo=nixos&style=for-the-badge)](https://nixos.wiki/wiki/Flakes)
 [![Home Manager](https://img.shields.io/badge/Home%20Manager-Enabled-brightgreen?logo=nixos&style=for-the-badge)](https://github.com/nix-community/home-manager)
+[![Catppuccin](https://img.shields.io/badge/Catppuccin-Mocha-f5c2e7?logo=catppuccin&style=for-the-badge)](https://catppuccin.com/)
 
 [![Licence: MIT](https://img.shields.io/github/license/lawrab/nixos-config?style=for-the-badge)](./LICENSE)
 [![Last Commit](https://img.shields.io/github/last-commit/lawrab/nixos-config?style=for-the-badge)](https://github.com/lawrab/nixos-config/commits/main)
@@ -81,6 +82,7 @@ This flake-based NixOS configuration is designed with modularity and clarity in 
 │   ├── hyprland.nix         # 🪟 Window manager rules and keybindings
 │   ├── waybar.nix           # 📊 Status bar modules and styling
 │   ├── packages.nix         # 📦 User packages organized by category
+│   ├── cli-tools.nix        # 🎨 Catppuccin theming for CLI tools
 │   ├── environment.nix      # 🔧 Environment variables and shell setup
 │   ├── shell.nix            # 🐚 Zsh configuration and aliases
 │   ├── gtk.nix              # 🎨 GTK theming with consolidated CSS
@@ -88,7 +90,7 @@ This flake-based NixOS configuration is designed with modularity and clarity in 
 │   └── ...and more application configs
 │
 ├── theme/
-│   └── theme.nix            # 🎨 Centralized color scheme and styling
+│   └── theme.nix            # 🎨 Fallback colors for non-Catppuccin apps
 │
 └── screenshots/
     └── hyprland-layout.png  # 🖼️ Desktop preview
@@ -133,9 +135,40 @@ The documentation focuses on **why** things are configured a certain way rather 
 
 ---
 
-## 🎨 The Heart of the Look: Theming
+## 🎨 The Heart of the Look: Official Catppuccin Theming
 
-All colours and style choices are managed in a single file: [`theme/theme.nix`](theme/theme.nix). This file is imported as a special argument into most modules, ensuring that everything from the window borders to the Waybar stays perfectly in sync. Change a colour once, and the whole desktop updates on the next rebuild.
+This configuration now uses the **official [Catppuccin/nix](https://github.com/catppuccin/nix) modules** for consistent theming across all supported applications. The setup provides:
+
+### Official Catppuccin Integration
+- **Centralized theming** via `catppuccin/nix` flake input
+- **System-wide Catppuccin Mocha** color scheme applied consistently
+- **Native module support** for applications like Firefox, Neovim, Kitty, Waybar, and more
+- **Automatic color coordination** - all applications use the same official Catppuccin palette
+
+### Supported Applications with Native Catppuccin Theming
+- **Terminal**: Kitty terminal with Catppuccin Mocha
+- **Editors**: Neovim with official Catppuccin plugin
+- **Browsers**: Firefox with Catppuccin theme
+- **Desktop**: Hyprland window manager borders and styling
+- **Status Bar**: Waybar with Catppuccin CSS integration
+- **CLI Tools**: bat, btop, fzf with matching themes
+- **Development**: VS Code with Catppuccin color profile
+
+### Fallback Theme System
+The [`theme/theme.nix`](theme/theme.nix) file now serves as a **fallback** for applications that don't yet have official Catppuccin/nix module support (like wofi, thunar, etc.). It contains the official Catppuccin Mocha color definitions for manual theming of unsupported applications.
+
+### Global Theme Configuration
+The theming is controlled through a single `catppuccin` configuration in [`home.nix`](home.nix):
+
+```nix
+catppuccin = {
+  enable = true;
+  flavor = "mocha";    # Dark theme
+  accent = "mauve";    # Purple accent color
+};
+```
+
+This ensures perfect color consistency across the entire desktop environment using the official Catppuccin color specifications.
 
 ---
 
@@ -640,7 +673,7 @@ This NixOS configuration showcases:
 Perfect for developers, Linux enthusiasts, and anyone interested in modern declarative system configuration with Wayland desktop environments.
 
 ### GitHub Topics
-`nixos` `hyprland` `wayland` `flakes` `home-manager` `linux-desktop` `dotfiles` `declarative-configuration` `wayland-compositor` `nix-flakes` `desktop-environment` `linux-customisation` `system-configuration` `waybar` `kitty-terminal` `developer-tools`
+`nixos` `hyprland` `wayland` `flakes` `home-manager` `catppuccin` `catppuccin-mocha` `linux-desktop` `dotfiles` `declarative-configuration` `wayland-compositor` `nix-flakes` `desktop-environment` `linux-customisation` `system-configuration` `waybar` `kitty-terminal` `developer-tools`
 
 ---
 

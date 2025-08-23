@@ -1,5 +1,5 @@
 # home.nix
-{ pkgs, pkgs-unstable, ... }:
+{ pkgs, pkgs-unstable, catppuccin, ... }:
 
 {
   # Set the default shell for the user at the system level
@@ -8,6 +8,9 @@
   # Home Manager configuration for user environment
   home-manager.users.lrabbets = {
     imports = [
+      # Catppuccin theming system
+      catppuccin.homeModules.catppuccin
+      
       # Window manager and desktop environment
       ./home/hyprland.nix      # Hyprland WM configuration
       ./home/waybar.nix        # Status bar
@@ -18,6 +21,7 @@
       
       # Applications and tools
       ./home/packages.nix      # System packages
+      ./home/cli-tools.nix     # CLI tools with Catppuccin theming
       ./home/browsers.nix      # Web browsers (Firefox & Brave)
       ./home/vscode.nix        # Code editor
       ./home/neovim.nix        # Terminal editor
@@ -35,6 +39,12 @@
       ./home/service.nix       # User services
       ./home/gtk.nix           # GTK theming
     ];
+
+    # Global Catppuccin configuration
+    catppuccin = {
+      enable = true;
+      flavor = "mocha"; # Dark theme - options: latte, frappe, macchiato, mocha
+    };
 
     home.stateVersion = "25.05";
   };

@@ -10,7 +10,7 @@
     # Dark mode theming
     BRAVE_FLAGS = "--enable-features=WebUIDarkMode --force-dark-mode";
     GTK_THEME = "Adwaita:dark";
-    QT_STYLE_OVERRIDE = "Adwaita-dark";
+    # QT_STYLE_OVERRIDE managed by catppuccin Qt theming
   };
 
   # Shell initialization for environment variables
