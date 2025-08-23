@@ -16,8 +16,6 @@
       # Status line
       lualine-nvim
 
-      # Color scheme
-      catppuccin-nvim
 
       # Autocompletion
       nvim-cmp
@@ -44,22 +42,17 @@
       vim.opt.hlsearch = false
       vim.opt.wrap = false
 
-      -- Set colorscheme
-      vim.g.catppuccin_flavour = "macchiato" -- latte, frappe, macchiato, mocha
-      vim.cmd.colorscheme "catppuccin"
-
       -- Configure nvim-tree
       require("nvim-tree").setup()
 
-      -- Configure lualine
-      require('lualine').setup {
-        options = {
-          theme = 'catppuccin'
-        }
-      }
+      -- Configure lualine (theme will be set by Catppuccin module)
+      require('lualine').setup {}
 
       -- Keybindings
       vim.keymap.set('n', '<leader>e', ':NvimTreeToggle<CR>')
     '';
   };
+
+  # Enable Catppuccin theming for Neovim
+  catppuccin.nvim.enable = true;
 }

@@ -1,4 +1,4 @@
-{ pkgs, config, theme, ...}:
+{ pkgs, config, ...}:
 
 let
   # Self-referencing: access our own config to generate a help script
@@ -122,10 +122,8 @@ in # This is the end of the 'let' block and the start of your main config
         gaps_in = 5;
         gaps_out = 10;
         border_size = 2;
-        # Gradient borders: first color from theme, second hardcoded red
-        "col.active_border" = "rgba(${theme.window_border_active}ee) rgba(cc0000ee) 45deg";
-        "col.inactive_border" = "rgba(${theme.window_border_inactive}aa)";
         allow_tearing = true; # Reduces input lag for gaming
+        # Border colors will be set by Catppuccin theme
       };
 
       decoration = { 
@@ -158,4 +156,7 @@ in # This is the end of the 'let' block and the start of your main config
 
   # Add our generated script to user packages
   home.packages = [ keybinds-script ];
+
+  # Enable Catppuccin theming for Hyprland
+  catppuccin.hyprland.enable = true;
 }

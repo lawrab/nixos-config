@@ -107,6 +107,9 @@
   # Enable PAM authentication for screen locking
   security.pam.services.hyprlock = {};
 
+  # Enable automatic trim
+  services.fstrim.enable = true;
+
   # Graphics configuration for gaming and GPU acceleration
   hardware.graphics = {
     enable = true;
@@ -138,7 +141,7 @@
     serviceConfig = {
       Type = "oneshot";
       RemainAfterExit = true;
-      ExecStart = "/run/current-system/sw/bin/nvidia-smi -lgc 1905";
+      ExecStart = "/run/current-system/sw/bin/nvidia-smi -lgc 1830";
       User = "root";
     };
   };

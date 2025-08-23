@@ -15,4 +15,7 @@
       bbenoist.nix     # Nix language support
     ];
   };
+
+  # Enable Catppuccin theming for VS Code
+  catppuccin.vscode.profiles.default.enable = true;
 }

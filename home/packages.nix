@@ -11,7 +11,7 @@
       lm_sensors         # Hardware sensors
     ]) ++
     
-    # CLI Tools (Stable)
+    # CLI Tools (Stable) - themed with Catppuccin
     (with pkgs; [
       eza                # Modern 'ls' replacement
       bat                # Modern 'cat' with syntax highlighting
@@ -22,7 +22,9 @@
     # Fonts and Themes (Stable)
     (with pkgs; [
       nerd-fonts.jetbrains-mono  # Programming font with icons
-      papirus-icon-theme         # Icon theme
+      # papirus-icon-theme - provided by Catppuccin
+      libsForQt5.qtstyleplugin-kvantum # Qt theme engine for Catppuccin
+      qt6Packages.qtstyleplugin-kvantum # Qt6 theme engine
     ]) ++
     
     # Development Environment (Stable)
@@ -59,5 +61,10 @@
     # Productivity Applications (Unstable)
     (with pkgs-unstable; [
       obsidian           # Note-taking and knowledge management
+    ]) ++
+    
+    # Communication (Unstable)
+    (with pkgs-unstable; [
+      discord            # Voice and text chat
     ]);
 }
