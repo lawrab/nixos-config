@@ -295,6 +295,46 @@ EOF
       exit 1
     fi
   '';
+
+  # Random wallpaper rotation script
+  wallpaperRotateScript = pkgs.writeShellScriptBin "wallpaper-rotate" ''
+    #!/usr/bin/env bash
+    set -euo pipefail
+
+    WALLPAPER_DIR="/home/lrabbets/nixos-config/wallpapers"
+    
+    # Check if wallpaper directory exists
+    if [ ! -d "$WALLPAPER_DIR" ]; then
+      echo "Error: Wallpaper directory $WALLPAPER_DIR not found"
+      exit 1
+    fi
+
+    # Get all image files (png, jpg, jpeg) from wallpaper directory
+    WALLPAPERS=()
+    while IFS= read -r -d $'\0' file; do
+      WALLPAPERS+=("$file")
+    done < <(find "$WALLPAPER_DIR" -type f \( -iname "*.png" -o -iname "*.jpg" -o -iname "*.jpeg" \) -print0)
+
+    # Check if any wallpapers found
+    if [ ''${#WALLPAPERS[@]} -eq 0 ]; then
+      echo "Error: No wallpaper files found in $WALLPAPER_DIR"
+      exit 1
+    fi
+
+    # Select random wallpaper
+    RANDOM_INDEX=$(($RANDOM % ''${#WALLPAPERS[@]}))
+    SELECTED_WALLPAPER="''${WALLPAPERS[$RANDOM_INDEX]}"
+
+    echo "Setting wallpaper to: $(basename "$SELECTED_WALLPAPER")"
+
+    # Set wallpaper using swww
+    if command -v swww >/dev/null 2>&1; then
+      swww img "$SELECTED_WALLPAPER" --transition-type grow --transition-pos center --transition-duration 2
+    else
+      echo "Error: swww not found"
+      exit 1
+    fi
+  '';
   
 in
 {
@@ -306,5 +346,6 @@ in
     lametricNotifyScript
     createEnvScript
     lametricMusicScript
+    wallpaperRotateScript
   ];
 }

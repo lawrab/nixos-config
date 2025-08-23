@@ -24,4 +24,34 @@
       "font"             = "JetBrainsMono Nerd Font 12";
     };
   };
+
+  # Systemd user services and timers
+  systemd.user = {
+    # Random wallpaper rotation service
+    services.wallpaper-rotate = {
+      Unit = {
+        Description = "Rotate wallpaper randomly";
+      };
+      Service = {
+        Type = "oneshot";
+        ExecStart = "${pkgs.bash}/bin/bash -c 'wallpaper-rotate'";
+      };
+    };
+
+    # Timer for random wallpaper rotation
+    timers.wallpaper-rotate = {
+      Unit = {
+        Description = "Run wallpaper rotation at random intervals";
+      };
+      Timer = {
+        # Run every 15-45 minutes (randomized)
+        OnCalendar = "*:00/15";
+        RandomizedDelaySec = "30min";
+        Persistent = true;
+      };
+      Install = {
+        WantedBy = [ "timers.target" ];
+      };
+    };
+  };
 }
