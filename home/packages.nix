@@ -83,7 +83,6 @@
       alsa-utils         # ALSA utilities (PipeWire compatible)
     ]) ++
     (with pkgs-unstable; [
-      reaper             # Professional DAW
       ffmpeg-full        # Comprehensive media conversion
       vlc                # Media player with codec support
     ]);

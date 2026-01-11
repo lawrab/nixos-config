@@ -11,6 +11,7 @@
         height = 36;
         spacing = 4;
         reload_style_on_change = true;
+        output = "DP-3";  # Only show on right monitor, keep left monitor clean for gaming
         modules-left = [ "hyprland/workspaces" "mpris" "custom/music-viz" ];
         modules-center = [ "hyprland/window" ];
         modules-right = [ "custom/services" "custom/vpn" "pulseaudio" "network" "cpu" "memory" "custom/temps" "clock" "tray" ];

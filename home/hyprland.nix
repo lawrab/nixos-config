@@ -157,11 +157,27 @@ in # This is the end of the 'let' block and the start of your main config
 
       # Window rules - automatically assign applications to specific workspaces
       windowrulev2 = [
+        # Disable rounded corners on fullscreen windows
+        "rounding 0, fullscreen:1"
+
         "workspace 2,class:^(brave-browser)$"
         "workspace 1,class:^(Godot)$"
         "workspace 1,class:^(godot)$"
         "tile,class:^(Godot)$"
         "tile,class:^(godot)$"
+
+        # World of Warcraft (via Steam/Proton) - gaming optimizations
+        "immediate, class:^(steam_app_0)$"                    # Enable tearing for lower input lag
+        "idleinhibit always, class:^(steam_app_0)$"           # Prevent screen sleep while playing
+        "workspace 3, class:^(steam_app_0)$"                  # Always open on workspace 3
+        "fullscreen, class:^(steam_app_0)$"                   # Start fullscreen
+        "rounding 0, class:^(steam_app_0)$"                   # No rounded corners
+
+        # Alternative match by title (in case class changes)
+        "immediate, title:^(World of Warcraft)$"
+        "idleinhibit always, title:^(World of Warcraft)$"
+        "fullscreen, title:^(World of Warcraft)$"
+        "rounding 0, title:^(World of Warcraft)$"
       ];
     };
   };

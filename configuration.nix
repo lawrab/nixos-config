@@ -47,7 +47,12 @@
       brgenml1lpr          # Brother generic LPR driver
       brgenml1cupswrapper  # Brother generic CUPS wrapper
     ];
+    # Only listen on IPv4 since IPv6 is disabled
+    listenAddresses = [ "localhost:631" ];
   };
+
+  # Enable color management for printers (fixes ColorManager DBus warnings)
+  services.colord.enable = true;
   
   # Enable network printer discovery
   services.avahi = {
