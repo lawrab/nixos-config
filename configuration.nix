@@ -25,6 +25,12 @@
   
   # Disable IPv6 to prevent VPN leaks
   networking.enableIPv6 = false;
+  # networking.enableIPv6 only sets net.ipv6.conf.all.disable_ipv6 but NetworkManager
+  # bypasses this via per-interface RA acceptance. Force-disable at all levels.
+  boot.kernel.sysctl = {
+    "net.ipv6.conf.default.disable_ipv6" = 1;
+    "net.ipv6.conf.enp0s31f6.disable_ipv6" = 1;
+  };
 
   # Firewall configuration for Minecraft server
   networking.firewall = {
@@ -35,6 +41,9 @@
 
   # DNS resolution service for caching and security
   services.resolved.enable = true;
+
+  # Distribute NIC interrupts across CPU cores to avoid bottlenecking on CPU 0
+  services.irqbalance.enable = true;
   
   # Enable UPower for power management information
   services.upower.enable = true;
@@ -147,6 +156,17 @@
   programs.hyprland.enable = true;
   programs.hyprland.xwayland.enable = true; # X11 app compatibility
 
+  # Steam with GE-Proton support
+  programs.steam = {
+    enable = true;
+    remotePlay.openFirewall = true; # Allow Steam Remote Play
+    dedicatedServer.openFirewall = true; # Allow dedicated servers
+    gamescopeSession.enable = true; # Enable gamescope session
+    extraCompatPackages = [
+      pkgs-unstable.proton-ge-bin # GE-Proton for better game compatibility
+    ];
+  };
+
   # XDG Desktop Portal for proper Wayland app integration
   xdg.portal = {
     enable = true;
@@ -189,6 +209,9 @@
     powerManagement.enable = true;
     powerManagement.finegrained = false;
   };
+
+  # CPU governor - performance mode for gaming
+  powerManagement.cpuFreqGovernor = "performance";
 
   # Enable swap for better memory pressure handling
   swapDevices = [ {

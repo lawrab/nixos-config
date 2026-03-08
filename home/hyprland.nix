@@ -34,7 +34,10 @@ in # This is the end of the 'let' block and the start of your main config
     enable = true;
     package = pkgs-unstable.hyprland; # Use unstable (0.52+) for crash fixes
     settings = {
-      monitor = ",preferred,auto,1";
+      monitor = [
+        "DP-2,1920x1080@144,0x0,1"
+        "DP-3,1920x1080@144,1920x0,1"
+      ];
 
       # Environment variables to ensure applications detect dark mode
       env = [
@@ -134,6 +137,10 @@ in # This is the end of the 'let' block and the start of your main config
         # Border colors will be set by Catppuccin theme
       };
 
+      xwayland = {
+        force_zero_scaling = true; # Fixes blurry XWayland fonts on NixOS
+      };
+
       decoration = { 
         rounding = 10;
         blur = {
@@ -155,29 +162,24 @@ in # This is the end of the 'let' block and the start of your main config
         ];
       };
 
-      # Window rules - automatically assign applications to specific workspaces
-      windowrulev2 = [
+      # Window rules - Hyprland 0.53+ syntax with match: prefix
+      windowrule = [
         # Disable rounded corners on fullscreen windows
-        "rounding 0, fullscreen:1"
+        "rounding 0, match:fullscreen 1"
 
-        "workspace 2,class:^(brave-browser)$"
-        "workspace 1,class:^(Godot)$"
-        "workspace 1,class:^(godot)$"
-        "tile,class:^(Godot)$"
-        "tile,class:^(godot)$"
+        # Battle.net launcher - float fullscreen
+        "match:title ^(Battle.net)$, float 1"
+        "match:title ^(Battle.net)$, fullscreen 1"
 
-        # World of Warcraft (via Steam/Proton) - gaming optimizations
-        "immediate, class:^(steam_app_0)$"                    # Enable tearing for lower input lag
-        "idleinhibit always, class:^(steam_app_0)$"           # Prevent screen sleep while playing
-        "workspace 3, class:^(steam_app_0)$"                  # Always open on workspace 3
-        "fullscreen, class:^(steam_app_0)$"                   # Start fullscreen
-        "rounding 0, class:^(steam_app_0)$"                   # No rounded corners
+        # World of Warcraft - no rounded corners or border (overFullscreen, not Hyprland fullscreen)
+        "match:title ^(World of Warcraft)$, rounding 0"
+        "match:title ^(World of Warcraft)$, border_size 0"
 
-        # Alternative match by title (in case class changes)
-        "immediate, title:^(World of Warcraft)$"
-        "idleinhibit always, title:^(World of Warcraft)$"
-        "fullscreen, title:^(World of Warcraft)$"
-        "rounding 0, title:^(World of Warcraft)$"
+        # Browser and editor assignments
+        "match:class ^(brave-browser)$, workspace 2"
+        "match:class ^(Godot)$, workspace 1, tile on"
+        "match:class ^(godot)$, workspace 1, tile on"
+
       ];
     };
   };

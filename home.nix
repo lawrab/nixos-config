@@ -24,6 +24,7 @@
       # ./home/python.nix      # Python development environment - moved to project flakes
       ./home/cli-tools.nix     # CLI tools with Catppuccin theming
       ./home/browsers.nix      # Web browsers (Firefox & Brave)
+      ./home/retroarch.nix     # Retro gaming emulation
       ./home/vscode.nix        # Code editor
       ./home/neovim.nix        # Terminal editor
       ./home/kitty.nix         # Terminal emulator

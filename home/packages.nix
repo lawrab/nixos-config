@@ -38,7 +38,6 @@
     
     # Essential Development Tools (Unstable - Latest Features)
     (with pkgs-unstable; [
-      claude-code        # AI coding assistant
       python3            # Python interpreter
       uv                 # Python tool runner (pipx alternative)
       nodejs             # JavaScript runtime
@@ -55,9 +54,8 @@
     ]) ++
     
     # Gaming (Unstable - Latest Compatibility)
+    # Note: Steam is configured in configuration.nix with programs.steam for GE-Proton support
     (with pkgs-unstable; [
-      steam              # Gaming platform
-      protonup-qt        # Proton version manager
       gamemode           # Game performance optimization
       gamescope          # Gaming compositor
       vulkan-tools       # Graphics debugging tools
@@ -68,12 +66,14 @@
     
     # Productivity Applications (Unstable)
     (with pkgs-unstable; [
+      claude-code
       obsidian           # Note-taking and knowledge management
     ]) ++
     
     # Communication (Unstable)
     (with pkgs-unstable; [
       discord            # Voice and text chat
+      mumble             # Low-latency voice chat
     ]) ++
     
     # Audio Production Tools (Mixed)

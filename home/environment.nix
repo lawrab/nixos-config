@@ -1,6 +1,11 @@
 # environment.nix - User environment variables and shell configuration
 { ... }:
 {
+  # Add ~/.local/bin to PATH for user-installed tools (e.g., Claude Code)
+  home.sessionPath = [
+    "$HOME/.local/bin"
+  ];
+
   # Set session variables for user applications
   home.sessionVariables = {
     # Wayland compatibility (moved from system environment.nix for user context)
