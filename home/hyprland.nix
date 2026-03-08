@@ -171,7 +171,8 @@ in # This is the end of the 'let' block and the start of your main config
         "match:title ^(Battle.net)$, float 1"
         "match:title ^(Battle.net)$, fullscreen 1"
 
-        # World of Warcraft - no rounded corners or border (overFullscreen, not Hyprland fullscreen)
+        # World of Warcraft - fullscreen to prevent XWayland coordinate desync, no decorations
+        "match:title ^(World of Warcraft)$, fullscreen 1"
         "match:title ^(World of Warcraft)$, rounding 0"
         "match:title ^(World of Warcraft)$, border_size 0"
 
