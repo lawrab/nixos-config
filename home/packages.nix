@@ -80,8 +80,6 @@
       audacity           # Free audio editor
       sox                # Sound processing library
       alsa-utils         # ALSA utilities (PipeWire compatible)
-      easyeffects        # PipeWire audio effects (output EQ for H390)
-      lsp-plugins        # LV2 EQ/dynamics plugins used by EasyEffects
     ]) ++
     (with pkgs-unstable; [
       ffmpeg-full        # Comprehensive media conversion
