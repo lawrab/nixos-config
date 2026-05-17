@@ -87,6 +87,75 @@
     alsa.enable = true; # ALSA compatibility
     alsa.support32Bit = true; # 32-bit app support
     pulse.enable = true; # PulseAudio compatibility
+
+    # Raise min-quantum from the default of 32 to 512.
+    # Adding filter-chain nodes lowers the negotiated graph quantum, causing
+    # xruns on output nodes. 512 is the recommended floor when running LADSPA
+    # filter-chains (per PipeWire GitLab issue #3852).
+    extraConfig.pipewire."92-quantum" = {
+      "context.properties" = {
+        "default.clock.min-quantum" = 512;
+      };
+    };
+
+    # Discord's WebRTC stack negotiates an unusual quantum of 360 samples which
+    # doesn't align with ALSA period boundaries, causing xruns and crackling.
+    # Force Discord's PulseAudio client to use 1024/48000 (~21ms) instead.
+    extraConfig.pipewire-pulse."30-discord-quantum" = {
+      "pulse.rules" = [
+        {
+          matches = [ { "application.name" = "Discord"; } ];
+          actions = {
+            "update-props" = {
+              "pulse.min.quantum" = "1024/48000";
+            };
+          };
+        }
+      ];
+    };
+
+    # DeepFilterNet noise suppression as a PipeWire filter-chain virtual mic.
+    # Wraps the raw H390 mic in the DeepFilterNet LADSPA plugin and exposes the
+    # result as "DeepFilter Noise Cancellation". priority.session=1010 makes
+    # WirePlumber prefer it over the raw H390 (default priority ~1000).
+    extraConfig.pipewire."99-deepfilter" = {
+      "context.modules" = [
+        {
+          name = "libpipewire-module-filter-chain";
+          args = {
+            "node.description" = "DeepFilter Noise Cancellation";
+            "media.name"       = "DeepFilter Noise Cancellation";
+            "filter.graph" = {
+              nodes = [
+                {
+                  type    = "ladspa";
+                  name    = "DeepFilter Mono";
+                  plugin  = "${pkgs.deepfilternet}/lib/ladspa/libdeep_filter_ladspa.so";
+                  label   = "deep_filter_mono";
+                  control = { "Attenuation Limit (dB)" = 100; };
+                }
+              ];
+            };
+            "node.latency"   = "512/48000";
+            "audio.rate"     = 48000;
+            "audio.channels" = 1;
+            "audio.position" = [ "MONO" ];
+            "capture.props" = {
+              "node.name"    = "capture.DeepFilter_Noise_Cancellation";
+              "node.passive" = true;
+              "audio.rate"   = 48000;
+            };
+            "playback.props" = {
+              "node.name"        = "DeepFilter_Noise_Cancellation";
+              "media.class"      = "Audio/Source";
+              "audio.rate"       = 48000;
+              "priority.session" = 1010;
+            };
+          };
+        }
+      ];
+    };
+
   };
 
   # User account configuration

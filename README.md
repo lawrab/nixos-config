@@ -39,6 +39,7 @@ This repository is the living blueprint of my desktop, crafted with [NixOS](http
 - [Using Unstable Packages](#-using-unstable-packages)
 - [Secrets Management](#-secrets-management)
 - [Network Storage Configuration](#-network-storage-configuration)
+- [Audio Pipeline & Noise Suppression](#️-audio-pipeline--noise-suppression)
 - [GPU Configuration & Undervolting](#-gpu-configuration--undervolting)
 - [Installation Guide](#-installation-guide)
 - [Troubleshooting & FAQ](#-troubleshooting--faq)
@@ -60,7 +61,7 @@ This NixOS configuration brings together carefully chosen tools to create a seam
 | **Terminal & Shell** | **Terminal:** [Kitty](./home/kitty.nix) │ **Shell:** [Zsh](./home/shell.nix) + [Oh My Zsh](https://ohmyz.sh/) │ **Prompt:** [Starship](https://starship.rs/) |
 | **Tooling**       | **Launcher:** [Wofi](./home/wofi.nix) │ **Notifications:** [Mako](https://github.com/emersion/mako) │ **File Manager:** [Thunar](https://docs.xfce.org/xfce/thunar/start) |
 | **Gaming & Apps** | **Gaming:** Steam, ProtonUp-Qt, Gamemode │ **Image Viewer:** [Loupe](https://gitlab.gnome.org/GNOME/loupe) │ **Passwords:** 1Password |
-| **Audio Production** | **Editing:** [Audacity](https://www.audacityteam.org/), [Reaper](https://www.reaper.fm/) │ **Conversion:** FFmpeg, SoX │ **Playback:** VLC |
+| **Audio** | **Noise Suppression:** [DeepFilterNet](https://github.com/Rikorose/DeepFilterNet) (PipeWire filter-chain) │ **Editing:** [Audacity](https://www.audacityteam.org/) │ **Conversion:** FFmpeg, SoX │ **Playback:** VLC |
 
 *...plus a custom [screenshot script](./home/scripts.nix), hand-picked fonts, and countless quality-of-life tweaks!*
 
@@ -639,6 +640,50 @@ cd /mnt/rabnas
 
 # Check mount status
 mount | grep rabnas
+```
+
+---
+
+## 🎙️ Audio Pipeline & Noise Suppression
+
+This configuration includes a [DeepFilterNet](https://github.com/Rikorose/DeepFilterNet) noise suppression pipeline for the microphone, implemented as a native PipeWire filter-chain. This is more reliable than running it through EasyEffects, as it avoids session manager routing conflicts.
+
+### How It Works
+
+```
+H390 mic (raw) → DeepFilter filter-chain → "DeepFilter Noise Cancellation" (virtual source, system default)
+```
+
+The virtual source is set as the system default microphone (`priority.session = 1010`). Apps like Discord should auto-select it, but you may need to set it manually in Discord's input device settings.
+
+### Critical PipeWire Quantum Settings
+
+**Do not remove the quantum settings in `configuration.nix`.** Two issues arise without them:
+
+1. **`default.clock.min-quantum = 512`** — When a LADSPA filter-chain is active in the PipeWire graph, it lowers the negotiated quantum for all nodes. With the default floor of 32, this causes xruns on unrelated output nodes (crackling on audio from others in calls, crackling when games play music). Fixed by raising the floor to 512. See [PipeWire GitLab #3852](https://gitlab.freedesktop.org/pipewire/pipewire/-/issues/3852).
+
+2. **Discord pulse rule (`pulse.min.quantum = 1024/48000`)** — Discord's WebRTC stack negotiates a non-standard 360-sample quantum that doesn't align with ALSA period boundaries, causing thousands of xruns on the playback stream. The per-app PulseAudio rule forces it to 1024/48000 (~21ms), eliminating the mismatch.
+
+### Do Not Run EasyEffects Alongside DeepFilterNet
+
+EasyEffects creates a virtual source ("Easy Effects Source") that WirePlumber auto-connects to the DeepFilter capture node instead of the raw H390 mic, creating a silent routing loop. You cannot run both without WirePlumber static link rules.
+
+If you want output EQ on the headset, configure it separately without EasyEffects' input processing active.
+
+### Verifying the Pipeline
+
+```bash
+# Routing: H390 mic should feed directly into DeepFilter
+pw-link -l | grep -A2 "DeepFilter"
+
+# Default source should be DeepFilter (marked with *)
+wpctl status | grep -A10 "Filters:"
+
+# Confirm quantum floor is applied
+pw-cli info 0 | grep min-quantum
+
+# Check for xruns during a call (B/Q should be well below 1.0)
+pw-top
 ```
 
 ---
