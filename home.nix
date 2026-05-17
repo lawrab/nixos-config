@@ -36,6 +36,9 @@
       ./home/scripts.nix       # Custom scripts
       ./home/direnv.nix        # Development environment management
       
+      # Audio
+      ./home/easyeffects.nix   # EasyEffects service + H390 output EQ preset
+
       # System integration
       ./home/environment.nix   # Environment variables and secrets
       ./home/default-apps.nix  # Default applications

@@ -87,6 +87,46 @@
     alsa.enable = true; # ALSA compatibility
     alsa.support32Bit = true; # 32-bit app support
     pulse.enable = true; # PulseAudio compatibility
+
+    # DeepFilterNet noise suppression as a PipeWire filter-chain virtual mic.
+    # Wraps the raw H390 mic in the DeepFilterNet LADSPA plugin and exposes the
+    # result as "DeepFilter Noise Cancellation" — a virtual source that all apps
+    # see transparently. priority.session=1010 makes WirePlumber prefer it over
+    # the raw H390 (default priority ~1000).
+    extraConfig.pipewire."99-deepfilter" = {
+      "context.modules" = [
+        {
+          name = "libpipewire-module-filter-chain";
+          args = {
+            "node.description" = "DeepFilter Noise Cancellation";
+            "media.name"       = "DeepFilter Noise Cancellation";
+            "filter.graph" = {
+              nodes = [
+                {
+                  type    = "ladspa";
+                  name    = "DeepFilter Mono";
+                  plugin  = "${pkgs.deepfilternet}/lib/ladspa/libdeep_filter_ladspa.so";
+                  label   = "deep_filter_mono";
+                  control = { "Attenuation Limit (dB)" = 100; };
+                }
+              ];
+            };
+            "audio.position" = [ "MONO" ];
+            "capture.props" = {
+              "node.name"    = "capture.DeepFilter_Noise_Cancellation";
+              "node.passive" = true;
+              "audio.rate"   = 48000;
+            };
+            "playback.props" = {
+              "node.name"        = "DeepFilter_Noise_Cancellation";
+              "media.class"      = "Audio/Source";
+              "audio.rate"       = 48000;
+              "priority.session" = 1010;
+            };
+          };
+        }
+      ];
+    };
   };
 
   # User account configuration
