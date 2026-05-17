@@ -1,7 +1,7 @@
 {pkgs, pkgs-unstable, ...}:
 
 {
-  home.packages = 
+  home.packages =
     # Core System Utilities (Stable)
     (with pkgs; [
       libnotify          # Desktop notifications
@@ -50,7 +50,6 @@
       wl-clipboard       # Wayland clipboard
       cliphist           # Clipboard history manager
       loupe              # Image viewer
-      cider              # Apple Music client
     ]) ++
     
     # Gaming (Unstable - Latest Compatibility)
@@ -63,7 +62,7 @@
       wowup-cf           # World of Warcraft addon manager (CurseForge)
       r2modman           # Thunderstore mod manager (Risk of Rain 2, Lethal Company, etc.)
     ]) ++
-    
+
     # Productivity Applications (Unstable)
     (with pkgs-unstable; [
       claude-code

@@ -68,7 +68,6 @@ in # This is the end of the 'let' block and the start of your main config
         "$mainMod, B, exec, brave-dark"
         "$mainMod SHIFT, B, exec, firefox"
         "$mainMod, L, exec, hyprlock"
-        "$mainMod, R, exec, cider"
         "$mainMod, X, exec, wlogout" 
 
         # -- Screenshots --
@@ -175,6 +174,9 @@ in # This is the end of the 'let' block and the start of your main config
         "match:title ^(World of Warcraft)$, fullscreen 1"
         "match:title ^(World of Warcraft)$, rounding 0"
         "match:title ^(World of Warcraft)$, border_size 0"
+        "match:title ^(World of Warcraft)$, no_blur on"
+        "match:title ^(World of Warcraft)$, no_shadow on"
+        "match:title ^(World of Warcraft)$, workspace 1"
 
         # Browser and editor assignments
         "match:class ^(brave-browser)$, workspace 2"
