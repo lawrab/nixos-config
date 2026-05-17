@@ -25,11 +25,10 @@
   
   # Disable IPv6 to prevent VPN leaks
   networking.enableIPv6 = false;
-  # networking.enableIPv6 only sets net.ipv6.conf.all.disable_ipv6 but NetworkManager
-  # bypasses this via per-interface RA acceptance. Force-disable at all levels.
+  # Force-disable at the default level so any new interface inherits this.
+  # Per-interface sysctl entries are skipped as the interface may not exist at sysctl time.
   boot.kernel.sysctl = {
     "net.ipv6.conf.default.disable_ipv6" = 1;
-    "net.ipv6.conf.enp0s31f6.disable_ipv6" = 1;
   };
 
   # Firewall configuration for Minecraft server
@@ -40,10 +39,16 @@
   };
 
   # DNS resolution service for caching and security
-  services.resolved.enable = true;
+  services.resolved = {
+    enable = true;
+    # Disable resolved's built-in mDNS to avoid conflicting with avahi,
+    # which handles mDNS + DNS-SD (needed for printer discovery)
+    extraConfig = "MulticastDNS=no";
+  };
 
-  # Distribute NIC interrupts across CPU cores to avoid bottlenecking on CPU 0
-  services.irqbalance.enable = true;
+  # irqbalance disabled - read-only /proc/irq on this system makes it ineffective,
+  # and single-socket gaming desktops don't benefit from it anyway
+  services.irqbalance.enable = false;
   
   # Enable UPower for power management information
   services.upower.enable = true;
@@ -173,7 +178,10 @@
     extraPortals = [
       pkgs.xdg-desktop-portal-gtk
     ];
-    config.common.default = "*";
+    # Explicit per-desktop config avoids the deprecated UseIn key fallback
+    config.hyprland = {
+      default = [ "hyprland" "gtk" ];
+    };
   };
 
   # Enable PAM authentication for screen locking
@@ -205,10 +213,15 @@
     nvidiaSettings = true; # Include nvidia-settings GUI
     package = config.boot.kernelPackages.nvidiaPackages.stable; # Stable driver version
     
-    # Enable power management and persistence for GPU control
-    powerManagement.enable = true;
+    # Power management disabled - known to cause shutdown hangs on NVIDIA + Wayland
+    # (driver tries to save GPU memory state on shutdown, which stalls kernel poweroff)
+    # Re-enable only if you need suspend/hibernate support
+    powerManagement.enable = false;
     powerManagement.finegrained = false;
   };
+
+  # Cap shutdown wait time so a stuck process can't hang forever
+  systemd.extraConfig = "DefaultTimeoutStopSec=15s";
 
   # CPU governor - performance mode for gaming
   powerManagement.cpuFreqGovernor = "performance";

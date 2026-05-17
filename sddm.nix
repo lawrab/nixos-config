@@ -34,7 +34,7 @@ in
       # General settings
       General = {
         DisplayServer = "wayland";
-        GreeterEnvironment = "QT_WAYLAND_SHELL_INTEGRATION=layer-shell";
+        GreeterEnvironment = "QT_WAYLAND_SHELL_INTEGRATION=layer-shell,XCURSOR_THEME=catppuccin-mocha-dark-cursors,XCURSOR_SIZE=24";
         InputMethod = "";  # Can be set to "qtvirtualkeyboard" if needed
       };
 
@@ -84,6 +84,7 @@ in
       background = "${./wallpapers/f1-3.png}";
       loginBackground = true;
     })
+    catppuccin-cursors.mochaDark  # Cursor theme for SDDM/kwin
     libsForQt5.qt5.qtquickcontrols2
     libsForQt5.qt5.qtgraphicaleffects
     kdePackages.qtquick3d
