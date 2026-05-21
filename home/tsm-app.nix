@@ -16,6 +16,7 @@ let
       zlib               # libz.so.1
       zstd               # libzstd.so.1 (Qt compression)
       openssl            # libssl/libcrypto (Qt networking/TLS)
+      krb5               # libgssapi_krb5.so.2 (Qt network/Kerberos)
       libxkbcommon       # libxkbcommon.so.0 (Qt input/Wayland)
       wayland            # libwayland-*.so (Qt Wayland backend)
       xorg.libX11
@@ -41,6 +42,7 @@ let
         zlib
         zstd
         openssl
+        krb5
         libxkbcommon
         wayland
         xorg.libX11
