@@ -14,6 +14,8 @@ let
       fontconfig         # libfontconfig.so.1
       freetype           # libfreetype.so.6
       zlib               # libz.so.1
+      zstd               # libzstd.so.1 (Qt compression)
+      openssl            # libssl/libcrypto (Qt networking/TLS)
       libxkbcommon       # libxkbcommon.so.0 (Qt input/Wayland)
       wayland            # libwayland-*.so (Qt Wayland backend)
       xorg.libX11
@@ -22,6 +24,8 @@ let
       xorg.libXrender
       dbus
       expat
+      libgcrypt
+      libgpg-error
     ];
 
     runScript = pkgs.writeShellScript "tsm-app-run" ''
@@ -35,6 +39,8 @@ let
         fontconfig
         freetype
         zlib
+        zstd
+        openssl
         libxkbcommon
         wayland
         xorg.libX11
@@ -43,6 +49,8 @@ let
         xorg.libXrender
         dbus
         expat
+        libgcrypt
+        libgpg-error
       ])}''${LD_LIBRARY_PATH:+:$LD_LIBRARY_PATH}"
 
       bin="$HOME/.local/share/uv/tools/tsm-app/bin/tsm-app"
