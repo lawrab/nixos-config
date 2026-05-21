@@ -1,4 +1,4 @@
-{ pkgs, ... }:
+{ pkgs, lib, ... }:
 
 let
   tsm-app-fhs = pkgs.buildFHSEnv {
@@ -35,14 +35,14 @@ let
     '';
   };
 in {
-  # ~/.local/bin comes before ~/.nix-profile/bin in PATH on this system, so we
-  # place the FHS wrapper directly there as the user-facing tsm-app entry point.
-  home.file.".local/bin/tsm-app" = {
-    source = "${tsm-app-fhs}/bin/tsm-app-fhs";
-  };
-
   # Redirect uv tool executables away from ~/.local/bin so they don't clobber
-  # the Home Manager-managed wrapper above. The actual venv stays at the default
-  # ~/.local/share/uv/tools/tsm-app/ — only the CLI shim moves.
+  # the FHS wrapper below. The actual venv stays at ~/.local/share/uv/tools/tsm-app/.
   home.sessionVariables.UV_TOOL_BIN_DIR = "$HOME/.local/share/uv-tools-bin";
+
+  # Force the FHS wrapper into ~/.local/bin/tsm-app on every rebuild.
+  # home.file cannot be used here because uv also writes to this path and would
+  # overwrite a static symlink on reinstall. home.activation runs last and wins.
+  home.activation.tsm-app-wrapper = lib.hm.dag.entryAfter ["writeBoundary"] ''
+    $DRY_RUN_CMD ln -sf "${tsm-app-fhs}/bin/tsm-app-fhs" "$HOME/.local/bin/tsm-app"
+  '';
 }
