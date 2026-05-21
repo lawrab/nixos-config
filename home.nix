@@ -30,6 +30,9 @@
       ./home/kitty.nix         # Terminal emulator
       ./home/1password.nix     # Password manager
       
+      # World of Warcraft tooling
+      ./home/tsm-app.nix        # TradeSkillMaster desktop app (via buildFHSEnv)
+
       # Shell and development environment
       ./home/shell.nix         # Zsh configuration
       ./home/git.nix           # Git settings

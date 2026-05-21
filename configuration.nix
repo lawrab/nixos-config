@@ -170,27 +170,6 @@
   # SSH agent disabled - using 1Password SSH agent instead
   programs.ssh.startAgent = false;
 
-  # nix-ld allows unmanaged (non-Nix) binaries to run on NixOS by providing
-  # the dynamic linker and a set of common system libraries they expect to find.
-  # Required for uv-installed Python apps with native extensions (e.g. PySide6).
-  programs.nix-ld = {
-    enable = true;
-    libraries = with pkgs; [
-      stdenv.cc.cc.lib  # libstdc++, libgcc_s
-      libGL             # libGL.so.1
-      glib              # libglib-2.0
-      fontconfig        # libfontconfig
-      freetype          # libfreetype
-      zlib              # libz
-      xorg.libX11
-      xorg.libXext
-      xorg.libxcb
-      xorg.libXrender
-      dbus
-      expat
-    ];
-  };
-
   # Home-Manager configuration - manages user environment
   home-manager = {
     useGlobalPkgs = true; # Use system nixpkgs
