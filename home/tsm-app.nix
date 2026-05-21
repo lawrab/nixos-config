@@ -25,6 +25,26 @@ let
     ];
 
     runScript = pkgs.writeShellScript "tsm-app-run" ''
+      # The Nix glibc linker doesn't search /usr/lib inside the FHS sandbox —
+      # it only follows RPATH and LD_LIBRARY_PATH. Set it explicitly so PySide6
+      # manylinux .so files can find their system lib dependencies.
+      export LD_LIBRARY_PATH="${pkgs.lib.makeLibraryPath (with pkgs; [
+        stdenv.cc.cc.lib
+        libGL
+        glib
+        fontconfig
+        freetype
+        zlib
+        libxkbcommon
+        wayland
+        xorg.libX11
+        xorg.libXext
+        xorg.libxcb
+        xorg.libXrender
+        dbus
+        expat
+      ])}''${LD_LIBRARY_PATH:+:$LD_LIBRARY_PATH}"
+
       bin="$HOME/.local/share/uv/tools/tsm-app/bin/tsm-app"
       if [ ! -x "$bin" ]; then
         echo "tsm-app is not installed."
