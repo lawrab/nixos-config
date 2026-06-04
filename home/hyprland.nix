@@ -39,6 +39,19 @@ in # This is the end of the 'let' block and the start of your main config
         "DP-3,1920x1080@144,1920x0,1"
       ];
 
+      workspace = [
+        "1, monitor:DP-2, default:true"
+        "2, monitor:DP-3, default:true"
+        "3, monitor:DP-3"
+        "4, monitor:DP-3"
+        "5, monitor:DP-3"
+        "6, monitor:DP-3"
+        "7, monitor:DP-3"
+        "8, monitor:DP-3"
+        "9, monitor:DP-3"
+        "10, monitor:DP-3"
+      ];
+
       # Environment variables to ensure applications detect dark mode
       env = [
         "GTK_THEME,Adwaita:dark"
@@ -80,7 +93,7 @@ in # This is the end of the 'let' block and the start of your main config
         "$mainMod, F, fullscreen,"
         "$mainMod, SPACE, togglefloating,"
         "$mainMod, P, pseudo, # dwindle"
-        "$mainMod SHIFT, P, togglesplit, # dwindle"
+        "$mainMod SHIFT, P, layoutmsg, togglesplit # dwindle"
 
         # -- Focus / Move with Arrow Keys --
         "$mainMod, left, movefocus, l"
@@ -166,9 +179,10 @@ in # This is the end of the 'let' block and the start of your main config
         # Disable rounded corners on fullscreen windows
         "rounding 0, match:fullscreen 1"
 
-        # Battle.net launcher - float fullscreen
+        # Battle.net launcher - float fullscreen on main monitor
         "match:title ^(Battle.net)$, float 1"
         "match:title ^(Battle.net)$, fullscreen 1"
+        "match:title ^(Battle.net)$, workspace 1"
 
         # World of Warcraft - fullscreen to prevent XWayland coordinate desync, no decorations
         "match:title ^(World of Warcraft)$, fullscreen 1"
@@ -182,6 +196,9 @@ in # This is the end of the 'let' block and the start of your main config
         "match:class ^(brave-browser)$, workspace 2"
         "match:class ^(Godot)$, workspace 1, tile on"
         "match:class ^(godot)$, workspace 1, tile on"
+
+        # Discord on workspace 3 (right monitor)
+        "match:class ^([Dd]iscord)$, workspace 3"
 
       ];
     };
