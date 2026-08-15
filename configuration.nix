@@ -8,6 +8,7 @@
     ./mounts.nix # Filesystem mount configuration
     ./home.nix # Home-manager configuration
     ./sddm.nix # SDDM display manager with Catppuccin theme
+    ./azerothcore.nix # AzerothCore (WotLK) private server support
     # ./ollama.nix # Local AI model server (heavy build!)
   ];
 
