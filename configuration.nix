@@ -230,6 +230,11 @@
   programs.hyprland.enable = true;
   programs.hyprland.xwayland.enable = true; # X11 app compatibility
 
+  programs.appimage = {
+    enable = true;
+    binfmt = true;
+  };
+
   # Steam with GE-Proton support
   programs.steam = {
     enable = true;
