@@ -8,8 +8,8 @@
     ./mounts.nix # Filesystem mount configuration
     ./home.nix # Home-manager configuration
     ./sddm.nix # SDDM display manager with Catppuccin theme
-    ./azerothcore.nix # AzerothCore (WotLK) private server support
-    # ./ollama.nix # Local AI model server (heavy build!)
+    ./azerothcore.nix # WotLK private server support
+    ./ollama.nix # Local AI model server (heavy build!)
   ];
 
   # Bootloader - systemd-boot is simpler than GRUB
@@ -35,8 +35,11 @@
   # Firewall configuration for Minecraft server
   networking.firewall = {
     enable = true;
-    allowedTCPPorts = [ 25565 ]; # Minecraft server
+    allowedTCPPorts = [ 25565 11434 ]; # Minecraft server, Ollama
     allowedUDPPorts = [ 25565 ]; # Minecraft server
+    extraCommands = ''
+      iptables -A OUTPUT -d 137.221.106.103 -p tcp --dport 80 -j REJECT --reject-with tcp-reset
+    '';
   };
 
   # DNS resolution service for caching and security
