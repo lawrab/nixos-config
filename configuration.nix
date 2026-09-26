@@ -91,16 +91,19 @@
     alsa.support32Bit = true; # 32-bit app support
     pulse.enable = true; # PulseAudio compatibility
 
-    # Use nixos-unstable's PipeWire build. Stable's UCM profile for the
-    # GoXLR Mini is broken ("ALSA UCM error" in wpctl status): stable's
-    # alsa-ucm-conf (1.2.12) doesn't detect Mini vs full-size GoXLR and
-    # hardcodes the wrong capture channel count, and even pointing just the
-    # config at unstable's fixed alsa-ucm-conf (1.2.16.1) wasn't enough since
-    # that profile needs alsa-lib 1.2.14+ syntax that stable's PipeWire
-    # (linked against alsa-lib 1.2.13) can't parse. Using the whole unstable
-    # pipewire package instead gives a matched, already-cached pipewire +
-    # alsa-lib + alsa-ucm-conf set rather than mixing versions by hand.
+    # Use nixos-unstable's PipeWire build. Stable's alsa-lib/alsa-ucm-conf
+    # (1.2.13/1.2.12) predate the GoXLR Mini's UCM profile fix upstream
+    # (alsa-project/alsa-ucm-conf#553) - the card ends up in a broken
+    # fallback state ("ALSA UCM error" in wpctl status), which is a
+    # plausible cause of the mic dropout/click. Fixed in alsa-lib/
+    # alsa-ucm-conf 1.2.14+, which unstable already has (1.2.16.1).
     package = pkgs-unstable.pipewire;
+
+    # wireplumber links its own separate copy of pipewire/alsa-lib for ALSA
+    # card enumeration - it's the one that actually logs the "ALSA UCM
+    # error" (confirmed via wireplumber[pid] in the log), independently of
+    # services.pipewire.package above, so it needs the same unstable build.
+    wireplumber.package = pkgs-unstable.wireplumber;
 
     # Raise min-quantum from the default of 32 to 512.
     # Adding filter-chain nodes lowers the negotiated graph quantum, causing
