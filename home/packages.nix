@@ -9,6 +9,7 @@
       btop               # System monitor
       lm_sensors         # Hardware sensors
       nvtopPackages.nvidia # GPU monitoring for btop
+      goxlr-utility      # GoXLR Mini control (goxlr-daemon/goxlr-client); daemon started via Hyprland exec-once
     ]) ++
 
     # File Manager (Stable)

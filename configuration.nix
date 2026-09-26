@@ -91,6 +91,17 @@
     alsa.support32Bit = true; # 32-bit app support
     pulse.enable = true; # PulseAudio compatibility
 
+    # Use nixos-unstable's PipeWire build. Stable's UCM profile for the
+    # GoXLR Mini is broken ("ALSA UCM error" in wpctl status): stable's
+    # alsa-ucm-conf (1.2.12) doesn't detect Mini vs full-size GoXLR and
+    # hardcodes the wrong capture channel count, and even pointing just the
+    # config at unstable's fixed alsa-ucm-conf (1.2.16.1) wasn't enough since
+    # that profile needs alsa-lib 1.2.14+ syntax that stable's PipeWire
+    # (linked against alsa-lib 1.2.13) can't parse. Using the whole unstable
+    # pipewire package instead gives a matched, already-cached pipewire +
+    # alsa-lib + alsa-ucm-conf set rather than mixing versions by hand.
+    package = pkgs-unstable.pipewire;
+
     # Raise min-quantum from the default of 32 to 512.
     # Adding filter-chain nodes lowers the negotiated graph quantum, causing
     # xruns on output nodes. 512 is the recommended floor when running LADSPA
@@ -117,10 +128,41 @@
       ];
     };
 
+    # GoXLR Mini per-app channel routing. Matches on application.process.binary
+    # (stable across window titles) and redirects the stream to the named
+    # GoXLR virtual channel via target.object. Note this routes the whole
+    # app, not individual browser tabs — PipeWire can't distinguish tabs of
+    # the same browser process.
+    extraConfig.pipewire-pulse."31-goxlr-routing" = {
+      "pulse.rules" = [
+        {
+          matches = [ { "application.process.binary" = "brave"; } ];
+          actions = {
+            "update-props" = {
+              "target.object" = "alsa_output.usb-TC-Helicon_GoXLRMini-00.HiFi__Line2__sink"; # Music
+            };
+          };
+        }
+      ];
+    };
+
     # DeepFilterNet noise suppression as a PipeWire filter-chain virtual mic.
-    # Wraps the raw H390 mic in the DeepFilterNet LADSPA plugin and exposes the
-    # result as "DeepFilter Noise Cancellation". priority.session=1010 makes
-    # WirePlumber prefer it over the raw H390 (default priority ~1000).
+    # Wraps the GoXLR Mini's "Chat Mic" capture (the Kraken's mic, via the
+    # GoXLR's own preamp/gate) in the DeepFilterNet LADSPA plugin and exposes
+    # the result as "DeepFilter Noise Cancellation". This runs entirely on
+    # the PC, downstream of the GoXLR over USB — it does not route back into
+    # the GoXLR's own hardware mixer/broadcast mix, so apps (Mumble/Discord)
+    # need to select this source directly as their mic input, same as the
+    # old onboard-mic setup. priority.session=1010 makes WirePlumber prefer
+    # it as the default mic over the raw GoXLR input.
+    #
+    # No AEC stage: tried libpipewire-module-echo-cancel (webrtc AEC3)
+    # chained in front of this to fix headset audio bleeding into the mic,
+    # but it suppressed the voice entirely during double-talk (silence in
+    # Mumble whenever music played) — confirmed via webrtc source that this
+    # is inherent AEC behavior when the echo signal is loud relative to the
+    # voice, not a config bug. Echo cancellation is better left to call apps,
+    # which already do their own and are tuned for exactly this.
     extraConfig.pipewire."99-deepfilter" = {
       "context.modules" = [
         {
@@ -144,9 +186,10 @@
             "audio.channels" = 1;
             "audio.position" = [ "MONO" ];
             "capture.props" = {
-              "node.name"    = "capture.DeepFilter_Noise_Cancellation";
-              "node.passive" = true;
-              "audio.rate"   = 48000;
+              "node.name"     = "capture.DeepFilter_Noise_Cancellation";
+              "node.passive"  = true;
+              "audio.rate"    = 48000;
+              "target.object" = "alsa_input.usb-TC-Helicon_GoXLRMini-00.HiFi__Headset__source";
             };
             "playback.props" = {
               "node.name"        = "DeepFilter_Noise_Cancellation";
@@ -158,7 +201,16 @@
         }
       ];
     };
+  };
 
+  # GoXLR Mini - external USB audio interface with its own mic preamp/headphone
+  # amp, bypassing the onboard Realtek codec's analog crosstalk entirely.
+  # goxlr-daemon runs headless (started via Hyprland exec-once); use
+  # `goxlr-client` or the web UI it serves (http://localhost:14564) to
+  # configure routing/effects/mic gain.
+  services.goxlr-utility = {
+    enable = true;
+    autoStart.xdg = false; # started via Hyprland exec-once instead
   };
 
   # User account configuration

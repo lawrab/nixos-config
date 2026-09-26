@@ -60,7 +60,8 @@ in # This is the end of the 'let' block and the start of your main config
         "GTK_APPLICATION_PREFER_DARK_THEME,1"
       ];
 
-      exec-once = [ 
+      exec-once = [
+        "goxlr-daemon"  # Headless GoXLR Mini control daemon
         "waybar"
         "swww init"  # Initialize swww daemon
         "wallpaper-rotate"  # Set random wallpaper at startup
