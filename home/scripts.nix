@@ -207,7 +207,6 @@ EOF
       ["ANTHROPIC_API_KEY"]="Anthropic API key for Claude"
       ["LAMETRIC_API_KEY"]="LaMetric device API key"  
       ["LAMETRIC_IP"]="LaMetric device IP address"
-      ["WEATHER_LOCATION"]="Weather location (e.g., London,UK or New York,NY)"
     )
     
     for var in "''${!variables[@]}"; do
@@ -307,34 +306,6 @@ EOF
     fi
   '';
 
-  # Service status indicator script
-  serviceStatusScript = pkgs.writeShellScriptBin "waybar-services" ''
-    #!/usr/bin/env bash
-    
-    # Services to monitor
-    declare -A services=(
-      # ["ollama"]="🤖"
-    )
-    
-    active_services=""
-    inactive_count=0
-    
-    for service in "''${!services[@]}"; do
-      if systemctl is-active --quiet "$service" 2>/dev/null; then
-        active_services+="''${services[$service]}"
-      else
-        ((inactive_count++))
-      fi
-    done
-    
-    # Show active services and count of inactive ones
-    if [ $inactive_count -gt 0 ]; then
-      echo "$active_services ⚠️$inactive_count"
-    else
-      echo "$active_services"
-    fi
-  '';
-
   # Music visualizer script
   musicVisualizerScript = pkgs.writeShellScriptBin "waybar-music-viz" ''
     #!/usr/bin/env bash
@@ -361,51 +332,6 @@ EOF
     
     # Format: visualizer + song info
     echo "♪ $viz $title"
-  '';
-
-  # Weather widget script
-  weatherScript = pkgs.writeShellScriptBin "waybar-weather" ''
-    #!/usr/bin/env bash
-    set -euo pipefail
-    
-    # Source environment variables
-    if [ -f "$HOME/.env" ]; then
-      source "$HOME/.env"
-    fi
-    
-    # Default location (can be overridden in ~/.env)
-    LOCATION="''${WEATHER_LOCATION:-London,UK}"
-    
-    # Weather API endpoint (using wttr.in - no API key needed)
-    WEATHER_URL="https://wttr.in/$LOCATION?format=%t|%C|%p"
-    
-    # Fetch weather data with timeout
-    if ! weather_data=$(curl -s --connect-timeout 5 --max-time 10 "$WEATHER_URL" 2>/dev/null); then
-      echo "🌡️ N/A"
-      exit 0
-    fi
-    
-    # Parse response: temperature|condition|precipitation
-    IFS='|' read -r temp condition precip <<< "$weather_data"
-    
-    # Weather condition icons
-    case "$condition" in
-      *"Clear"*|*"Sunny"*) icon="☀️" ;;
-      *"Partly cloudy"*) icon="⛅" ;;
-      *"Cloudy"*|*"Overcast"*) icon="☁️" ;;
-      *"Rain"*|*"Drizzle"*) icon="🌧️" ;;
-      *"Snow"*) icon="🌨️" ;;
-      *"Thunder"*) icon="⛈️" ;;
-      *"Fog"*|*"Mist"*) icon="🌫️" ;;
-      *) icon="🌤️" ;;
-    esac
-    
-    # Format output
-    if [ "$precip" != "0.0mm" ] && [ -n "$precip" ]; then
-      echo "$icon $temp | Rain: $precip"
-    else
-      echo "$icon $temp"
-    fi
   '';
 
   # Random wallpaper rotation script
@@ -587,9 +513,7 @@ in
     createEnvScript
     lametricMusicScript
     wallpaperRotateScript
-    serviceStatusScript
     musicVisualizerScript
-    weatherScript
     waybarVpnScript
     vpnScript
     devInitScript

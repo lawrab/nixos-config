@@ -14,7 +14,7 @@
         output = "DP-3";  # Only show on right monitor, keep left monitor clean for gaming
         modules-left = [ "hyprland/workspaces" "mpris" "custom/music-viz" ];
         modules-center = [ "hyprland/window" ];
-        modules-right = [ "custom/services" "custom/vpn" "pulseaudio" "network" "cpu" "memory" "custom/temps" "clock" "tray" ];
+        modules-right = [ "custom/vpn" "pulseaudio" "network" "cpu" "memory" "custom/temps" "clock" "tray" ];
 
         "hyprland/workspaces" = {
           "format" = "{id}";
@@ -83,16 +83,6 @@
           "tooltip-format" = "CPU and GPU Temperatures";
           "on-click" = "kitty -e bash -c 'sensors; read'";
         };
-
-        "custom/services" = {
-          "exec" = "waybar-services";
-          "format" = "{}";
-          "interval" = 30;
-          "tooltip" = true;
-          "tooltip-format" = "Service Status (🤖=Ollama)";
-          "on-click" = "kitty -e bash -c 'systemctl --no-pager status ollama; read'";
-        };
-
 
         "custom/music-viz" = {
           "exec" = "waybar-music-viz";
