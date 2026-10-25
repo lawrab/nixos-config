@@ -344,12 +344,6 @@
   # CPU governor - performance mode for gaming
   powerManagement.cpuFreqGovernor = "performance";
 
-  # Enable swap for better memory pressure handling
-  swapDevices = [ {
-    device = "/var/lib/swapfile";
-    size = 8*1024; # 8GB swap file
-  } ];
-
   # Fix NVIDIA device node creation
   services.udev.extraRules = ''
     KERNEL=="nvidia_uvm", OWNER="root", GROUP="video", MODE="0660"
