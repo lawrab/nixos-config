@@ -2,6 +2,15 @@
 {
   # The 1Password app and CLI are installed by the NixOS modules in configuration.nix
 
+  # gnome-keyring for 1Password secret storage. PAM starts and unlocks the daemon at
+  # login, but Hyprland doesn't run XDG autostart, so this `--start` is what hands the
+  # unlocked daemon to the session bus. Without it you get a keyring unlock prompt.
+  # Only using secrets component - 1Password SSH agent handles SSH keys
+  services.gnome-keyring = {
+    enable = true;
+    components = [ "secrets" ];
+  };
+
   # SSH configuration for 1Password integration
   programs.ssh = {
     enable = true;
