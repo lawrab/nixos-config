@@ -357,14 +357,14 @@
   ];
 
   # GPU clock speed configuration via systemd service
-  # -lgc locks the graphics clock; it does not undervolt
+  # -lgc caps the graphics clock (min,max) so it can still idle down; it does not undervolt
   systemd.services.gpu-clock-lock = {
     description = "Lock NVIDIA GPU graphics clock";
     wantedBy = [ "multi-user.target" ];
     serviceConfig = {
       Type = "oneshot";
       RemainAfterExit = true;
-      ExecStart = "${config.hardware.nvidia.package.bin}/bin/nvidia-smi -lgc 1830";
+      ExecStart = "${config.hardware.nvidia.package.bin}/bin/nvidia-smi -lgc 300,1830";
       User = "root";
     };
   };
