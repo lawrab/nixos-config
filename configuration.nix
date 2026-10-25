@@ -8,7 +8,6 @@
     ./mounts.nix # Filesystem mount configuration
     ./home.nix # Home-manager configuration
     ./sddm.nix # SDDM display manager with Catppuccin theme
-    ./azerothcore.nix # WotLK private server support
   ];
 
   # Bootloader - systemd-boot is simpler than GRUB
