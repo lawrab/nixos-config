@@ -10,6 +10,7 @@
       lm_sensors         # Hardware sensors
       nvtopPackages.nvidia # GPU monitoring for btop
       goxlr-utility      # GoXLR Mini control (goxlr-daemon/goxlr-client); daemon started via Hyprland exec-once
+      piper              # Gaming mouse configuration GUI (needs services.ratbagd)
     ]) ++
 
     # File Manager (Stable)

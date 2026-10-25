@@ -216,6 +216,10 @@
     autoStart.xdg = false; # started via Hyprland exec-once instead
   };
 
+  # Logitech G502 HERO configuration (DPI, buttons, LEDs) via libratbag;
+  # configure with Piper (home/packages.nix). Settings persist in onboard memory.
+  services.ratbagd.enable = true;
+
   # User account configuration
   users.users.lrabbets = {
     isNormalUser = true;
