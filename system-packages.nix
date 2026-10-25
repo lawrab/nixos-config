@@ -8,17 +8,15 @@
     openvpn     # OpenVPN client for Surfshark
     wireguard-tools # WireGuard VPN tools
     networkmanagerapplet # GUI for NetworkManager VPN
-    podman      # Container runtime
     podman-tui  # Terminal UI for Podman
-    podman-compose # Docker Compose compatibility
+    podman-compose # Compose file support for `podman compose`
     ghostscript # Required for CUPS print preview generation
     poppler_utils # PDF conversion tools for print preview
   ];
 
-  # Podman configuration for rootless containers
+  # Podman configuration for rootless containers (also installs the podman CLI)
   virtualisation.podman = {
     enable = true;
-    dockerCompat = true; # Docker compatibility
     defaultNetwork.settings.dns_enabled = true;
   };
 
