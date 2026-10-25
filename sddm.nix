@@ -25,7 +25,7 @@ in
     };
 
     # Theme configuration
-    theme = "catppuccin-mocha";
+    theme = "catppuccin-mocha-mauve";
 
     # Use KDE6 version for better Wayland support
     package = pkgs.kdePackages.sddm;
@@ -40,7 +40,7 @@ in
 
       # Theme settings
       Theme = {
-        Current = "catppuccin-mocha";
+        Current = "catppuccin-mocha-mauve";
         ThemeDir = "/run/current-system/sw/share/sddm/themes";
         FacesDir = "/var/lib/AccountsService/icons";
         CursorTheme = "catppuccin-mocha-dark-cursors";
@@ -67,7 +67,7 @@ in
         DefaultPath = "/run/current-system/sw/bin";
         HideShells = "";
         HideUsers = "";
-        MaximumUid = 60513;
+        MaximumUid = 29999; # Excludes nixbld build users (30001+)
         MinimumUid = 1000;
         RememberLastSession = true;
         RememberLastUser = true;
@@ -80,6 +80,7 @@ in
   environment.systemPackages = with pkgs; [
     (catppuccin-sddm.override {
       flavor = "mocha";
+      accent = "mauve"; # Theme dir is catppuccin-<flavor>-<accent>
       fontSize = "9";
       background = "${./wallpapers/f1-3.png}";
       loginBackground = true;
