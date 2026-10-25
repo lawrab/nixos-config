@@ -260,26 +260,7 @@
     dates = "weekly";
     options = "--delete-older-than 14d";
   };
-  
-  # Run user garbage collection alongside system cleanup
-  systemd.user.services.nix-gc-user = {
-    description = "Nix Garbage Collector (User)";
-    script = "${pkgs.nix}/bin/nix-collect-garbage --delete-older-than 14d";
-    serviceConfig = {
-      Type = "oneshot";
-      User = "lrabbets";
-    };
-  };
-  
-  systemd.user.timers.nix-gc-user = {
-    description = "Nix Garbage Collection Timer (User)";
-    wantedBy = [ "timers.target" ];
-    timerConfig = {
-      OnCalendar = "weekly";
-      RandomizedDelaySec = "1800"; # 30min random delay
-      Persistent = true;
-    };
-  };
+  # User profile garbage collection is nix.gc in home.nix
 
   # Automatic store optimization to reduce disk usage
   nix.settings.auto-optimise-store = true;

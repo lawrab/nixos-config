@@ -51,6 +51,14 @@
       flavor = "mocha"; # Dark theme - options: latte, frappe, macchiato, mocha
     };
 
+    # Garbage-collect the user profile on the same schedule as the system
+    nix.gc = {
+      automatic = true;
+      dates = "weekly";
+      randomizedDelaySec = "30min";
+      options = "--delete-older-than 14d";
+    };
+
     home.stateVersion = "25.05";
   };
 }
