@@ -4,13 +4,13 @@
 # - Runtime wallpaper switching
 # - Per-monitor wallpaper support
 # - Low CPU usage after initial caching
-{pkgs, ...}:
+{ ... }:
 
 {
-  home.packages = with pkgs; [
-    awww  # Animated wallpaper daemon for Wayland
-  ];
+  # Runs awww-daemon as a systemd user service tied to the Wayland session,
+  # restarted automatically if it crashes. Installs the awww CLI too.
+  services.awww.enable = true;
 
-  # awww doesn't use config files - it's controlled via CLI commands
-  # Configuration is handled through autostart commands in hyprland.nix
+  # awww doesn't use config files - wallpapers are set via `awww img`
+  # (see wallpaper-rotate in scripts.nix and its service in service.nix)
 }

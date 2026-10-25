@@ -31,11 +31,15 @@
     services.wallpaper-rotate = {
       Unit = {
         Description = "Rotate wallpaper randomly";
+        After = [ "awww.service" ];
+        Requisite = [ "awww.service" ]; # Skip timer runs when there is no session
       };
       Service = {
         Type = "oneshot";
         ExecStart = "${pkgs.bash}/bin/bash -c 'wallpaper-rotate'";
       };
+      # Set a wallpaper as soon as the daemon starts at login
+      Install.WantedBy = [ "awww.service" ];
     };
 
     # Timer for random wallpaper rotation

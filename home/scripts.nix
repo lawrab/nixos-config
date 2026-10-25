@@ -367,6 +367,11 @@ EOF
 
     # Set wallpaper using awww
     if command -v awww >/dev/null 2>&1; then
+      # The daemon may still be starting at login - wait up to 5s for its socket
+      for _ in $(seq 50); do
+        awww query >/dev/null 2>&1 && break
+        sleep 0.1
+      done
       awww img "$SELECTED_WALLPAPER" --transition-type grow --transition-pos center --transition-duration 2
     else
       echo "Error: awww not found"
