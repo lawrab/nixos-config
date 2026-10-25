@@ -19,10 +19,10 @@ let
       krb5               # libgssapi_krb5.so.2 (Qt network/Kerberos)
       libxkbcommon       # libxkbcommon.so.0 (Qt input/Wayland)
       wayland            # libwayland-*.so (Qt Wayland backend)
-      xorg.libX11
-      xorg.libXext
-      xorg.libxcb
-      xorg.libXrender
+      libx11
+      libxext
+      libxcb
+      libxrender
       dbus
       expat
       libgcrypt
@@ -45,10 +45,10 @@ let
         krb5
         libxkbcommon
         wayland
-        xorg.libX11
-        xorg.libXext
-        xorg.libxcb
-        xorg.libXrender
+        libx11
+        libxext
+        libxcb
+        libxrender
         dbus
         expat
         libgcrypt

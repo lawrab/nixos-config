@@ -33,6 +33,8 @@ in # This is the end of the 'let' block and the start of your main config
     wayland.windowManager.hyprland = {
     enable = true;
     package = pkgs-unstable.hyprland; # Use unstable (0.52+) for crash fixes
+    # Keep generating hyprland.conf for now; Lua (the 26.05 default) is a separate migration
+    configType = "hyprlang";
     settings = {
       monitor = [
         "DP-2,1920x1080@144,0x0,1"
@@ -63,7 +65,7 @@ in # This is the end of the 'let' block and the start of your main config
       exec-once = [
         "goxlr-daemon"  # Headless GoXLR Mini control daemon
         "waybar"
-        "swww init"  # Initialize swww daemon
+        "awww-daemon"  # Start wallpaper daemon
         "wallpaper-rotate"  # Set random wallpaper at startup
         "wl-paste --type text --watch cliphist store"  # Start clipboard history daemon
         "wl-paste --type image --watch cliphist store"  # Store image clipboard items

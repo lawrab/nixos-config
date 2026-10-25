@@ -16,7 +16,7 @@
       ./home/waybar.nix        # Status bar
       ./home/wofi.nix          # Application launcher
       ./home/wlogout.nix       # Logout menu
-      ./swww/swww.nix          # Animated wallpaper manager
+      ./awww/awww.nix          # Animated wallpaper manager
       ./hyprlock/hyprlock.nix   # Screen locker
       
       # Applications and tools

@@ -15,9 +15,9 @@
 
     # File Manager (Stable)
     (with pkgs; [
-      xfce.thunar              # GUI file manager with drag-and-drop
-      xfce.thunar-volman       # Automatic device management
-      xfce.thunar-archive-plugin  # Archive file support
+      thunar                # GUI file manager with drag-and-drop
+      thunar-volman         # Automatic device management
+      thunar-archive-plugin # Archive file support
     ]) ++
     
     # CLI Tools (Stable) - themed with Catppuccin

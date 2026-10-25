@@ -7,6 +7,8 @@
     defaultEditor = true; # Sets Neovim as the default editor via $EDITOR
     viAlias = true;       # Creates a 'vi' alias to 'nvim'
     vimAlias = true;      # Creates a 'vim' alias to 'nvim'
+    withRuby = false;     # No plugins need the Ruby or Python providers
+    withPython3 = false;
 
     # Plugin packages are separate from configuration
     plugins = with pkgs-unstable.vimPlugins; [
@@ -27,8 +29,8 @@
       nvim-lspconfig
     ];
 
-    # extraLuaConfig vs extraConfig: Lua goes here, Vimscript in extraConfig
-    extraLuaConfig = ''
+    # initLua vs extraConfig: Lua goes here, Vimscript in extraConfig
+    initLua = ''
       -- Set leader key to space
       vim.g.mapleader = ' '
       vim.g.maplocalleader = ' '

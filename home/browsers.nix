@@ -5,6 +5,7 @@
   programs.firefox = {
     enable = true;
     package = pkgs-unstable.firefox;
+    configPath = ".mozilla/firefox"; # Keep the existing profile location
 
     profiles.default = {
       isDefault = true;

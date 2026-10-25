@@ -45,7 +45,7 @@
     enable = true;
     # Disable resolved's built-in mDNS to avoid conflicting with avahi,
     # which handles mDNS + DNS-SD (needed for printer discovery)
-    extraConfig = "MulticastDNS=no";
+    settings.Resolve.MulticastDNS = false;
   };
 
   # irqbalance disabled - read-only /proc/irq on this system makes it ineffective,
@@ -357,7 +357,7 @@
   };
 
   # Cap shutdown wait time so a stuck process can't hang forever
-  systemd.extraConfig = "DefaultTimeoutStopSec=15s";
+  systemd.settings.Manager.DefaultTimeoutStopSec = "15s";
 
   # CPU governor - performance mode for gaming
   powerManagement.cpuFreqGovernor = "performance";

@@ -11,7 +11,7 @@
     podman-tui  # Terminal UI for Podman
     podman-compose # Compose file support for `podman compose`
     ghostscript # Required for CUPS print preview generation
-    poppler_utils # PDF conversion tools for print preview
+    poppler-utils # PDF conversion tools for print preview
   ];
 
   # Podman configuration for rootless containers (also installs the podman CLI)
@@ -47,7 +47,7 @@
       inter # Better system font
       noto-fonts
       noto-fonts-cjk-sans
-      noto-fonts-emoji
+      noto-fonts-color-emoji
       source-han-sans
       source-han-serif
     ];

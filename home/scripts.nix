@@ -365,11 +365,11 @@ EOF
 
     echo "Setting wallpaper to: $(basename "$SELECTED_WALLPAPER")"
 
-    # Set wallpaper using swww
-    if command -v swww >/dev/null 2>&1; then
-      swww img "$SELECTED_WALLPAPER" --transition-type grow --transition-pos center --transition-duration 2
+    # Set wallpaper using awww
+    if command -v awww >/dev/null 2>&1; then
+      awww img "$SELECTED_WALLPAPER" --transition-type grow --transition-pos center --transition-duration 2
     else
-      echo "Error: swww not found"
+      echo "Error: awww not found"
       exit 1
     fi
   '';
