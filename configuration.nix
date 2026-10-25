@@ -386,14 +386,14 @@
   ];
 
   # GPU clock speed configuration via systemd service
-  systemd.services.gpu-undervolt = {
-    description = "GPU Undervolting Service";
-    after = [ "graphical-session.target" ];
+  # -lgc locks the graphics clock; it does not undervolt
+  systemd.services.gpu-clock-lock = {
+    description = "Lock NVIDIA GPU graphics clock";
     wantedBy = [ "multi-user.target" ];
     serviceConfig = {
       Type = "oneshot";
       RemainAfterExit = true;
-      ExecStart = "/run/current-system/sw/bin/nvidia-smi -lgc 1830";
+      ExecStart = "${config.hardware.nvidia.package.bin}/bin/nvidia-smi -lgc 1830";
       User = "root";
     };
   };
