@@ -1,29 +1,85 @@
-{ pkgs, pkgs-unstable, config, ...}:
+{ pkgs, lib, ...}:
 
 let
-  # Self-referencing: access our own config to generate a help script
-  keybinds = config.wayland.windowManager.hyprland.settings.bind;
+  inherit (lib.generators) mkLuaInline toLua;
+  lua = toLua { };
 
-  # Function to format each keybinding line for display
-  format-keybind = bind:
-    let
-      # Split the line by comma, e.g., "$mainMod, RETURN, exec, kitty"
-      parts = pkgs.lib.splitString "," bind;
-      # Get the keys (first 2 parts), e.g., "$mainMod, RETURN"
-      keys = pkgs.lib.concatStringsSep "," (pkgs.lib.take 2 parts);
-      # Get the action (the rest), e.g., "exec, kitty"
-      action = pkgs.lib.concatStringsSep "," (pkgs.lib.drop 2 parts);
-    in
-    # Replace variables and format for readability
-    "<b>${pkgs.lib.replaceStrings [ "$mainMod" ] [ "SUPER" ] keys}</b>: ${action}";
+  mainMod = "SUPER";
 
-  # Create the final list of formatted keybindings
-  formatted-keybinds = pkgs.lib.map format-keybind keybinds;
+  # Dispatcher helpers, so the bind list below reads like the hyprlang it replaced
+  exec = cmd: "hl.dsp.exec_cmd(${lua cmd})";
+  focusDir = dir: "hl.dsp.focus({ direction = ${lua dir} })";
+  moveDir = dir: "hl.dsp.window.move({ direction = ${lua dir} })";
+  resize = x: y: "hl.dsp.window.resize({ x = ${toString x}, y = ${toString y}, relative = true })";
+
+  # Every keybinding: generates both the hl.bind calls and the SUPER+/ help menu
+  binds = [
+    # -- App Launchers --
+    { keys = "${mainMod} + RETURN"; dsp = exec "kitty"; desc = "Terminal"; }
+    { keys = "${mainMod} + D"; dsp = exec "wofi --show drun"; desc = "App launcher"; }
+    { keys = "${mainMod} + E"; dsp = exec "thunar"; desc = "File manager"; }
+    { keys = "${mainMod} + O"; dsp = exec "obsidian"; desc = "Obsidian"; }
+    { keys = "${mainMod} + B"; dsp = exec "brave-dark"; desc = "Brave"; }
+    { keys = "${mainMod} + SHIFT + B"; dsp = exec "firefox"; desc = "Firefox"; }
+    { keys = "${mainMod} + L"; dsp = exec "hyprlock"; desc = "Lock screen"; }
+    { keys = "${mainMod} + X"; dsp = exec "wlogout"; desc = "Power menu"; }
+
+    # -- Screenshots --
+    { keys = "Print"; dsp = exec "screenshot full"; desc = "Screenshot (full)"; }
+    { keys = "SHIFT + Print"; dsp = exec "screenshot select"; desc = "Screenshot (area)"; }
+
+    # -- Window Management --
+    { keys = "${mainMod} + Q"; dsp = "hl.dsp.window.close()"; desc = "Close window"; }
+    { keys = "${mainMod} + M"; dsp = "hl.dsp.exit()"; desc = "Exit Hyprland"; }
+    { keys = "${mainMod} + F"; dsp = "hl.dsp.window.fullscreen()"; desc = "Fullscreen"; }
+    { keys = "${mainMod} + SPACE"; dsp = ''hl.dsp.window.float({ action = "toggle" })''; desc = "Toggle floating"; }
+    { keys = "${mainMod} + P"; dsp = "hl.dsp.window.pseudo()"; desc = "Pseudo-tile (dwindle)"; }
+    { keys = "${mainMod} + SHIFT + P"; dsp = ''hl.dsp.layout("togglesplit")''; desc = "Toggle split (dwindle)"; }
+
+    # -- Focus / Move with Arrow Keys --
+    { keys = "${mainMod} + left"; dsp = focusDir "left"; desc = "Focus left"; }
+    { keys = "${mainMod} + right"; dsp = focusDir "right"; desc = "Focus right"; }
+    { keys = "${mainMod} + up"; dsp = focusDir "up"; desc = "Focus up"; }
+    { keys = "${mainMod} + down"; dsp = focusDir "down"; desc = "Focus down"; }
+
+    { keys = "${mainMod} + SHIFT + left"; dsp = moveDir "left"; desc = "Move window left"; }
+    { keys = "${mainMod} + SHIFT + right"; dsp = moveDir "right"; desc = "Move window right"; }
+    { keys = "${mainMod} + SHIFT + up"; dsp = moveDir "up"; desc = "Move window up"; }
+    { keys = "${mainMod} + SHIFT + down"; dsp = moveDir "down"; desc = "Move window down"; }
+
+    # -- Resize Windows --
+    { keys = "${mainMod} + CTRL + left"; dsp = resize (-20) 0; desc = "Shrink width"; }
+    { keys = "${mainMod} + CTRL + right"; dsp = resize 20 0; desc = "Grow width"; }
+    { keys = "${mainMod} + CTRL + up"; dsp = resize 0 (-20); desc = "Shrink height"; }
+    { keys = "${mainMod} + CTRL + down"; dsp = resize 0 20; desc = "Grow height"; }
+
+    # -- Keybinding Helper --
+    { keys = "${mainMod} + slash"; dsp = exec "hypr-keybinds"; desc = "Show keybindings"; }
+
+    # -- Clipboard Manager --
+    { keys = "${mainMod} + V"; dsp = exec "cliphist list | wofi --dmenu | cliphist decode | wl-copy"; desc = "Clipboard history"; }
+  ]
+  # -- Workspace Navigation -- (key 0 is workspace 10)
+  ++ lib.concatMap (i:
+    let key = toString (lib.mod i 10); in [
+      { keys = "${mainMod} + ${key}"; dsp = "hl.dsp.focus({ workspace = ${toString i} })"; desc = "Workspace ${toString i}"; }
+      { keys = "${mainMod} + SHIFT + ${key}"; dsp = "hl.dsp.window.move({ workspace = ${toString i} })"; desc = "Move to workspace ${toString i}"; }
+    ]) (lib.range 1 10);
 
   # writeShellScriptBin creates an executable script in your PATH
   keybinds-script = pkgs.writeShellScriptBin "hypr-keybinds" ''
-    echo -e "${pkgs.lib.concatStringsSep "\\n" formatted-keybinds}" | wofi --show dmenu --allow-markup -p "Hyprland Keybindings"
+    echo -e "${lib.concatMapStringsSep "\\n" (b: "<b>${b.keys}</b>: ${b.desc}") binds}" | wofi --show dmenu --allow-markup -p "Hyprland Keybindings"
   '';
+
+  # Run shell commands when a Hyprland event fires
+  onEvent = event: cmds: {
+    _args = [
+      event
+      (mkLuaInline "function()\n${lib.concatMapStrings (c: "  hl.exec_cmd(${lua c})\n") cmds}end")
+    ];
+  };
+
+  windowRule = match: effects: effects // { inherit match; };
 
 in # This is the end of the 'let' block and the start of your main config
 
@@ -34,172 +90,102 @@ in # This is the end of the 'let' block and the start of your main config
     enable = true;
     package = null;
     portalPackage = null;
-    # Keep generating hyprland.conf for now; Lua (the 26.05 default) is a separate migration
-    configType = "hyprlang";
+    # Generates hyprland.lua: each settings attribute becomes an hl.<name>(...) call
+    configType = "lua";
     settings = {
       monitor = [
-        "DP-2,1920x1080@144,0x0,1"
-        "DP-3,1920x1080@144,1920x0,1"
+        { output = "DP-2"; mode = "1920x1080@144"; position = "0x0"; scale = 1; }
+        { output = "DP-3"; mode = "1920x1080@144"; position = "1920x0"; scale = 1; }
       ];
 
-      workspace = [
-        "1, monitor:DP-2, default:true"
-        "2, monitor:DP-3, default:true"
-        "3, monitor:DP-3"
-        "4, monitor:DP-3"
-        "5, monitor:DP-3"
-        "6, monitor:DP-3"
-        "7, monitor:DP-3"
-        "8, monitor:DP-3"
-        "9, monitor:DP-3"
-        "10, monitor:DP-3"
+      workspace_rule =
+        [ { workspace = "1"; monitor = "DP-2"; default = true; } ]
+        ++ map (i: { workspace = toString i; monitor = "DP-3"; } // lib.optionalAttrs (i == 2) { default = true; })
+          (lib.range 2 10);
+
+      on = [
+        (onEvent "hyprland.start" [
+          "goxlr-daemon"  # Headless GoXLR Mini control daemon
+          "wl-paste --type text --watch cliphist store"  # Start clipboard history daemon
+          "wl-paste --type image --watch cliphist store"  # Store image clipboard items
+        ])
+        # Nothing else ends the session on logout, so waybar and awww would
+        # otherwise outlive the compositor and crash-loop on its dead socket
+        (onEvent "hyprland.shutdown" [
+          "systemctl --user stop graphical-session.target"
+        ])
       ];
 
-      exec-once = [
-        "goxlr-daemon"  # Headless GoXLR Mini control daemon
-        "wl-paste --type text --watch cliphist store"  # Start clipboard history daemon
-        "wl-paste --type image --watch cliphist store"  # Store image clipboard items
-      ];
+      bind = map (b: { _args = [ b.keys (mkLuaInline b.dsp) { description = b.desc; } ]; }) binds;
 
-      "$mainMod" = "SUPER";
-      
-      bind = [
-        # -- App Launchers --
-        "$mainMod, RETURN, exec, kitty"
-        "$mainMod, D, exec, wofi --show drun"
-        "$mainMod, E, exec, thunar"
-        "$mainMod, O, exec, obsidian"
-        "$mainMod, B, exec, brave-dark"
-        "$mainMod SHIFT, B, exec, firefox"
-        "$mainMod, L, exec, hyprlock"
-        "$mainMod, X, exec, wlogout" 
-
-        # -- Screenshots --
-        ", Print, exec, screenshot full"
-        "SHIFT, Print, exec, screenshot select"
-
-        # -- Window Management --
-        "$mainMod, Q, killactive,"
-        "$mainMod, M, exit,"
-        "$mainMod, F, fullscreen,"
-        "$mainMod, SPACE, togglefloating,"
-        "$mainMod, P, pseudo, # dwindle"
-        "$mainMod SHIFT, P, layoutmsg, togglesplit # dwindle"
-
-        # -- Focus / Move with Arrow Keys --
-        "$mainMod, left, movefocus, l"
-        "$mainMod, right, movefocus, r"
-        "$mainMod, up, movefocus, u"
-        "$mainMod, down, movefocus, d"
-
-        "$mainMod SHIFT, left, movewindow, l"
-        "$mainMod SHIFT, right, movewindow, r"
-        "$mainMod SHIFT, up, movewindow, u"
-        "$mainMod SHIFT, down, movewindow, d"
-
-        # -- Resize Windows --
-        "$mainMod CTRL, left, resizeactive, -20 0"
-        "$mainMod CTRL, right, resizeactive, 20 0"
-        "$mainMod CTRL, up, resizeactive, 0 -20"
-        "$mainMod CTRL, down, resizeactive, 0 20"
-
-        # -- Keybinding Helper --
-        "$mainMod, slash, exec, hypr-keybinds"
-
-        # -- Clipboard Manager --
-        "$mainMod, V, exec, cliphist list | wofi --dmenu | cliphist decode | wl-copy"
-
-        # -- Workspace Navigation --
-        "$mainMod, 1, workspace, 1"
-        "$mainMod, 2, workspace, 2"
-        "$mainMod, 3, workspace, 3"
-        "$mainMod, 4, workspace, 4"
-        "$mainMod, 5, workspace, 5"
-        "$mainMod, 6, workspace, 6"
-        "$mainMod, 7, workspace, 7"
-        "$mainMod, 8, workspace, 8"
-        "$mainMod, 9, workspace, 9"
-        "$mainMod, 0, workspace, 10"
-        "$mainMod SHIFT, 1, movetoworkspace, 1"
-        "$mainMod SHIFT, 2, movetoworkspace, 2"
-        "$mainMod SHIFT, 3, movetoworkspace, 3"
-        "$mainMod SHIFT, 4, movetoworkspace, 4"
-        "$mainMod SHIFT, 5, movetoworkspace, 5"
-        "$mainMod SHIFT, 6, movetoworkspace, 6"
-        "$mainMod SHIFT, 7, movetoworkspace, 7"
-        "$mainMod SHIFT, 8, movetoworkspace, 8"
-        "$mainMod SHIFT, 9, movetoworkspace, 9"
-        "$mainMod SHIFT, 0, movetoworkspace, 10"
-      ];
-      
-      general = {
-        gaps_in = 5;
-        gaps_out = 10;
-        border_size = 2;
-        allow_tearing = true; # Reduces input lag for gaming
-        "col.active_border" = "rgba(cba6f7ff)"; # Catppuccin Mocha mauve
-        "col.inactive_border" = "rgba(313244ff)"; # Catppuccin Mocha surface0
-      };
-
-      xwayland = {
-        force_zero_scaling = true; # Fixes blurry XWayland fonts on NixOS
-      };
-
-      decoration = { 
-        rounding = 10;
-        blur = {
-          enabled = true;
-          size = 5;
-          passes = 2;
+      config = {
+        general = {
+          gaps_in = 5;
+          gaps_out = 10;
+          border_size = 2;
+          allow_tearing = true; # Reduces input lag for gaming
+          # colors is the Catppuccin palette, loaded by catppuccin.hyprland
+          col = {
+            active_border = mkLuaInline "colors.accent";
+            inactive_border = mkLuaInline "colors.surface0";
+          };
         };
+
+        xwayland = {
+          force_zero_scaling = true; # Fixes blurry XWayland fonts on NixOS
+        };
+
+        decoration = {
+          rounding = 10;
+          blur = {
+            enabled = true;
+            size = 5;
+            passes = 2;
+          };
+        };
+
+        animations.enabled = true;
       };
 
-      animations = {
-        enabled = true; 
-        bezier = "myBezier, 0.05, 0.9, 0.1, 1.05";
-        animation = [
-          "windows, 1, 7, myBezier"
-          "windowsOut, 1, 7, default, popin 80%"
-          "border, 1, 10, default"
-          "fade, 1, 7, default"
-          "workspaces, 1, 6, default"
-        ];
+      curve = {
+        _args = [ "myBezier" { type = "bezier"; points = [ [ 0.05 0.9 ] [ 0.1 1.05 ] ]; } ];
       };
 
-      # Window rules - Hyprland 0.53+ syntax with match: prefix
-      windowrule = [
+      animation = [
+        { leaf = "windows"; enabled = true; speed = 7; bezier = "myBezier"; }
+        { leaf = "windowsOut"; enabled = true; speed = 7; bezier = "default"; style = "popin 80%"; }
+        { leaf = "border"; enabled = true; speed = 10; bezier = "default"; }
+        { leaf = "fade"; enabled = true; speed = 7; bezier = "default"; }
+        { leaf = "workspaces"; enabled = true; speed = 6; bezier = "default"; }
+      ];
+
+      window_rule = [
         # Disable rounded corners on fullscreen windows
-        "rounding 0, match:fullscreen 1"
+        (windowRule { fullscreen = true; } { rounding = 0; })
 
         # Battle.net launcher - float fullscreen on main monitor
-        "match:title ^(Battle.net)$, float 1"
-        "match:title ^(Battle.net)$, fullscreen 1"
-        "match:title ^(Battle.net)$, workspace 1"
+        (windowRule { title = "^(Battle.net)$"; } { float = true; fullscreen = true; workspace = "1"; })
 
         # World of Warcraft - fullscreen to prevent XWayland coordinate desync, no decorations
-        "match:title ^(World of Warcraft)$, fullscreen 1"
-        "match:title ^(World of Warcraft)$, rounding 0"
-        "match:title ^(World of Warcraft)$, border_size 0"
-        "match:title ^(World of Warcraft)$, no_blur on"
-        "match:title ^(World of Warcraft)$, no_shadow on"
-        "match:title ^(World of Warcraft)$, workspace 1"
+        (windowRule { title = "^(World of Warcraft)$"; } {
+          fullscreen = true;
+          rounding = 0;
+          border_size = 0;
+          no_blur = true;
+          no_shadow = true;
+          workspace = "1";
+        })
 
         # Browser and editor assignments
-        "match:class ^(brave-browser)$, workspace 2"
-        "match:class ^(Godot)$, workspace 1, tile on"
-        "match:class ^(godot)$, workspace 1, tile on"
+        (windowRule { class = "^(brave-browser)$"; } { workspace = "2"; })
+        (windowRule { class = "^([Gg]odot)$"; } { workspace = "1"; tile = true; })
 
         # Discord on workspace 3 (right monitor)
-        "match:class ^([Dd]iscord)$, workspace 3"
-
+        (windowRule { class = "^([Dd]iscord)$"; } { workspace = "3"; })
       ];
     };
   };
 
   # Add our generated script to user packages
   home.packages = [ keybinds-script ];
-
-  # The catppuccin module only supports Lua configs (it emits colors._var = require(...)),
-  # so it stays off while configType is hyprlang; border colors are set in general above
-  catppuccin.hyprland.enable = false;
 }
