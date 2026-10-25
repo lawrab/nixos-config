@@ -55,20 +55,10 @@ in # This is the end of the 'let' block and the start of your main config
         "10, monitor:DP-3"
       ];
 
-      # Environment variables to ensure applications detect dark mode
-      env = [
-        "GTK_THEME,Adwaita:dark"
-        "QT_STYLE_OVERRIDE,Adwaita-dark"
-        "COLOR_SCHEME,prefer-dark"
-        "GTK_APPLICATION_PREFER_DARK_THEME,1"
-      ];
-
       exec-once = [
         "goxlr-daemon"  # Headless GoXLR Mini control daemon
         "wl-paste --type text --watch cliphist store"  # Start clipboard history daemon
         "wl-paste --type image --watch cliphist store"  # Store image clipboard items
-        "gsettings set org.gnome.desktop.interface gtk-theme 'Adwaita-dark'"  # Set GTK dark theme
-        "gsettings set org.gnome.desktop.interface color-scheme 'prefer-dark'"  # Set color scheme preference
       ];
 
       "$mainMod" = "SUPER";

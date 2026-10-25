@@ -12,11 +12,6 @@
     MOZ_ENABLE_WAYLAND = "1";       # Firefox uses Wayland
     NIXOS_OZONE_WL = "1";           # Chromium/Electron use Wayland
 
-    # Dark mode theming
-    BRAVE_FLAGS = "--enable-features=WebUIDarkMode --force-dark-mode";
-    GTK_THEME = "Adwaita:dark";
-    # QT_STYLE_OVERRIDE managed by catppuccin Qt theming
-
     # UV Python configuration for NixOS compatibility
     UV_PYTHON_PREFERENCE = "only-system";
 

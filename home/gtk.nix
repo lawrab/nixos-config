@@ -6,6 +6,13 @@
   gtk = {
     enable = true;
 
+    # GTK3 apps; GTK4/libadwaita apps follow color-scheme below instead
+    theme = {
+      name = "Adwaita-dark";
+      package = pkgs.gnome-themes-extra;
+    };
+    gtk4.theme = null; # don't inject the GTK3 theme into libadwaita
+
     # iconTheme managed by Catppuccin kvantum module
 
     cursorTheme = {
