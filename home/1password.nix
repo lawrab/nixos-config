@@ -6,13 +6,6 @@
     pkgs-unstable._1password-gui
   ];
 
-  # Enable gnome-keyring for 1Password secret storage
-  # Only using secrets component - 1Password SSH agent handles SSH keys
-  services.gnome-keyring = {
-    enable = true;
-    components = [ "secrets" ];
-  };
-
   # SSH configuration for 1Password integration
   programs.ssh = {
     enable = true;
