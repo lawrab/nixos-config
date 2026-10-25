@@ -65,7 +65,6 @@ in # This is the end of the 'let' block and the start of your main config
 
       exec-once = [
         "goxlr-daemon"  # Headless GoXLR Mini control daemon
-        "waybar"
         "wl-paste --type text --watch cliphist store"  # Start clipboard history daemon
         "wl-paste --type image --watch cliphist store"  # Store image clipboard items
         "gsettings set org.gnome.desktop.interface gtk-theme 'Adwaita-dark'"  # Set GTK dark theme

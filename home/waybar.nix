@@ -4,6 +4,9 @@
   programs.waybar = {
     enable = true;
     package = pkgs-unstable.waybar;
+    # Run as a user service so it restarts on crash (e.g. its pulseaudio
+    # module aborts when PipeWire restarts during a switch)
+    systemd.enable = true;
     settings = {
       mainBar = {
         layer = "top";
