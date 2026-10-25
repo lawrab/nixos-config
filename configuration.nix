@@ -295,6 +295,18 @@
   services.gnome.gnome-keyring.enable = true;
   security.pam.services.sddm.enableGnomeKeyring = true;
 
+  # 1Password via the NixOS modules: setgid wrappers for browser extension and
+  # CLI app integration, plus the polkit policy for system authentication
+  programs._1password = {
+    enable = true;
+    package = pkgs-unstable._1password-cli;
+  };
+  programs._1password-gui = {
+    enable = true;
+    package = pkgs-unstable._1password-gui;
+    polkitPolicyOwners = [ "lrabbets" ];
+  };
+
   # Enable automatic trim
   services.fstrim.enable = true;
 

@@ -1,10 +1,6 @@
-{ pkgs-unstable, ... }:
+{ ... }:
 {
-  home.packages = [
-    # 1Password packages use underscores in Nix, not hyphens
-    pkgs-unstable._1password-cli
-    pkgs-unstable._1password-gui
-  ];
+  # The 1Password app and CLI are installed by the NixOS modules in configuration.nix
 
   # SSH configuration for 1Password integration
   programs.ssh = {
