@@ -253,17 +253,18 @@
   
   nixpkgs.config.allowUnfree = true; # Allow proprietary software
 
-  # Automatic garbage collection - runs daily and keeps only last 3 days
+  # Automatic garbage collection - weekly, keeping 14 days of generations
+  # so there is always a known-good generation to roll back to after an upgrade
   nix.gc = {
     automatic = true;
-    dates = "daily"; # Run every day at 03:15
-    options = "--delete-older-than 3d"; # Keep only last 3 days (very aggressive)
+    dates = "weekly";
+    options = "--delete-older-than 14d";
   };
   
   # Run user garbage collection alongside system cleanup
   systemd.user.services.nix-gc-user = {
     description = "Nix Garbage Collector (User)";
-    script = "${pkgs.nix}/bin/nix-collect-garbage --delete-older-than 3d";
+    script = "${pkgs.nix}/bin/nix-collect-garbage --delete-older-than 14d";
     serviceConfig = {
       Type = "oneshot";
       User = "lrabbets";
@@ -274,7 +275,7 @@
     description = "Nix Garbage Collection Timer (User)";
     wantedBy = [ "timers.target" ];
     timerConfig = {
-      OnCalendar = "daily";
+      OnCalendar = "weekly";
       RandomizedDelaySec = "1800"; # 30min random delay
       Persistent = true;
     };
