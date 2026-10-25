@@ -288,8 +288,11 @@
   system.autoUpgrade.enable = false;
 
   # Hyprland window manager (Wayland-based)
-  # Note: Package version is managed in home/hyprland.nix via home-manager
+  # Unstable for the latest fixes. This is the only Hyprland install: its cap_sys_nice
+  # wrapper in /run/wrappers/bin is first in PATH, so it is the binary that runs
   programs.hyprland.enable = true;
+  programs.hyprland.package = pkgs-unstable.hyprland;
+  programs.hyprland.portalPackage = pkgs-unstable.xdg-desktop-portal-hyprland;
   programs.hyprland.xwayland.enable = true; # X11 app compatibility
 
   programs.appimage = {

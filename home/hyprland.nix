@@ -29,10 +29,11 @@ in # This is the end of the 'let' block and the start of your main config
 
 {
     # Hyprland window manager configuration
-    # This is the single source of truth for Hyprland version and settings
+    # The package comes from programs.hyprland in configuration.nix
     wayland.windowManager.hyprland = {
     enable = true;
-    package = pkgs-unstable.hyprland; # Use unstable (0.52+) for crash fixes
+    package = null;
+    portalPackage = null;
     # Keep generating hyprland.conf for now; Lua (the 26.05 default) is a separate migration
     configType = "hyprlang";
     settings = {
