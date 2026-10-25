@@ -237,9 +237,7 @@
     useUserPackages = true; # Install to user profile
     backupFileExtension = "backup"; # Backup existing files instead of failing
     extraSpecialArgs = { inherit pkgs-unstable theme; }; # Pass variables to home config
-    users.lrabbets = { ... }: {
-      # User configuration defined in home.nix
-    };
+    # User configuration is defined in home.nix
   };
 
   # Nix configuration

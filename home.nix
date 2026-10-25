@@ -21,8 +21,6 @@
       
       # Applications and tools
       ./home/packages.nix      # System packages
-      # ./home/python.nix      # Python development environment - moved to project flakes
-      ./home/cli-tools.nix     # CLI tools with Catppuccin theming
       ./home/browsers.nix      # Web browsers (Firefox & Brave)
       ./home/vscode.nix        # Code editor
       ./home/neovim.nix        # Terminal editor
