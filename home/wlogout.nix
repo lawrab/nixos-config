@@ -12,12 +12,6 @@
         "keybind" = "l";
       }
       {
-        "label" = "hibernate";
-        "action" = "systemctl hibernate";
-        "text" = "Hibernate";
-        "keybind" = "h";
-      }
-      {
         "label" = "logout";
         "action" = "hyprctl dispatch exit";
         "text" = "Logout";
@@ -127,23 +121,6 @@
       }
       #suspend:before {
         content: "⏸️";
-        font-size: 48px;
-        display: block;
-        margin-bottom: 10px;
-      }
-
-      #hibernate {
-        background-color: rgba(180, 190, 254, 0.15);
-        border-color: rgba(180, 190, 254, 0.5);
-      }
-      #hibernate:hover { 
-        border-color: #${theme.lavender}; 
-        color: #${theme.lavender};
-        background-color: rgba(180, 190, 254, 0.25);
-        box-shadow: 0 8px 25px rgba(180, 190, 254, 0.4);
-      }
-      #hibernate:before {
-        content: "❄️";
         font-size: 48px;
         display: block;
         margin-bottom: 10px;
