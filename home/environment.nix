@@ -21,7 +21,7 @@
     UV_PYTHON_PREFERENCE = "only-system";
 
     # 1Password SSH agent configuration
-    SSH_AUTH_SOCK = "~/.1password/agent.sock";
+    SSH_AUTH_SOCK = "$HOME/.1password/agent.sock";
   };
 
   # Shell initialization for environment variables
