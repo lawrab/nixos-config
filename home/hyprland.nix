@@ -147,7 +147,8 @@ in # This is the end of the 'let' block and the start of your main config
         gaps_out = 10;
         border_size = 2;
         allow_tearing = true; # Reduces input lag for gaming
-        # Border colors will be set by Catppuccin theme
+        "col.active_border" = "rgba(cba6f7ff)"; # Catppuccin Mocha mauve
+        "col.inactive_border" = "rgba(313244ff)"; # Catppuccin Mocha surface0
       };
 
       xwayland = {
@@ -208,6 +209,7 @@ in # This is the end of the 'let' block and the start of your main config
   # Add our generated script to user packages
   home.packages = [ keybinds-script ];
 
-  # Enable Catppuccin theming for Hyprland
-  catppuccin.hyprland.enable = true;
+  # The catppuccin module only supports Lua configs (it emits colors._var = require(...)),
+  # so it stays off while configType is hyprlang; border colors are set in general above
+  catppuccin.hyprland.enable = false;
 }
