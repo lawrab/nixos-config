@@ -9,6 +9,9 @@
     };
     settings = {
       background_opacity = "0.85";
+      # The tiler sizes windows; a remembered "maximized" state made new windows
+      # open maximized, which Hyprland refuses to move between monitors
+      remember_window_size = "no";
     };
   };
 
